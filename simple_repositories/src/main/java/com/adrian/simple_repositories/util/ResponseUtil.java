@@ -5,6 +5,10 @@ import java.util.List;
 
 import com.adrian.simple_repositories.response.ApiResponse;
 
+/*
+ * User standard HttpResponse instead??
+ * */
+
 public class ResponseUtil {
 
   public static <T> ApiResponse<T> success(T data, String message, String path) {

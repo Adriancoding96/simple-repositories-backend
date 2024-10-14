@@ -10,6 +10,7 @@ import com.adrian.simple_repositories.dto.SignupRequestDTO;
 import com.adrian.simple_repositories.model.User;
 import com.adrian.simple_repositories.repository.UserRepository;
 import com.adrian.simple_repositories.service.UserService;
+import com.adrian.simple_repositories.exception.ExistingUserException;
 
 import jakarta.transaction.Transactional;
 
@@ -25,12 +26,13 @@ public class UserServiceImpl implements UserService {
     this.passwordEncoder = passwordEncoder;
   }
 
+  @Override
   @Transactional
   public void signup(SignupRequestDTO signupRequestDTO) {
     String email = signupRequestDTO.getEmail();
     Optional<User> existingUser = userRepository.findByEmail(email);
-    if(existingUser.isPresent()) { //TODO Implement custom exception
-      throw new RuntimeException("User with email: " + email + " already exists");
+    if(existingUser.isPresent()) {
+      throw new ExistingUserException("User with email: " + email + " already exists");
     }
     
     String hashedPassword = passwordEncoder.encode(signupRequestDTO.getPassword());

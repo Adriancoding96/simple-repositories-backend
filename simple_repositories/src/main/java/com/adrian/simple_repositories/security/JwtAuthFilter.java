@@ -77,7 +77,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       try {
           response.getWriter().write(toJson(errorResponse));
       } catch (IOException e) {
-          // Log the failure to write the error response (optional)
           e.printStackTrace();
       }
   }

@@ -1,8 +1,6 @@
 package com.adrian.simple_repositories.dto;
 
-
 import java.util.List;
-
 
 public class FolderFullDTO {
 

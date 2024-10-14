@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.adrian.simple_repositories.exception.ProjectNotFoundException;
 import com.adrian.simple_repositories.exception.FolderNotFoundException;
+import com.adrian.simple_repositories.exception.InvalidPushException;
 import com.adrian.simple_repositories.exception.FileNotFoundException;
 import com.adrian.simple_repositories.exception.AccessDeniedException;
+import com.adrian.simple_repositories.exception.BranchNotFoundException;
+import com.adrian.simple_repositories.exception.UserNotFoundException;
+import com.adrian.simple_repositories.exception.ExistingUserException;
 
-//Class clarifys the response messages sent back when faulty controller requests are recognized
 @RestControllerAdvice
 public class CustomExceptionHandler {
 
@@ -44,15 +47,47 @@ public class CustomExceptionHandler {
   }
   
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  @ExceptionHandler(FileNotFoundException.class)
+  public Map<String, String> handleFileNotFoundException(FileNotFoundException exception) {
+    Map<String, String> map = new HashMap<>();
+    map.put("errorMessage", exception.getMessage());
+    return map;
+  }
+
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  @ExceptionHandler(BranchNotFoundException.class)
+  public Map<String, String> handleBranchNotFoundException(BranchNotFoundException exception) {
+    Map<String, String> map = new HashMap<>();
+    map.put("errorMessage", exception.getMessage());
+    return map;
+  }
+
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  @ExceptionHandler(UserNotFoundException.class)
+  public Map<String, String> handleUserNotFoundException(UserNotFoundException exception) {
+    Map<String, String> map = new HashMap<>();
+    map.put("errorMessage", exception.getMessage());
+    return map;
+  }
+
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  @ExceptionHandler(ExistingUserException.class)
+  public Map<String, String> handleExistingUserException(ExistingUserException exception) {
+    Map<String, String> map = new HashMap<>();
+    map.put("errorMessage", exception.getMessage());
+    return map;
+  }
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   @ExceptionHandler(AccessDeniedException.class)
   public Map<String, String> handleAccessDenied(AccessDeniedException exception) {
     Map<String, String> map = new HashMap<>();
     map.put("errorMessage", exception.getMessage());
     return map;
   }
+
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-  @ExceptionHandler(FileNotFoundException.class)
-  public Map<String, String> handleFileNotFoundException(FileNotFoundException exception) {
+  @ExceptionHandler(InvalidPushException.class)
+  public Map<String, String> handleInvalidPushException(InvalidPushException exception) {
     Map<String, String> map = new HashMap<>();
     map.put("errorMessage", exception.getMessage());
     return map;

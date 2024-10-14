@@ -1,9 +1,14 @@
 package com.adrian.simple_repositories.model;
 
+import java.util.List;
+import java.util.ArrayList;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,6 +23,12 @@ public class User {
   private String email;
   private String password;
 
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<UserProjectActivity> activities = new ArrayList<>();
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Project> projects = new ArrayList<>();
+
   public User() {
 
   }
@@ -26,6 +37,13 @@ public class User {
     this.name = name;
     this.email = email;
     this.password = password;
+  }
+
+  public User(String name, String email, String password, List<Project> projects, List<UserProjectActivity> activities) {
+    this.name = name;
+    this.email = email;
+    this.password = password;
+    this.activities = activities;
   }
 
   public Long getId() {
@@ -44,6 +62,10 @@ public class User {
     return password;
   }
 
+  public List<UserProjectActivity> getActivities() {
+    return activities;
+  }
+
   public void setId(Long id) {
     this.id = id;
   }
@@ -58,6 +80,10 @@ public class User {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+  
+  public void setActivities(List<UserProjectActivity> activities) {
+    this.activities = activities;
   }
 
 }

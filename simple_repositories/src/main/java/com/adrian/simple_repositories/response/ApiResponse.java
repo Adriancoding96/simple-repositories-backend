@@ -2,6 +2,9 @@ package com.adrian.simple_repositories.response;
 
 import java.util.List;
 
+/*
+ * Probably not going to use this, better to stick to HttpResponse
+ * */
 public class ApiResponse<T> {
   
   private boolean success;

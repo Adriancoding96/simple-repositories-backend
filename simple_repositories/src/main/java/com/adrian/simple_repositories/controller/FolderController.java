@@ -27,30 +27,4 @@ public class FolderController {
   public FolderController(FolderService folderService) {
     this.folderService = folderService;
   }
-
-  @GetMapping
-  public ResponseEntity<List<FolderDTO>> getAllFolders() {
-    List<FolderDTO> folders = folderService.getAllFolders();
-    return ResponseEntity.ok(folders);
-
-  }  
-
-  @GetMapping("/{parentFolderId}")
-  public ResponseEntity<List<FolderDTO>> getAllSubFolders(@PathVariable Long parentFolderId) {
-    List<FolderDTO> subFolders = folderService.getAllSubFolders(parentFolderId);
-    return ResponseEntity.ok(subFolders);    
-  }
-
-  @GetMapping("/{FolderId}")
-  public ResponseEntity<FolderDTO> getFolderById(@PathVariable Long folderId) {
-    FolderDTO folder = folderService.getFolderById(folderId);
-    return ResponseEntity.ok(folder);
-  }
-
-  @PostMapping
-  public ResponseEntity<FolderDTO> createFolder(@RequestBody FolderDTO folderDTO, @PathVariable Long projectId) {
-    FolderDTO folder = folderService.createFolder(folderDTO, projectId);
-    return ResponseEntity.status(HttpStatus.CREATED).body(folder);
-  }
-
 }

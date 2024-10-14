@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.adrian.simple_repositories.repository.UserRepository;
 import com.adrian.simple_repositories.model.User;
+import com.adrian.simple_repositories.exception.UserNotFoundException;
 
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
@@ -18,15 +19,18 @@ public class UserDetailServiceImpl implements UserDetailsService {
     this.userRepository = userRepository;
   }
 
-  @Override
+  public User getUserByEmail(String email) {
+    User user = userRepository.findByEmail(email)
+      .orElseThrow(() -> new UserNotFoundException("User does not exist with email: " + email));
+    return user;
+  }
+
   public UserDetails loadUserByUsername(String email) {
-    User user = userRepository.findByEmail(email) //TODO Implement NotFoundException
-      .orElseThrow(() -> new RuntimeException("User does not exist with email: " + email));
-  
+    User user = getUserByEmail(email); 
     return org.springframework.security.core.userdetails.User.builder()
       .username(user.getEmail())
       .password(user.getPassword())
       .build();
-    
   }
+
 } 

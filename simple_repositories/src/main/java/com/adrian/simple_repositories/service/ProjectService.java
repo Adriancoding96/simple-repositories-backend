@@ -1,15 +1,12 @@
 package com.adrian.simple_repositories.service;
 
-import java.util.List;
-
-import com.adrian.simple_repositories.dto.ProjectDTO;
 import com.adrian.simple_repositories.dto.ProjectFullDTO;
+import com.adrian.simple_repositories.dto.PushResponseDTO;
+import com.adrian.simple_repositories.model.Project;
 
 public interface ProjectService {
-  ProjectFullDTO createFullProject(ProjectFullDTO projectFullDTO);
-  ProjectDTO createProject(ProjectDTO projectDTO);
-  List<ProjectDTO> getAllProjects();
-  ProjectDTO getProjectById(Long id); 
-  ProjectDTO updateProject(ProjectDTO projectDTO);
-  void deleteProjectById(Long id);  
+
+  Project createProjectFromPush(ProjectFullDTO projectDTO, String ownerEmail);
+
+  Project getProjectById(Long projectId);
 }
