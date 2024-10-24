@@ -1,6 +1,7 @@
 package com.adrian.simple_repositories.model;
 
 import java.util.List;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import jakarta.persistence.CascadeType;
@@ -20,6 +21,8 @@ public class UserProjectActivity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  private LocalDateTime dateTime;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private User user;
@@ -36,8 +39,9 @@ public class UserProjectActivity {
 
   }
 
-  public UserProjectActivity(Long id, User user, Project project, Branch branch) {
+  public UserProjectActivity(Long id, LocalDateTime dateTime, User user, Project project, Branch branch) {
     this.id = id;
+    this.dateTime = dateTime;
     this.user = user;
     this.project = project;
     this.branch = branch;
@@ -45,6 +49,10 @@ public class UserProjectActivity {
 
   public Long getId() {
     return id;
+  }
+
+  public LocalDateTime getDateTime() {
+    return dateTime;
   }
 
   public User getUser() {
@@ -61,6 +69,10 @@ public class UserProjectActivity {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public void setDateTime(LocalDateTime dateTime) {
+    this.dateTime = dateTime;
   }
 
   public void setUser(User user) {

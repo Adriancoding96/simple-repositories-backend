@@ -2,8 +2,11 @@ package com.adrian.simple_repositories.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 
 @Entity
 public class Folder {
@@ -19,7 +23,12 @@ public class Folder {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(unique = true, nullable = false, updatable = false)
+  private String uuid;
+
   private String folderName;
+
+  private String path;
 
   @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<File> files = new ArrayList<>(); 
@@ -35,14 +44,21 @@ public class Folder {
   @JoinColumn(name = "parent_folder_id")
   private Folder parentFolder;
 
+  @PrePersist
+  private void generateUuid() {
+    if(uuid != null) return;
+    uuid = UUID.randomUUID().toString();
+  }
+
   public Folder() {
 
   }
 
-  public Folder(Long id, String folderName, List<File> files, 
+  public Folder(Long id, String folderName, String path, List<File> files, 
                   List<Folder> folders, Project project, Folder parentFolder) {
     this.id = id;
     this.folderName = folderName;
+    this.path = path;
     this.files = files;
     this.folders = folders;
     this.project = project;
@@ -53,8 +69,16 @@ public class Folder {
     return this.id;
   }
 
+  public String getUuid() {
+    return uuid;
+  }
+
   public String getFolderName() {
     return this.folderName;
+  }
+
+  public String getPath() {
+    return path;
   }
 
   public List<File> getFiles() {
@@ -77,8 +101,16 @@ public class Folder {
     this.id = id;
   }
 
+  public void setUuid(String uuid) {
+    this.uuid = uuid;
+  }
+
   public void setFolderName(String folderName) {
     this.folderName = folderName;
+  }
+
+  public void setPath(String path) {
+    this.path = path;
   }
 
   public void setFiles(List<File> files) {
@@ -95,6 +127,32 @@ public class Folder {
 
   public void setParentFolder(Folder parentFolder) {
     this.parentFolder = parentFolder;
+  }
+
+  public String toStringWithoutProject() {
+    return "Folder{" +
+            "id=" + id +
+            ", folderName='" + folderName + '\'' +
+            ", subFolders=" + folders.stream()
+                                .map(Folder::toStringWithoutProject)
+                                .collect(Collectors.toList()) +
+            ", files=" + files.stream()
+                                .map(File::toStringWithoutFolder)
+                                .collect(Collectors.toList()) +
+            '}';
+  }
+
+  public String toStringWithoutPush() {
+    return "Folder{" +
+            "id=" + id +
+            ", folderName='" + folderName + '\'' +
+            ", subFolders=" + folders.stream()
+                                .map(Folder::toStringWithoutPush)
+                                .collect(Collectors.toList()) +
+            ", files=" + files.stream()
+                                .map(File::toStringWithoutFolder)
+                                .collect(Collectors.toList()) +
+            '}';
   }
 
 }

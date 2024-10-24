@@ -44,11 +44,14 @@ public class SecurityConfig {
       .csrf(AbstractHttpConfigurer::disable)
       .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .authorizeHttpRequests(auth -> auth
+        .requestMatchers("/h2-console/**").permitAll()
+        .requestMatchers("/favicon.ico").permitAll()
         .requestMatchers(HttpMethod.POST, "/signup/**").permitAll()
         .requestMatchers(HttpMethod.POST, "/login/**").permitAll()
         .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
         .requestMatchers(HttpMethod.GET, "/authentication-docs/**").permitAll()
         .anyRequest().authenticated())
+        .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
         .authenticationManager(authenticationManager)
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
       .cors(c -> c.configurationSource(customCorsConfiguration));

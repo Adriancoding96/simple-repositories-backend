@@ -1,9 +1,11 @@
-package com.adrian.simple_repositories.dto;
+package com.adrian.simple_repositories.dto.project;
+
 import java.util.List;
+
+import com.adrian.simple_repositories.dto.folder.FolderFullDTO;
 
 public class ProjectFullDTO {
 
-  private Long id;
   private String projectName;
   private String projectInformation;
   private List<FolderFullDTO> folders;
@@ -12,15 +14,10 @@ public class ProjectFullDTO {
 
   }
 
-  public ProjectFullDTO(Long id, String projectName, String projectInformation, List<FolderFullDTO> folders) {
-    this.id = id;
+  public ProjectFullDTO(String projectName, String projectInformation, List<FolderFullDTO> folders) {
     this.projectName = projectName;
     this.projectInformation = projectInformation;
     this.folders = folders;
-  }
-
-  public Long getId() {
-    return id;
   }
 
   public String getProjectName() {
@@ -33,10 +30,6 @@ public class ProjectFullDTO {
 
   public List<FolderFullDTO> getFolders() {
     return folders;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
   }
 
   public void setProjectName(String projectName) {

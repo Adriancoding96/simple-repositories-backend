@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.adrian.simple_repositories.exception.ProjectNotFoundException;
+import com.adrian.simple_repositories.exception.PushNotFoundException;
 import com.adrian.simple_repositories.exception.FolderNotFoundException;
 import com.adrian.simple_repositories.exception.InvalidPushException;
 import com.adrian.simple_repositories.exception.FileNotFoundException;
@@ -65,6 +66,14 @@ public class CustomExceptionHandler {
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   @ExceptionHandler(UserNotFoundException.class)
   public Map<String, String> handleUserNotFoundException(UserNotFoundException exception) {
+    Map<String, String> map = new HashMap<>();
+    map.put("errorMessage", exception.getMessage());
+    return map;
+  }
+
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  @ExceptionHandler(PushNotFoundException.class)
+  public Map<String, String> handlePushNotFoundException(PushNotFoundException exception) {
     Map<String, String> map = new HashMap<>();
     map.put("errorMessage", exception.getMessage());
     return map;

@@ -3,9 +3,8 @@
  *                                          *
  * PushPipeline is used to control          *
  * the API flow based on the content        *
- * of recieved push request.                *
- *                                          *
- * This is achived by instead of            *
+ * of recieved push request.                * 
+ * This is done for the reason instead of   *
  * coupling the service classes with        *
  * eachother they are injected here.        *
  *                                          *
@@ -17,14 +16,16 @@
 
 package com.adrian.simple_repositories.pipeline;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.adrian.simple_repositories.dto.BranchDTO;
-import com.adrian.simple_repositories.dto.FileDTO;
-import com.adrian.simple_repositories.dto.FolderFullDTO;
-import com.adrian.simple_repositories.dto.PushDTO;
-import com.adrian.simple_repositories.dto.PushResponseDTO;
+import com.adrian.simple_repositories.dto.branch.BranchDTO;
+import com.adrian.simple_repositories.dto.file.FileDTO;
+import com.adrian.simple_repositories.dto.folder.FolderFullDTO;
+import com.adrian.simple_repositories.dto.push.PushDTO;
+import com.adrian.simple_repositories.dto.push.PushResponseDTO;
 import com.adrian.simple_repositories.exception.InvalidPushException;
 import com.adrian.simple_repositories.mapper.ResponseMapper;
 import com.adrian.simple_repositories.model.Branch;
@@ -68,12 +69,13 @@ public class PushPipeline {
     if(pushDTO.getProjectFullDTO() != null) return handleProjectPush(pushDTO);
     if(pushDTO.getFolderFullDTO() != null) return handleFolderPush(pushDTO.getFolderFullDTO());
     if(pushDTO.getFileDTO() != null) return handleFilePush(pushDTO.getFileDTO());
-    throw new InvalidPushException("Push request body is invalid, does not contain project/folder/file()");
+    throw new InvalidPushException("Push request body is invalid, does not contain project/folder/file");
   }
 
   private PushResponseDTO handleProjectPush(PushDTO pushDTO) {
-    Project project = projectService.createProjectFromPush(pushDTO.getProjectFullDTO(), pushDTO.getOwnerEmail());
-    Branch mainBranch = branchService.createBranch(new BranchDTO(null, "main", null), project);
+    User user = userDetailServiceImpl.getUserByEmail(pushDTO.getOwnerEmail());
+    Project project = projectService.createProjectFromPush(pushDTO.getProjectFullDTO(), user);
+    Branch mainBranch = branchService.createBranch(new BranchDTO(null, "main", LocalDateTime.now(), null), project);
     newUserProjectActivity(pushDTO, project, mainBranch);
     return responseMapper.toPushResponseFromProject(project);   
   }
@@ -82,7 +84,7 @@ public class PushPipeline {
     Project project = projectService.getProjectById(folderDTO.getProjectId());
     Folder folder = folderService.createFolderFromPush(folderDTO, project);
     return responseMapper.toPushResponseFromFolder(folder);
-  }
+   }
 
   private PushResponseDTO handleFilePush(FileDTO fileDTO) {
     Folder parentFolder = folderService.getFolderById(fileDTO.getFolderId());

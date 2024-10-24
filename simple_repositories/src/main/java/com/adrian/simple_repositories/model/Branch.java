@@ -1,6 +1,7 @@
 package com.adrian.simple_repositories.model;
 
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,8 @@ public class Branch {
 
   private String branchName;
 
+  private LocalDateTime latestPushToBranch;
+
   @ManyToOne
   @JoinColumn(name = "project_id")
   private Project project;
@@ -37,15 +40,17 @@ public class Branch {
     
   }
 
-  public Branch(Long id, String branchName, Project project) {
+  public Branch(Long id, String branchName, LocalDateTime latestPushToBranch, Project project) {
     this.id = id;
     this.branchName = branchName;
+    this.latestPushToBranch = latestPushToBranch;
     this.project = project;
   }
 
-  public Branch(Long id, String branchName, Project project, List<Push> pushes) {
+  public Branch(Long id, String branchName, LocalDateTime latestPushToBranch, Project project, List<Push> pushes) {
     this.id = id;
     this.branchName = branchName;
+    this.latestPushToBranch = latestPushToBranch;
     this.project = project;
     this.pushes = pushes;
   }
@@ -56,6 +61,10 @@ public class Branch {
 
   public String getBranchName() {
     return branchName;
+  }
+
+  public LocalDateTime getLatestPushToBranch() {
+    return latestPushToBranch;
   }
 
   public Project getProject() {
@@ -72,6 +81,10 @@ public class Branch {
 
   public void setBranchName(String branchName) {
     this.branchName = branchName;
+  }
+
+  public void setLatestPushToBranch(LocalDateTime latestPushToBranch) {
+    this.latestPushToBranch = latestPushToBranch;
   }
 
   public void setProject(Project project) {

@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.adrian.simple_repositories.dto.FolderFullDTO;
+import com.adrian.simple_repositories.dto.folder.FolderFullDTO;
 import com.adrian.simple_repositories.model.Folder;
 
 @Component
@@ -22,7 +22,6 @@ public class FolderFullMapper {
     if(folder == null) return null;
 
     FolderFullDTO dto = new FolderFullDTO();
-    dto.setId(folder.getId());
     dto.setFolderName(folder.getFolderName());
 
     if(folder.getFiles() != null || folder.getFiles().isEmpty()) {
@@ -44,7 +43,6 @@ public class FolderFullMapper {
     if(dto == null) return null;
 
     Folder folder = new Folder();
-    folder.setId(dto.getId());
     folder.setFolderName(dto.getFolderName());
   
     return folder;

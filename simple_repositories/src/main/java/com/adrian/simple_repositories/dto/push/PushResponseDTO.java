@@ -1,4 +1,6 @@
-package com.adrian.simple_repositories.dto;
+package com.adrian.simple_repositories.dto.push;
+
+import java.util.UUID;
 
 public class PushResponseDTO {
   

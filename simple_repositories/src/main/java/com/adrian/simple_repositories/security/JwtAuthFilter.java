@@ -34,6 +34,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
   }
 
   @Override
+  protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    String path = request.getRequestURI();
+    System.out.println("IMPORTANT: JwtAuthFilter - shouldNotFilter path: " + path);
+    return path.startsWith("/h2-console") || path.equals("/favicon.ico");
+  }
+
+  @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException {
     try {
       String authHeader = request.getHeader("Authorization");

@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.adrian.simple_repositories.dto.LoginRequestDTO;
-import com.adrian.simple_repositories.dto.LoginResponseDTO;
-import com.adrian.simple_repositories.dto.UserDetailDTO;
+import com.adrian.simple_repositories.dto.auth.LoginRequestDTO;
+import com.adrian.simple_repositories.dto.auth.LoginResponseDTO;
+import com.adrian.simple_repositories.dto.auth.UserDetailDTO;
 import com.adrian.simple_repositories.security.JwtHelper;
 
 import jakarta.servlet.http.Cookie;

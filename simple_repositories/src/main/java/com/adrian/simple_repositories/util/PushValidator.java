@@ -16,6 +16,6 @@ public class PushValidator implements ConstraintValidator<ValidPush, Push> {
     if(push.getFolder() != null) nonNullCount++;
     if(push.getFile() != null) nonNullCount++;
 
-    return nonNullCount > 0;
+    return nonNullCount == 1;
   }
 } 

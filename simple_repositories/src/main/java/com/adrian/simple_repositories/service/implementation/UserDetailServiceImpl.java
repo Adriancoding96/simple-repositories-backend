@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.adrian.simple_repositories.repository.UserRepository;
 import com.adrian.simple_repositories.model.User;
+import com.adrian.simple_repositories.dto.auth.UserDetailDTO;
 import com.adrian.simple_repositories.exception.UserNotFoundException;
 
 @Service
@@ -31,6 +32,12 @@ public class UserDetailServiceImpl implements UserDetailsService {
       .username(user.getEmail())
       .password(user.getPassword())
       .build();
+  }
+
+  public UserDetailDTO getUserAsDTOByEmail(String email) {
+    User user = userRepository.findByEmail(email)
+      .orElseThrow(() -> new UserNotFoundException("Could not find user with email: " + email));
+    return new UserDetailDTO(user.getEmail());
   }
 
 } 

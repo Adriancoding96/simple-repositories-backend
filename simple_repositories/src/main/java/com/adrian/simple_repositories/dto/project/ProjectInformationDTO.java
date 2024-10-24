@@ -1,7 +1,8 @@
-package com.adrian.simple_repositories.dto;
+package com.adrian.simple_repositories.dto.project;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 public class ProjectInformationDTO {
 
@@ -54,6 +55,12 @@ public class ProjectInformationDTO {
 
   public void setFileTypes(Map<String, Integer> fileTypes) {
     this.fileTypes = fileTypes;
+  }
+
+  public void addAllFileTypes(List<String> types) {
+    for(String type : types) {
+      addFileType(type);
+    }
   }
 
   public void addFileType(String fileType) {

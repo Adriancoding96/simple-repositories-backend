@@ -1,4 +1,4 @@
-package com.adrian.simple_repositories.dto;
+package com.adrian.simple_repositories.dto.auth;
 
 public class LoginRequestDTO {
 

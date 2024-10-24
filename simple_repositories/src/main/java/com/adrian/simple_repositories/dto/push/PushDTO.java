@@ -1,4 +1,9 @@
-package com.adrian.simple_repositories.dto;
+package com.adrian.simple_repositories.dto.push;
+
+import com.adrian.simple_repositories.dto.branch.BranchDTO;
+import com.adrian.simple_repositories.dto.project.ProjectFullDTO;
+import com.adrian.simple_repositories.dto.folder.FolderFullDTO;
+import com.adrian.simple_repositories.dto.file.FileDTO;
 
 public class PushDTO {
 

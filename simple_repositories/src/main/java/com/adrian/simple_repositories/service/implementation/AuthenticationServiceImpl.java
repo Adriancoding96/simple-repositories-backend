@@ -5,8 +5,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
-import com.adrian.simple_repositories.dto.LoginRequestDTO;
-import com.adrian.simple_repositories.dto.LoginResponseDTO;
+import com.adrian.simple_repositories.dto.auth.LoginRequestDTO;
+import com.adrian.simple_repositories.dto.auth.LoginResponseDTO;
 import com.adrian.simple_repositories.security.JwtHelper;
 import com.adrian.simple_repositories.service.AuthenticationService;
 

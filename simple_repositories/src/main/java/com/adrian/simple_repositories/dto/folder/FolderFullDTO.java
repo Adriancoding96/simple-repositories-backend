@@ -1,11 +1,13 @@
-package com.adrian.simple_repositories.dto;
+package com.adrian.simple_repositories.dto.folder;
 
 import java.util.List;
 
+import com.adrian.simple_repositories.dto.file.FileDTO;
+
 public class FolderFullDTO {
 
-  private Long id;
   private String folderName;
+  private String path;
   private List<FileDTO> files;
   private List<FolderFullDTO> folders;
   private Long projectId;
@@ -15,21 +17,21 @@ public class FolderFullDTO {
 
   } 
 
-  public FolderFullDTO(Long id, String folderName, List<FileDTO> files, List<FolderFullDTO> folders, Long projectId, Long parentFolderId) {
-    this.id = id;
+  public FolderFullDTO(String folderName, String path, List<FileDTO> files, List<FolderFullDTO> folders, Long projectId, Long parentFolderId) {
     this.folderName = folderName;
+    this.path = path;
     this.files = files;
     this.folders = folders;
     this.projectId = projectId;
     this.parentFolderId= parentFolderId;
   }
 
-  public Long getId() {
-    return id;
-  }
-
   public String getFolderName() {
     return folderName;
+  }
+
+  public String getPath() {
+    return path;
   }
 
   public List<FileDTO> getFiles() {
@@ -48,12 +50,12 @@ public class FolderFullDTO {
     return parentFolderId;
   }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
   public void setFolderName(String folderName) {
     this.folderName = folderName;
+  }
+
+  public void setPath(String path) {
+    this.path = path;
   }
 
   public void setFiles(List<FileDTO> files) {

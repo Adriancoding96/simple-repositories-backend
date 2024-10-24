@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.adrian.simple_repositories.dto.SignupRequestDTO;
+import com.adrian.simple_repositories.dto.auth.SignupRequestDTO;
 import com.adrian.simple_repositories.model.User;
 import com.adrian.simple_repositories.repository.UserRepository;
 import com.adrian.simple_repositories.service.UserService;

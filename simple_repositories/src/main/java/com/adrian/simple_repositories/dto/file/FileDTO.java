@@ -1,27 +1,25 @@
-package com.adrian.simple_repositories.dto;
+package com.adrian.simple_repositories.dto.file;
 
 public class FileDTO {
-  
-  private Long id;
+
   private String fileName;
   private String extension;
+  private String path;
   private byte[] content;
   private Long folderId;
+  private String uuid;
 
   public FileDTO() {
 
   } 
 
-  public FileDTO(Long id, String fileName, String extension, byte[] content, Long folderId) {
-    this.id = id;
+  public FileDTO(String fileName, String extension, String path, byte[] content, Long folderId, String uuid) {
     this.fileName = fileName;
     this.extension = extension;
+    this.path = path;
     this.content = content;
     this.folderId = folderId;
-  }
-
-  public Long getId() {
-    return this.id;
+    this.uuid = uuid;
   }
 
   public String getFileName() {
@@ -32,6 +30,10 @@ public class FileDTO {
     return this.extension;
   }
 
+  public String getPath() {
+    return path;
+  }
+
   public byte[] getContent() {
     return this.content;
   }
@@ -40,8 +42,8 @@ public class FileDTO {
     return this.folderId;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public String getUuid() {
+    return uuid;
   }
 
   public void setFileName(String fileName) {
@@ -52,12 +54,20 @@ public class FileDTO {
     this.extension = extension;
   }
 
+  public void setPath(String path) {
+    this.path = path;
+  }
+
   public void setContent(byte[] content) {
     this.content = content;
   }
 
   public void setFolderId(Long folderId) {
     this.folderId = folderId;
+  }
+
+  public void setUuid(String uuid) {
+    this.uuid = uuid;
   }
 
 }

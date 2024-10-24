@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.adrian.simple_repositories.dto.FileDTO;
-import com.adrian.simple_repositories.dto.FolderFullDTO;
+import com.adrian.simple_repositories.dto.file.FileDTO;
+import com.adrian.simple_repositories.dto.folder.FolderFullDTO;
 import com.adrian.simple_repositories.model.Folder;
 import com.adrian.simple_repositories.model.Project;
 import com.adrian.simple_repositories.model.File;
@@ -23,10 +23,11 @@ public class FolderAssembler {
   }
 
   public Folder assemble(FolderFullDTO dto, Project project, Folder parentFolder) {
-    if(dto == null || project == null || parentFolder == null) return null; 
+    if(dto == null || project == null) return null; 
     
     Folder folder = new Folder();
     folder.setFolderName(dto.getFolderName());
+    folder.setPath(dto.getPath());
     folder.setProject(project);
     folder.setParentFolder(parentFolder);
 

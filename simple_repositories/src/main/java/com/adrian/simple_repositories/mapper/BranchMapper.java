@@ -2,7 +2,7 @@ package com.adrian.simple_repositories.mapper;
 
 import org.springframework.stereotype.Component;
 
-import com.adrian.simple_repositories.dto.BranchDTO;
+import com.adrian.simple_repositories.dto.branch.BranchDTO;
 import com.adrian.simple_repositories.model.Branch;
 
 @Component
@@ -13,8 +13,11 @@ public class BranchMapper {
     
     BranchDTO dto = new BranchDTO();
     dto.setId( branch.getId());
-    dto.setBranchName(branch.getBranchName());
-    dto.setProjectId(branch.getProject().getId());
+    dto.setBranchName(branch.getBranchName()); 
+    dto.setProjectUuid(branch.getProject().getUuid());
+    if(branch.getLatestPushToBranch() != null) {
+      dto.setLatestPushToBranch(branch.getLatestPushToBranch());
+    }
 
     return dto;
   }
@@ -25,6 +28,9 @@ public class BranchMapper {
     Branch branch = new Branch();
     branch.setId(dto.getId());
     branch.setBranchName(branch.getBranchName());
+    if(dto.getLatestPushToBranch() != null) {
+      branch.setLatestPushToBranch(dto.getLatestPushToBranch());
+    }
     
     return branch;
   }
