@@ -22,8 +22,8 @@ public interface FolderRepository extends JpaRepository<Folder, Long> {
   
   Optional<Folder> findFolderByUuid(String uuid);
 
-  @Query("SELECT f FROM folder f WHERE f.project.uuid = :uuid")
-  List<Folder> findAllFoldersByProjectUuid(String uuid);
+  @Query("SELECT f FROM Folder f WHERE f.project.uuid = :uuid")
+  List<Folder> findAllFoldersByProjectUuid(@Param("uuid") String uuid);
 
   void deleteByUuid(String uuid);
 

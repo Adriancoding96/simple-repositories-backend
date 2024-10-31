@@ -15,12 +15,12 @@ public interface FileRepository extends JpaRepository<File, Long> {
 
   Optional<File> findByUuid(String uuid);
 
-  @Query("SELECT f FROM file f WHERE f.folder.project.uuid = :uuid")
-  List<File> findAllByProjectUuid(String uuid);
+  @Query("SELECT f FROM File f WHERE f.folder.project.uuid = :uuid")
+  List<File> findAllByProjectUuid(@Param("uuid") String uuid);
 
   void deleteByUuid(String uuid);
 
-  boolean exisitsByUuid(String uuid); 
+  boolean existsByUuid(String uuid); 
 }
 
 

@@ -1,7 +1,7 @@
 package com.adrian.simple_repositories.service.implementation;
 
-import java.util.List;
 import java.util.stream.Collectors;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +15,9 @@ import com.adrian.simple_repositories.model.Folder;
 import com.adrian.simple_repositories.repository.FileRepository;
 import com.adrian.simple_repositories.service.FileService;
 import com.adrian.simple_repositories.util.FilePathUtil;
+
+import jakarta.transaction.Transactional;
+
 import com.adrian.simple_repositories.exception.FileNotFoundException;;
 
 
@@ -110,8 +113,9 @@ public class FileServiceImpl implements FileService {
   }
 
   @Override
+  @Transactional
   public void deleteFileByUuid(String uuid) {
-    if(fileRepository.exisitsByUuid(uuid)) {
+    if(!fileRepository.existsByUuid(uuid)) {
       throw new FileNotFoundException("Could not find file with uuid: " + uuid);
     }
     fileRepository.deleteByUuid(uuid);

@@ -16,6 +16,7 @@ import jakarta.persistence.NamedAttributeNode;
 import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.NamedSubgraph;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
 
 /*@NamedEntityGraph(
     name = "Push.full",
@@ -46,6 +47,7 @@ import jakarta.persistence.PrePersist;
     }
 )*/
 @Entity
+@Table(name = "pushes")
 //@ValidPush
 public class Push {
 

@@ -15,29 +15,17 @@ public class ResponseMapper {
 
 
   public PushResponseDTO toPushResponseFromFile(File file) {
-    if(file == null) return new PushResponseDTO(false, "Failed to create file from push", null, null, null);
-    return createPushResponse("file", null, file.getId(), "File created successfully from push");
+    if(file == null) return new PushResponseDTO(false, "Failed to create file from push", null);
+    return new PushResponseDTO(true, "File created successfully from push", file.getUuid());
   }
 
   public PushResponseDTO toPushResponseFromFolder(Folder folder) {
-    if(folder == null) return new PushResponseDTO(false, "Failed to create folder from push", null, null, null);
-    return createPushResponse("folder", null, folder.getId(), "Folder created successfully from push");
+    if(folder == null) return new PushResponseDTO(false, "Failed to create folder from push", null);
+    return new PushResponseDTO(true, "Folder created successfully from push", folder.getUuid());
   }
 
   public PushResponseDTO toPushResponseFromProject(Project project) {
-    if(project == null) return new PushResponseDTO(false, "Failed to create project from push", null, null, null);
-    return createPushResponse("project", project.getId(), null, "project created successfully from push");
-  }
-
-  private PushResponseDTO createPushResponse(String content, Long projectId, Long id, String message) {
-    switch(content) {
-      case "file": return new PushResponseDTO(true, message, null, null, id); 
-      case "folder": return new PushResponseDTO(true, message, null, id, null);
-      case "project": return new PushResponseDTO(true, message, projectId, null, null);
-      default: {
-        throw new RuntimeException("Could not create push response for: " + content + " with id: " + id);
-      }
-    }
-
+    if(project == null) return new PushResponseDTO(false, "Failed to create project from push", null);
+    return new PushResponseDTO(true, "Project created successfully from push", project.getUuid());
   }
 }

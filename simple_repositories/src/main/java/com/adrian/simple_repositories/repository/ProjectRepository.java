@@ -25,7 +25,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
   List<Project> findAllByUserEmail(String email);
 
-  Optional<Project> findByUuid(String uuid); sf
+  Optional<Project> findByUuid(String uuid); 
 
   @Query("SELECT p FROM Project p WHERE p.projectName = :projectName AND p.user.email = :email")
   Optional<Project> findProjectByProjectNameAndUserEmail(@Param("projectName") String projectName, @Param("email") String email);

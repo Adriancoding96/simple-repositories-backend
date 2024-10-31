@@ -38,7 +38,7 @@ public class FileController {
     return ResponseEntity.ok(fileService.getAllFilesAsDTOsByProjectUuid(uuid));
   }
 
-  @PutMapping("/update/{uuid}")
+  @PutMapping("/{uuid}")
   public ResponseEntity<FileDTO> updateFile(@RequestBody FileUpdateDTO updateDTO, @PathVariable String uuid) {
     return ResponseEntity.ok(fileService.updateFile(updateDTO, uuid));
   }

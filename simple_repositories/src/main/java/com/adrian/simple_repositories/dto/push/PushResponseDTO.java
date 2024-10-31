@@ -1,29 +1,22 @@
 package com.adrian.simple_repositories.dto.push;
 
-import java.util.UUID;
-
 public class PushResponseDTO {
   
   private boolean success;
   
   private String message;
   
-  private Long projectId;
-  
-  private Long folderId;
-  
-  private Long fileId;
+  private String uuid;
+
 
   public PushResponseDTO() {
 
   }
 
-  public PushResponseDTO(boolean success, String message, Long projectId, Long folderId, Long fileId) {
+  public PushResponseDTO(boolean success, String message, String uuid) {
     this.success = success;
     this.message = message;
-    this.projectId = projectId;
-    this.folderId = folderId;
-    this.fileId = fileId;
+    this.uuid = uuid;
   }
 
   public boolean isSuccess() {
@@ -34,16 +27,8 @@ public class PushResponseDTO {
     return message;
   }
 
-  public Long getProjectId() {
-    return projectId;
-  }
-
-  public Long getFolderId() {
-    return folderId;
-  }
-
-  public Long getFileId() {
-    return fileId;
+  public String getUuid() {
+    return uuid;
   }
 
   public void setSuccess(boolean success) {
@@ -54,15 +39,8 @@ public class PushResponseDTO {
     this.message = message;
   }
 
-  public void setProjectId(Long projectId) {
-    this.projectId = projectId;
+  public void setUuid(String uuid) {
+    this.uuid = uuid;
   }
 
-  public void setFolderId(Long folderId) {
-    this.folderId = folderId;
-  }
-
-  public void setFileId(Long fileId) {
-    this.fileId = fileId;
-  }
 }

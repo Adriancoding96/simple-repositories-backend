@@ -43,11 +43,11 @@ public class PushMapper {
   }
 
   private ProjectFullDTO setProjectBody(Push push) {
-    return projectMapper.toDTO(push.getProject());
+    return projectMapper.toFullDTO(push.getProject());
   }
 
   private FolderFullDTO setFolderBody(Push push) {
-    return folderMapper.toDTO(push.getFolder()); 
+    return folderMapper.toFullDTO(push.getFolder()); 
   }
 
   private FileDTO setFileBody(Push push) {
