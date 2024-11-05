@@ -12,6 +12,12 @@ import com.adrian.simple_repositories.model.Directory;
 import com.adrian.simple_repositories.model.Project;
 import com.adrian.simple_repositories.model.User;
 
+/*
+ * Project Assembler serves as the beginning of a assembler chain
+ * for creating project enitities ready to be persisted to the database.
+ *
+ * Injects DirectoryAssembler to handle nested directory data.
+ */
 @Component
 public class ProjectAssembler {
 
@@ -22,6 +28,14 @@ public class ProjectAssembler {
     this.directoryAssembler = directoryAssembler;
   }
 
+  /*
+   * Creates project with nested directory and file entites by calling assemble method
+   * from directory assembler which is the second class in the assembly chain
+   *
+   * @param ProjectFullDTO contains project data
+   * @param User contains user data of project owner
+   * @return assembeled project entity
+   */
   public Project assemble(ProjectFullDTO dto, User user) {
     if(dto == null) return null;
 

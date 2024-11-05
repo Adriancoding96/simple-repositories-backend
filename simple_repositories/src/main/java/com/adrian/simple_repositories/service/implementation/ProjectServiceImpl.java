@@ -25,6 +25,13 @@ import com.adrian.simple_repositories.service.ProjectService;
 
 import jakarta.transaction.Transactional;
 
+/*
+ * Implementation of ProjectService interface
+ *
+ * Injects ProjectService to handle database operations on the projects table,
+ * ProjectAssembler to construct project entity containing nested entities before persisting
+ * to database, ProjectMapper to map projects to DTOs.
+ */
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
@@ -38,7 +45,16 @@ public class ProjectServiceImpl implements ProjectService {
     this.projectAssembler = projectAssembler;
     this.projectMapper = projectMapper;
   }
-
+  
+  /*
+   *  TODO Change method name to createProjectFromFullDTO ?
+   *
+   * Creates a new project from ProjectFullDTO and assiciating it with given user
+   *
+   * @param projectDTO containing project data
+   * @param user containing user data of project owner
+   * @return persisted project entity
+   */
   @Override
   @Transactional
   public Project createProjectFromPush(ProjectFullDTO projectDTO, User user) {
@@ -53,18 +69,39 @@ public class ProjectServiceImpl implements ProjectService {
     return savedProject;
   }
 
+  /*
+   * Retrieves project by ID
+   *
+   * @param projectId of project
+   * @return project entity
+   * @throws ProjectNotFoundException if project not found by ID
+   */
   @Override
   public Project getProjectById(Long projectId) {
     return projectRepository.findById(projectId)
       .orElseThrow(() -> new ProjectNotFoundException("Poject with id: " + projectId + " not found"));
   }
 
+  /*
+   * Retrieves project by UUID
+   *
+   * @param uuid of project
+   * @return project entity
+   * @throws ProjectNotFoundException if project not found by uuid
+   */
   @Override
   public Project getProjectByUuid(String uuid) {
     return projectRepository.findByUuid(uuid)
       .orElseThrow(() -> new ProjectNotFoundException("Could not find project with uuid: " + uuid));
   }
 
+  /*
+   * Retrieves project by UUID and converts it to ProjectFullDTO
+   *
+   * @param uuid of project
+   * @return project entity
+   * @throws ProjectNotFoundException if project not found by uuid
+   */
   @Override
   public ProjectFullDTO getProjectAsDTOByUuid(String uuid) {
     return projectMapper.toFullDTO(getProjectByUuid(uuid));
