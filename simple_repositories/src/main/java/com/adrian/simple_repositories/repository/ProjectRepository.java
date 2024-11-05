@@ -13,11 +13,11 @@ import com.adrian.simple_repositories.model.User;
 
 public interface ProjectRepository extends JpaRepository<Project, Long> {
   @Query("SELECT p FROM Project p "
-         + "LEFT JOIN FETCH p.folders f "
+         + "LEFT JOIN FETCH p.directories f "
          + "LEFT JOIN FETCH f.files "
-         + "LEFT JOIN FETCH f.folders subfolders "
+         + "LEFT JOIN FETCH f.directories subdirectories "
          + "WHERE p.id = :projectId")
-  Optional<Project> findByIdWithFoldersAndFiles(@Param("projectId") Long projectId);
+  Optional<Project> findByIdWithDirectoriesAndFiles(@Param("projectId") Long projectId);
 
   List<Project> findAllByUser(User user);
 

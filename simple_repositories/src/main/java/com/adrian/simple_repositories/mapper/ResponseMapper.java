@@ -1,7 +1,7 @@
 package com.adrian.simple_repositories.mapper;
 
 import com.adrian.simple_repositories.model.File;
-import com.adrian.simple_repositories.model.Folder;
+import com.adrian.simple_repositories.model.Directory;
 import com.adrian.simple_repositories.model.Project;
 
 import java.util.UUID;
@@ -19,9 +19,9 @@ public class ResponseMapper {
     return new PushResponseDTO(true, "File created successfully from push", file.getUuid());
   }
 
-  public PushResponseDTO toPushResponseFromFolder(Folder folder) {
-    if(folder == null) return new PushResponseDTO(false, "Failed to create folder from push", null);
-    return new PushResponseDTO(true, "Folder created successfully from push", folder.getUuid());
+  public PushResponseDTO toPushResponseFromDirectory(Directory directory) {
+    if(directory == null) return new PushResponseDTO(false, "Failed to create directory from push", null);
+    return new PushResponseDTO(true, "Directory created successfully from push", directory.getUuid());
   }
 
   public PushResponseDTO toPushResponseFromProject(Project project) {

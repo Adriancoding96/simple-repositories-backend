@@ -2,7 +2,7 @@ package com.adrian.simple_repositories.dto.push;
 
 import com.adrian.simple_repositories.dto.branch.BranchDTO;
 import com.adrian.simple_repositories.dto.project.ProjectFullDTO;
-import com.adrian.simple_repositories.dto.folder.FolderFullDTO;
+import com.adrian.simple_repositories.dto.directory.DirectoryFullDTO;
 import com.adrian.simple_repositories.dto.file.FileDTO;
 
 public class PushDTO {
@@ -13,7 +13,7 @@ public class PushDTO {
   private String ownerEmail;
   private BranchDTO branchDTO;
   private ProjectFullDTO projectFullDTO;
-  private FolderFullDTO folderFullDTO;
+  private DirectoryFullDTO directoryFullDTO;
   private FileDTO fileDTO;
   
   public PushDTO() {
@@ -29,13 +29,13 @@ public class PushDTO {
     this.projectFullDTO = projectFullDTO;
   }
   
-  public PushDTO(Long id, String commitHash, String commitMessage, String ownerEmail, BranchDTO branchDTO, FolderFullDTO folderFullDTO) {
+  public PushDTO(Long id, String commitHash, String commitMessage, String ownerEmail, BranchDTO branchDTO, DirectoryFullDTO directoryFullDTO) {
     this.id = id;
     this.commitHash = commitHash;
     this.commitMessage = commitMessage;
     this.ownerEmail = ownerEmail;
     this.branchDTO = branchDTO;
-    this.folderFullDTO = folderFullDTO;
+    this.directoryFullDTO = directoryFullDTO;
   }
   
   public PushDTO(Long id, String commitHash, String commitMessage, String ownerEmail, BranchDTO branchDTO, FileDTO fileDTO) {
@@ -71,8 +71,8 @@ public class PushDTO {
     return projectFullDTO;
   }
 
-  public FolderFullDTO getFolderFullDTO() {
-    return folderFullDTO;
+  public DirectoryFullDTO getDirectoryFullDTO() {
+    return directoryFullDTO;
   }
 
   public FileDTO getFileDTO() {
@@ -103,8 +103,8 @@ public class PushDTO {
     this.projectFullDTO = projectFullDTO;
   }
 
-  public void setFolderDTO(FolderFullDTO folderFullDTO) {
-    this.folderFullDTO = folderFullDTO;
+  public void setDirectoryDTO(DirectoryFullDTO directoryFullDTO) {
+    this.directoryFullDTO = directoryFullDTO;
   }
 
   public void setFileDTO(FileDTO fileDTO) {

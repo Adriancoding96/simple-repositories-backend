@@ -4,12 +4,12 @@ import java.util.List;
 
 import com.adrian.simple_repositories.dto.file.FileDTO;
 import com.adrian.simple_repositories.dto.file.FileUpdateDTO;
-import com.adrian.simple_repositories.model.Folder;
+import com.adrian.simple_repositories.model.Directory;
 import com.adrian.simple_repositories.model.File;
 
 public interface FileService {
 
-  File createFileFromPush(FileDTO fileDTO, Folder parentFolder);
+  File createFileFromPush(FileDTO fileDTO, Directory parentDirectory);
   File getFileById(Long fileId);
   File getFileByUuid(String uuid);
   FileDTO getFileAsDTOByUuid(String uuid);

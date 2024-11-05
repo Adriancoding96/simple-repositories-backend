@@ -18,8 +18,8 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "folders")
-public class Folder {
+@Table(name = "directories")
+public class Directory {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,23 +28,23 @@ public class Folder {
   @Column(unique = true, nullable = false, updatable = false)
   private String uuid;
 
-  private String folderName;
+  private String directoryName;
 
   private String path;
 
-  @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "directory", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<File> files = new ArrayList<>(); 
 
-  @OneToMany(mappedBy = "parentFolder", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Folder> folders = new ArrayList<>();
+  @OneToMany(mappedBy = "parentDirectory", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Directory> directories = new ArrayList<>();
 
   @ManyToOne
   @JoinColumn(name = "project_id")
   private Project project;
 
   @ManyToOne
-  @JoinColumn(name = "parent_folder_id")
-  private Folder parentFolder;
+  @JoinColumn(name = "parent_directory_id")
+  private Directory parentDirectory;
 
   @PrePersist
   private void generateUuid() {
@@ -52,19 +52,19 @@ public class Folder {
     uuid = UUID.randomUUID().toString();
   }
 
-  public Folder() {
+  public Directory() {
 
   }
 
-  public Folder(Long id, String folderName, String path, List<File> files, 
-                  List<Folder> folders, Project project, Folder parentFolder) {
+  public Directory(Long id, String directoryName, String path, List<File> files, 
+                  List<Directory> directories, Project project, Directory parentDirectory) {
     this.id = id;
-    this.folderName = folderName;
+    this.directoryName = directoryName;
     this.path = path;
     this.files = files;
-    this.folders = folders;
+    this.directories = directories;
     this.project = project;
-    this.parentFolder = parentFolder;
+    this.parentDirectory = parentDirectory;
   }
 
   public Long getId() {
@@ -75,8 +75,8 @@ public class Folder {
     return uuid;
   }
 
-  public String getFolderName() {
-    return this.folderName;
+  public String getDirectoryName() {
+    return this.directoryName;
   }
 
   public String getPath() {
@@ -87,16 +87,16 @@ public class Folder {
     return this.files;
   }
 
-  public List<Folder> getFolders() {
-    return this.folders;
+  public List<Directory> getDirectories() {
+    return this.directories;
   }
 
   public Project getProject() {
     return this.project;
   }
 
-  public Folder getParentFolder() {
-    return this.parentFolder;
+  public Directory getParentDirectory() {
+    return this.parentDirectory;
   }
 
   public void setId(Long id) {
@@ -107,8 +107,8 @@ public class Folder {
     this.uuid = uuid;
   }
 
-  public void setFolderName(String folderName) {
-    this.folderName = folderName;
+  public void setDirectoryName(String directoryName) {
+    this.directoryName = directoryName;
   }
 
   public void setPath(String path) {
@@ -119,40 +119,40 @@ public class Folder {
     this.files = files;
   }
 
-  public void setFolders(List<Folder> folders) {
-    this.folders = folders;
+  public void setDirectories(List<Directory> directories) {
+    this.directories = directories;
   }
 
   public void setProject(Project project) {
     this.project = project;
   }
 
-  public void setParentFolder(Folder parentFolder) {
-    this.parentFolder = parentFolder;
+  public void setParentDirectory(Directory parentDirectory) {
+    this.parentDirectory = parentDirectory;
   }
 
   public String toStringWithoutProject() {
-    return "Folder{" +
+    return "Directory{" +
             "id=" + id +
-            ", folderName='" + folderName + '\'' +
-            ", subFolders=" + folders.stream()
-                                .map(Folder::toStringWithoutProject)
+            ", directoryName='" + directoryName + '\'' +
+            ", subdirectories=" + directories.stream()
+                                .map(Directory::toStringWithoutProject)
                                 .collect(Collectors.toList()) +
             ", files=" + files.stream()
-                                .map(File::toStringWithoutFolder)
+                                .map(File::toStringWithoutDirectory)
                                 .collect(Collectors.toList()) +
             '}';
   }
 
   public String toStringWithoutPush() {
-    return "Folder{" +
+    return "Directory{" +
             "id=" + id +
-            ", folderName='" + folderName + '\'' +
-            ", subFolders=" + folders.stream()
-                                .map(Folder::toStringWithoutPush)
+            ", directoryName='" + directoryName + '\'' +
+            ", subdirectories=" + directories.stream()
+                                .map(Directory::toStringWithoutPush)
                                 .collect(Collectors.toList()) +
             ", files=" + files.stream()
-                                .map(File::toStringWithoutFolder)
+                                .map(File::toStringWithoutDirectory)
                                 .collect(Collectors.toList()) +
             '}';
   }

@@ -16,7 +16,7 @@ public class FileMapper {
     dto.setExtension(file.getExtension());
     dto.setPath(file.getPath());
     dto.setContent(file.getContent());
-    dto.setFolderId(file.getFolder() != null ? file.getFolder().getId() : null);
+    dto.setDirectoryId(file.getDirectory() != null ? file.getDirectory().getId() : null);
     dto.setUuid(file.getUuid());
     return dto;
   }

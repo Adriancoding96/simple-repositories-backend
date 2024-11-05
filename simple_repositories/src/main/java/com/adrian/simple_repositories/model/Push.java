@@ -27,20 +27,20 @@ import jakarta.persistence.Table;
         @NamedSubgraph(
             name = "projectSubgraph",
             attributeNodes = {
-                @NamedAttributeNode(value = "folders", subgraph = "folderSubgraph")
+                @NamedAttributeNode(value = "directorys", subgraph = "directorySubgraph")
             }
         ),
         @NamedSubgraph(
-            name = "folderSubgraph",
+            name = "directorySubgraph",
             attributeNodes = {
-                @NamedAttributeNode(value = "folders", subgraph = "subFolderSubgraph"),
+                @NamedAttributeNode(value = "directorys", subgraph = "subDirectorySubgraph"),
                 @NamedAttributeNode(value = "files")
             }
         ),
         @NamedSubgraph(
-            name = "subFolderSubgraph",
+            name = "subDirectorySubgraph",
             attributeNodes = {
-                @NamedAttributeNode(value = "folders"),
+                @NamedAttributeNode(value = "directorys"),
                 @NamedAttributeNode(value = "files")
             }
         )
@@ -73,8 +73,8 @@ public class Push {
   private Project project;
 
   @ManyToOne
-  @JoinColumn(name = "folder_id")
-  private Folder folder;
+  @JoinColumn(name = "directory_id")
+  private Directory directory;
 
   @ManyToOne
   @JoinColumn(name = "file_id")
@@ -99,13 +99,13 @@ public class Push {
     this.project = project;
   }  
 
-  public Push(Long id, String commitHash, String commitMessage, LocalDateTime dateTime, Branch branch, Folder folder) {
+  public Push(Long id, String commitHash, String commitMessage, LocalDateTime dateTime, Branch branch, Directory directory) {
     this.id = id;
     this.commitHash = commitHash;
     this.commitMessage = commitMessage;
     this.dateTime = dateTime;
     this.branch = branch;
-    this.folder = folder;
+    this.directory = directory;
   }
 
   public Push(Long id, String commitHash, String commitMessage, LocalDateTime dateTime, Branch branch, File file) {
@@ -145,8 +145,8 @@ public class Push {
     return project;
   }
 
-  public Folder getFolder() {
-    return folder;
+  public Directory getDirectory() {
+    return directory;
   }
 
   public File getFile() {
@@ -181,8 +181,8 @@ public class Push {
     this.project = project;
   }
 
-  public void setFolder(Folder folder) {
-    this.folder = folder;
+  public void setDirectory(Directory directory) {
+    this.directory = directory;
   }
 
   public void setFile(File file) {
@@ -197,7 +197,7 @@ public class Push {
             ", commitMessage='" + commitMessage + '\'' +
             ", branchId=" + (branch != null ? branch.getId() : null) +
             ", project=" + (project != null ? project.toStringWithoutPush() : null) +
-            ", folder=" + (folder != null ? folder.toStringWithoutPush() : null) +
+            ", directory=" + (directory != null ? directory.toStringWithoutPush() : null) +
             ", file=" + (file != null ? file.toStringWithoutPush() : null) +
             '}';
   }

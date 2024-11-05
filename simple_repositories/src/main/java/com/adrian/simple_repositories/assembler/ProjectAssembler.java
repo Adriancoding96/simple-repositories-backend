@@ -6,20 +6,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.adrian.simple_repositories.dto.folder.FolderFullDTO;
+import com.adrian.simple_repositories.dto.directory.DirectoryFullDTO;
 import com.adrian.simple_repositories.dto.project.ProjectFullDTO;
-import com.adrian.simple_repositories.model.Folder;
+import com.adrian.simple_repositories.model.Directory;
 import com.adrian.simple_repositories.model.Project;
 import com.adrian.simple_repositories.model.User;
 
 @Component
 public class ProjectAssembler {
 
-  private final FolderAssembler folderAssembler;
+  private final DirectoryAssembler directoryAssembler;
 
   @Autowired
-  public ProjectAssembler(FolderAssembler folderAssembler) {
-    this.folderAssembler = folderAssembler;
+  public ProjectAssembler(DirectoryAssembler directoryAssembler) {
+    this.directoryAssembler = directoryAssembler;
   }
 
   public Project assemble(ProjectFullDTO dto, User user) {
@@ -30,12 +30,12 @@ public class ProjectAssembler {
     project.setProjectInformation(dto.getProjectInformation());
     project.setUser(user);
 
-    List<Folder> folders = new ArrayList<>();
-    for(FolderFullDTO folderDTO : dto.getFolders()) {
-      Folder folder = folderAssembler.assemble(folderDTO, project, null);
-      folders.add(folder);
+    List<Directory> directories = new ArrayList<>();
+    for(DirectoryFullDTO directoryDTO : dto.getDirectories()) {
+      Directory directory = directoryAssembler.assemble(directoryDTO, project, null);
+      directories.add(directory);
     }
-    project.setFolders(folders);
+    project.setDirectories(directories);
     
     return project;
   }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.adrian.simple_repositories.exception.ProjectNotFoundException;
 import com.adrian.simple_repositories.exception.PushNotFoundException;
-import com.adrian.simple_repositories.exception.FolderNotFoundException;
+import com.adrian.simple_repositories.exception.DirectoryNotFoundException;
 import com.adrian.simple_repositories.exception.InvalidPushException;
 import com.adrian.simple_repositories.exception.FileNotFoundException;
 import com.adrian.simple_repositories.exception.AccessDeniedException;
@@ -40,8 +40,8 @@ public class CustomExceptionHandler {
   }
   
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-  @ExceptionHandler(FolderNotFoundException.class)
-  public Map<String, String> handleFolderNotFoundException(FolderNotFoundException exception) {
+  @ExceptionHandler(DirectoryNotFoundException.class)
+  public Map<String, String> handleDirectoryNotFoundException(DirectoryNotFoundException exception) {
     Map<String, String> map = new HashMap<>();
     map.put("errorMessage", exception.getMessage());
     return map;

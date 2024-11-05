@@ -13,7 +13,7 @@ public class PushValidator implements ConstraintValidator<ValidPush, Push> {
     int nonNullCount = 0;
 
     if(push.getProject() != null) nonNullCount++;
-    if(push.getFolder() != null) nonNullCount++;
+    if(push.getDirectory() != null) nonNullCount++;
     if(push.getFile() != null) nonNullCount++;
 
     return nonNullCount == 1;

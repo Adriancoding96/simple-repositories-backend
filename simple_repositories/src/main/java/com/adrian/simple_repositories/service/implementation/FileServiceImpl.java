@@ -11,7 +11,7 @@ import com.adrian.simple_repositories.dto.file.FileDTO;
 import com.adrian.simple_repositories.dto.file.FileUpdateDTO;
 import com.adrian.simple_repositories.mapper.FileMapper;
 import com.adrian.simple_repositories.model.File;
-import com.adrian.simple_repositories.model.Folder;
+import com.adrian.simple_repositories.model.Directory;
 import com.adrian.simple_repositories.repository.FileRepository;
 import com.adrian.simple_repositories.service.FileService;
 import com.adrian.simple_repositories.util.FilePathUtil;
@@ -38,9 +38,9 @@ public class FileServiceImpl implements FileService {
   }
 
   @Override
-  public File createFileFromPush(FileDTO fileDTO, Folder parentFolder) {
+  public File createFileFromPush(FileDTO fileDTO, Directory parentDirectory) {
     File file = fileAssembler.assemble(fileDTO);
-    file.setFolder(parentFolder);
+    file.setDirectory(parentDirectory);
     File savedFile = fileRepository.save(file);
     return savedFile;
   }

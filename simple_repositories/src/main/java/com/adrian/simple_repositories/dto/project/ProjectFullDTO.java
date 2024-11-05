@@ -2,22 +2,22 @@ package com.adrian.simple_repositories.dto.project;
 
 import java.util.List;
 
-import com.adrian.simple_repositories.dto.folder.FolderFullDTO;
+import com.adrian.simple_repositories.dto.directory.DirectoryFullDTO;
 
 public class ProjectFullDTO {
 
   private String projectName;
   private String projectInformation;
-  private List<FolderFullDTO> folders;
+  private List<DirectoryFullDTO> directories;
 
   public ProjectFullDTO() {
 
   }
 
-  public ProjectFullDTO(String projectName, String projectInformation, List<FolderFullDTO> folders) {
+  public ProjectFullDTO(String projectName, String projectInformation, List<DirectoryFullDTO> directories) {
     this.projectName = projectName;
     this.projectInformation = projectInformation;
-    this.folders = folders;
+    this.directories = directories;
   }
 
   public String getProjectName() {
@@ -28,8 +28,8 @@ public class ProjectFullDTO {
     return projectInformation;
   }
 
-  public List<FolderFullDTO> getFolders() {
-    return folders;
+  public List<DirectoryFullDTO> getDirectories() {
+    return directories;
   }
 
   public void setProjectName(String projectName) {
@@ -40,8 +40,8 @@ public class ProjectFullDTO {
     this.projectInformation = projectInformation;
   }
 
-  public void setFolders(List<FolderFullDTO> folders) {
-    this.folders = folders;
+  public void setDirectories(List<DirectoryFullDTO> directories) {
+    this.directories = directories;
   }
 
 }

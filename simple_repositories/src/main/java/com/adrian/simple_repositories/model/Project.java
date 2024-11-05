@@ -36,7 +36,7 @@ public class Project {
   private String projectInformation;
 
   @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Folder> folders = new ArrayList<>();
+  private List<Directory> directories = new ArrayList<>();
 
   @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY )
   private List<Push> pushes = new ArrayList<>();
@@ -61,11 +61,11 @@ public class Project {
 
   }
 
-  public Project(Long id, String projectName, String projectInformation, List<File> files, List<Folder> folders, User user) {
+  public Project(Long id, String projectName, String projectInformation, List<File> files, List<Directory> directories, User user) {
     this.id = id;
     this.projectName = projectName;
     this.projectInformation = projectInformation;
-    this.folders = folders;
+    this.directories = directories;
     this.user = user;
   }
 
@@ -85,8 +85,8 @@ public class Project {
     return projectInformation;
   }
 
-  public List<Folder> getFolders() {
-    return this.folders;
+  public List<Directory> getDirectories() {
+    return this.directories;
   }
 
   public User getUser() {
@@ -109,8 +109,8 @@ public class Project {
     this.projectInformation = projectInformation;
   }
 
-  public void setFolders(List<Folder> folders) {
-    this.folders = folders;
+  public void setDirectories(List<Directory> directories) {
+    this.directories = directories;
   }
 
   public void setUser(User user) {
@@ -122,8 +122,8 @@ public class Project {
             "id=" + id +
             ", projectName='" + projectName + '\'' +
             ", projectInformation='" + projectInformation + '\'' +
-            ", folders=" + folders.stream()
-                                    .map(Folder::toStringWithoutProject)
+            ", directories=" + directories.stream()
+                                    .map(Directory::toStringWithoutProject)
                                     .collect(Collectors.toList()) +
             '}';
   }

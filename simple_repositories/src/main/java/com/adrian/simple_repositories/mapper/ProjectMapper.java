@@ -14,11 +14,11 @@ import com.adrian.simple_repositories.model.Project;
 @Component
 public class ProjectMapper {
 
-  private final FolderMapper folderMapper;
+  private final DirectoryMapper directoryMapper;
 
   @Autowired
-  public ProjectMapper(FolderMapper folderMapper) {
-    this.folderMapper = folderMapper;
+  public ProjectMapper(DirectoryMapper directoryMapper) {
+    this.directoryMapper = directoryMapper;
   }
 
   public ProjectFullDTO toFullDTO(Project project) {
@@ -27,8 +27,8 @@ public class ProjectMapper {
     ProjectFullDTO dto = new ProjectFullDTO();
     dto.setProjectName(project.getProjectName());
     dto.setProjectInformation(project.getProjectInformation());
-    dto.setFolders(project.getFolders().stream()
-      .map(folderMapper::toFullDTO)
+    dto.setDirectories(project.getDirectories().stream()
+      .map(directoryMapper::toFullDTO)
       .collect(Collectors.toList()));
 
     return dto;

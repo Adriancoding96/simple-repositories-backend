@@ -10,12 +10,12 @@ import java.util.Optional;
 
 public interface FileRepository extends JpaRepository<File, Long> {
     
-  @Query("SELECT f FROM File f WHERE f.folder.id = :folderId")
-  Optional<List<File>> findAllByFolderId(@Param("folderId") Long folderId);
+  @Query("SELECT f FROM File f WHERE f.directory.id = :directoryId")
+  Optional<List<File>> findAllByDirectoryId(@Param("directoryId") Long directoryId);
 
   Optional<File> findByUuid(String uuid);
 
-  @Query("SELECT f FROM File f WHERE f.folder.project.uuid = :uuid")
+  @Query("SELECT f FROM File f WHERE f.directory.project.uuid = :uuid")
   List<File> findAllByProjectUuid(@Param("uuid") String uuid);
 
   void deleteByUuid(String uuid);

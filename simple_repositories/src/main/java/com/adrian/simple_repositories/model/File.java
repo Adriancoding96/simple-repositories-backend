@@ -35,8 +35,8 @@ public class File {
   private byte[] content;
 
   @ManyToOne
-  @JoinColumn(name = "folder_id", nullable = false)
-  private Folder folder;
+  @JoinColumn(name = "directory_id", nullable = false)
+  private Directory directory;
 
   @PrePersist
   public void generateUuid() {
@@ -48,13 +48,13 @@ public class File {
     
   }
 
-  public File(Long id, String fileName, String extension, String path, byte[] content, Folder folder) {
+  public File(Long id, String fileName, String extension, String path, byte[] content, Directory directory) {
     this.id = id;
     this.fileName = fileName;
     this.extension = extension;
     this.path = path;
     this.content = content;
-    this.folder = folder;
+    this.directory = directory;
   }
 
   public Long getId() {
@@ -81,8 +81,8 @@ public class File {
     return this.content;
   }
 
-  public Folder getFolder() {
-    return this.folder;
+  public Directory getDirectory() {
+    return this.directory;
   }
 
   public void setId(Long id) {
@@ -109,11 +109,11 @@ public class File {
     this.content = content;
   }
 
-  public void setFolder(Folder folder) {
-    this.folder = folder;
+  public void setDirectory(Directory directory) {
+    this.directory = directory;
   }
 
-  public String toStringWithoutFolder() {
+  public String toStringWithoutDirectory() {
     return "File{" +
             "id=" + id +
             ", fileName='" + fileName + '\'' +
@@ -123,6 +123,6 @@ public class File {
     }
 
     public String toStringWithoutPush() {
-        return toStringWithoutFolder(); 
+        return toStringWithoutDirectory(); 
     }
 }

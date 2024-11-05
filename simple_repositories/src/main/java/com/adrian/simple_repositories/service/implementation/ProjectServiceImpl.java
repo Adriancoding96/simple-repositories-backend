@@ -8,18 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.adrian.simple_repositories.assembler.ProjectAssembler;
+import com.adrian.simple_repositories.dto.UniqueIdentifierDTO;
 import com.adrian.simple_repositories.dto.project.ProjectDTO;
 import com.adrian.simple_repositories.dto.project.ProjectFullDTO;
+import com.adrian.simple_repositories.dto.project.ProjectIdentifierRequestDTO;
 import com.adrian.simple_repositories.dto.project.ProjectInformationDTO;
 import com.adrian.simple_repositories.dto.project.ProjectUpdateDTO;
-import com.adrian.simple_repositories.dto.project.ProjectIdentifierRequestDTO;
-import com.adrian.simple_repositories.dto.UniqueIdentifierDTO;
 import com.adrian.simple_repositories.exception.ProjectNotFoundException;
 import com.adrian.simple_repositories.mapper.ProjectMapper;
+import com.adrian.simple_repositories.model.File;
+import com.adrian.simple_repositories.model.Directory;
 import com.adrian.simple_repositories.model.Project;
 import com.adrian.simple_repositories.model.User;
-import com.adrian.simple_repositories.model.Folder;
-import com.adrian.simple_repositories.model.File;
 import com.adrian.simple_repositories.repository.ProjectRepository;
 import com.adrian.simple_repositories.service.ProjectService;
 
@@ -46,7 +46,7 @@ public class ProjectServiceImpl implements ProjectService {
     Project savedProject = projectRepository.save(project);
     if(savedProject != null) {
       System.out.println(savedProject.getProjectName());
-      if(savedProject.getFolders() == null) {
+      if(savedProject.getDirectories() == null) {
         System.out.println("PROJECTS FOLDERS ARE NULL");
       }
     }
@@ -94,26 +94,26 @@ public class ProjectServiceImpl implements ProjectService {
 
   private List<String> getAllFileExtionsFromProject(Project project) {
     List<String> extensions = new ArrayList<>();
-    for(Folder folder : project.getFolders()) {
-      walkThroughFolderTree(folder, extensions);
+    for(Directory directory : project.getDirectories()) {
+      walkThroughDirectoryTree(directory, extensions);
     }
 
     return extensions;
   }
 
-  private void walkThroughFolderTree(Folder folder, List<String> extensions) {
-    if(folder.getFiles() != null || !folder.getFiles().isEmpty()) {
-      getFileExtensionsFromFolder(folder, extensions);
+  private void walkThroughDirectoryTree(Directory directory, List<String> extensions) {
+    if(directory.getFiles() != null || !directory.getFiles().isEmpty()) {
+      getFileExtensionsFromDirectory(directory, extensions);
     } 
 
-    if(folder.getFolders() == null || folder.getFolders().isEmpty()) return;
-    for(Folder subFolder : folder.getFolders()) {
-      walkThroughFolderTree(subFolder, extensions);
+    if(directory.getDirectories() == null || directory.getDirectories().isEmpty()) return;
+    for(Directory subDirectory : directory.getDirectories()) {
+      walkThroughDirectoryTree(subDirectory, extensions);
     }
   } 
 
-  private void getFileExtensionsFromFolder(Folder folder, List<String> extensions) {
-    for(File file : folder.getFiles()) {
+  private void getFileExtensionsFromDirectory(Directory directory, List<String> extensions) {
+    for(File file : directory.getFiles()) {
       extensions.add(file.getExtension());
     }
   }

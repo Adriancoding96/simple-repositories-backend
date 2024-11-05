@@ -6,19 +6,19 @@ public class FileDTO {
   private String extension;
   private String path;
   private byte[] content;
-  private Long folderId;
+  private Long directoryId;
   private String uuid;
 
   public FileDTO() {
 
   } 
 
-  public FileDTO(String fileName, String extension, String path, byte[] content, Long folderId, String uuid) {
+  public FileDTO(String fileName, String extension, String path, byte[] content, Long directoryId, String uuid) {
     this.fileName = fileName;
     this.extension = extension;
     this.path = path;
     this.content = content;
-    this.folderId = folderId;
+    this.directoryId = directoryId;
     this.uuid = uuid;
   }
 
@@ -38,8 +38,8 @@ public class FileDTO {
     return this.content;
   }
 
-  public Long getFolderId() {
-    return this.folderId;
+  public Long getDirectoryId() {
+    return this.directoryId;
   }
 
   public String getUuid() {
@@ -62,8 +62,8 @@ public class FileDTO {
     this.content = content;
   }
 
-  public void setFolderId(Long folderId) {
-    this.folderId = folderId;
+  public void setDirectoryId(Long directoryId) {
+    this.directoryId = directoryId;
   }
 
   public void setUuid(String uuid) {
