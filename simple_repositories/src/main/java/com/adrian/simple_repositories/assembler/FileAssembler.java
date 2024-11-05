@@ -5,9 +5,20 @@ import org.springframework.stereotype.Component;
 import com.adrian.simple_repositories.dto.file.FileDTO;
 import com.adrian.simple_repositories.model.File;
 
+
+/*
+ * FileAssembler serves as the only stage in the assembly chain for creating file entitys,
+ * and the final stage for directories and projects
+ */
 @Component
 public class FileAssembler {
 
+  /*
+   * Assembles a file entity based on data in file dto
+   *
+   * @param dto: DTO containing file data
+   * @return file: returns assembled file entity
+   */
   public File assemble(FileDTO dto) {
     if(dto == null) return null;
 

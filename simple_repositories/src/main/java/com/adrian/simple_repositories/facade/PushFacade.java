@@ -1,7 +1,7 @@
 /********************************************
- *           -- PushFacade --             *
+ *            -- PushFacade --              *
  *                                          *
- * PushFacade is used to control          *
+ * PushFacade is used to control            *
  * the API flow based on the content        *
  * of recieved push request.                * 
  * This is done for the reason instead of   *
@@ -125,7 +125,7 @@ public class PushFacade {
    * @param pushDTO: DTO containing push request data
    * @return pushResponseDTO: DTO containing push response data
    */
-  private PushResponseDTO handleFilePush(FileDTO fileDTO) {
+ private PushResponseDTO handleFilePush(FileDTO fileDTO) {
     Directory parentDirectory = directoryService.getDirectoryById(fileDTO.getDirectoryId());
     File file = fileService.createFileFromPush(fileDTO, parentDirectory);
     return responseMapper.toPushResponseFromFile(file);
