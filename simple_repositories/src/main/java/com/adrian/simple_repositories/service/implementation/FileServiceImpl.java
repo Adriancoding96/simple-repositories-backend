@@ -20,7 +20,14 @@ import jakarta.transaction.Transactional;
 
 import com.adrian.simple_repositories.exception.FileNotFoundException;;
 
-
+/*
+ * Implementation of FileService
+ *
+ * Implements methods to handle database operations on files table.
+ *
+ * Injects FileRepository for database operations on files table, FileAssembler to assemble file from push,
+ * FileMapper to convert files to DTOs, FilePathUtil containing helper methods to handle file path alteration.
+ */
 @Service
 public class FileServiceImpl implements FileService {
 
@@ -37,6 +44,12 @@ public class FileServiceImpl implements FileService {
     this.filePathUtil = filePathUtil;
   }
 
+  /*
+   * Creates file binds it to parent directory and persists it to the datbase from file dto
+   *
+   * @param fileDTO: DTO containing file data
+   * @param parentDirectory: Directory entity that fileDTO belongs to
+   */
   @Override
   public File createFileFromPush(FileDTO fileDTO, Directory parentDirectory) {
     File file = fileAssembler.assemble(fileDTO);
@@ -45,22 +58,50 @@ public class FileServiceImpl implements FileService {
     return savedFile;
   }
 
+  /*
+   * Retrieves file from database by ID
+   *
+   * @param fileId: ID of file
+   * @return file: returns file fetched from database
+   * @throws FileNotFoundException: throws exception if file was not found by ID
+   */
   @Override
   public File getFileById(Long fileId) {
     return fileRepository.findById(fileId)
       .orElseThrow(() -> new FileNotFoundException("Could not find file with id: " + fileId));
   }
 
+  /*
+   * Retrieves file from database by UUID
+   *
+   * @param uuid: UUID of file
+   * @return file: returns file fetched from database
+   * @throws FileNotFoundException: throws exception if file was not found by UUID
+   */
   public File getFileByUuid(String uuid) {
     return fileRepository.findByUuid(uuid)
       .orElseThrow(() -> new FileNotFoundException("Could not find file with uuid: " + uuid));
   }
 
+  /*
+   * Retrieves file from database by UUID and converts it to a file DTO
+   *
+   * @param uuid: file UUID
+   * @return fileDTO: returns DTO containing file data
+   * @throws FileNotFoundException: throws exception if file was not found by UUID
+   */
   @Override
   public FileDTO getFileAsDTOByUuid(String uuid) {
     return fileMapper.toDTO(getFileByUuid(uuid));
   }
 
+  /*
+   * Retrieves all files by project UUID
+   *
+   * @param projectUuid: project UUID
+   * @return fileDTOs: returns list of DTOs containing file data
+   * @throws FileNotFoundException: throws exception if no files was found by project uuid
+   */
   @Override
   public List<File> getAllFilesByProjectUuid(String projectUuid) {
     List<File> files = fileRepository.findAllByProjectUuid(projectUuid);
@@ -70,6 +111,14 @@ public class FileServiceImpl implements FileService {
     return files;
   }
 
+
+  /*
+   * Retrieves all files as DTOs by project UUID
+   *
+   * @param projectUuid: project UUID
+   * @return fileDTOs: returns list of DTOs containing file data
+   * @throws FileNotFoundException: throws exception if no files was found by project UUID
+   */
   @Override
   public List<FileDTO> getAllFilesAsDTOsByProjectUuid(String projectUuid) {
     return getAllFilesByProjectUuid(projectUuid).stream()
@@ -77,7 +126,17 @@ public class FileServiceImpl implements FileService {
       .collect(Collectors.toList());
   }
 
-  //TODO Split in to more methods?
+  /*
+   * TODO split method in to smaller methods with higher SOC
+   *
+   * Updates file with new data from file DTO, fetches file from database by UUID, returns file as DTO
+   *
+   * @param updateDTO: DTO containing data to be used for file update
+   * @param uuid: file UUID
+   * @return fileDTO: returns DTO containing updated file data
+   * @throws FileNotFoundException: throws exception if file was not found by UUID
+   */
+
   @Override
   public FileDTO updateFile(FileUpdateDTO updateDTO, String uuid) {
     File file = getFileByUuid(uuid);
@@ -92,10 +151,26 @@ public class FileServiceImpl implements FileService {
     return fileMapper.toDTO(updatedFile);
   }
 
+  /*
+   * TODO change input parameter updateDTO to String fileName?
+   *
+   * Helper method to update file extension if present in update DTO
+   *
+   * @param file: file entity that will be updated with new extension
+   * @param updateDTO: DTO containing file update data
+   */
   private void setExtension(File file, FileUpdateDTO updateDTO) {
     file.setExtension("." + getFileExtensionFromFileName(updateDTO.getFileName()));
   }
 
+  /*
+   * Helper method to check if extension has been changed in file name but not directly in extenssion attribute,
+   * if changed sets extension to match the one in file name
+   *
+   * @param originalFileName: original name of file
+   * @param newFileName: new name of file
+   * @return hasFileNameChanged: if file name has changed return true, else false 
+   */
   private boolean hasExtensionChangedInFileName(String originalFileName, String newFileName) {
     String orgExtension = getFileExtensionFromFileName(originalFileName);
     String newExtenstion = getFileExtensionFromFileName(newFileName);
@@ -103,6 +178,12 @@ public class FileServiceImpl implements FileService {
     return !orgExtension.equals(newExtenstion);
   }
 
+  /*
+   * Helper method to extract extension from file name
+   *
+   * @param fileName: name of file
+   * @return extension: extension extracted from file name
+   */
  private String getFileExtensionFromFileName(String fileName) {
     if(fileName == null) return null; //TODO Implement exception logic
     int dotIndex = fileName.lastIndexOf('.');
@@ -112,6 +193,11 @@ public class FileServiceImpl implements FileService {
     return null;
   }
 
+  /*
+   * Deletes file by UUID
+   *
+   * @param uuid: file UUID
+   */
   @Override
   @Transactional
   public void deleteFileByUuid(String uuid) {
