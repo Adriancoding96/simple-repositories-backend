@@ -40,7 +40,7 @@ public class PushController {
   }
 
   /*
-   * Retrieves push by id (TODO needs to be changed to uuid)
+   * Retrieves push as DTO by id (TODO needs to be changed to uuid)
    *
    * @Param id: ID of push
    * @return pushDTO: returns DTO containing push response data (TODO needs to be changed to information DTO)

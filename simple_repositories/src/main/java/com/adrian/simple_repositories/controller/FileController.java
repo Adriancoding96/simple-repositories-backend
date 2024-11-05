@@ -28,21 +28,44 @@ public class FileController {
     this.fileService = fileService;
   }
 
+  /*
+   * Retrieves file as DTO by uuid
+   *
+   * @param uuid: file uuid
+   * @return fileDTO: returns DTO containing file data
+   */
   @GetMapping("/{uuid}")
   public ResponseEntity<FileDTO> getFileById(@PathVariable String uuid) {
     return ResponseEntity.ok(fileService.getFileAsDTOByUuid(uuid));
   }
 
+  /*
+   * Retrieves file as DTO by project uuid
+   *
+   * @param uuid: project uuid
+   * @return fileDTO: returns response entity containing DTO with file data 
+   */
   @GetMapping("/project/{uuid}")
   public ResponseEntity<List<FileDTO>> getAllFilesByProjectUuid(@PathVariable String uuid) {
     return ResponseEntity.ok(fileService.getAllFilesAsDTOsByProjectUuid(uuid));
   }
 
+  /*
+   * Updates file by uuid and returns updated file as a DTO
+   *
+   * @param uuid: file uuid
+   * @return fileDTO: returns response entity containing DTO with update file data
+   */
   @PutMapping("/{uuid}")
   public ResponseEntity<FileDTO> updateFile(@RequestBody FileUpdateDTO updateDTO, @PathVariable String uuid) {
     return ResponseEntity.ok(fileService.updateFile(updateDTO, uuid));
   }
 
+  /*
+   * Deletes file by uuid
+   *
+   * @param uuid: file uuid
+   */
   @DeleteMapping("/{uuid}")
   public ResponseEntity<Void> deleteFile(@PathVariable String uuid) {
     fileService.deleteFileByUuid(uuid);
