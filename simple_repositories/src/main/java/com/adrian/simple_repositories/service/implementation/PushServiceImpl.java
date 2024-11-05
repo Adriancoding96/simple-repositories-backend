@@ -41,8 +41,8 @@ public class PushServiceImpl implements PushService {
   /*
    * Creates a new push
    *
-   * @param pushDTO contains push data
-   * @return push response data
+   * @param pushDTO: DTO containing push data
+   * @return pushResponse: DTO containing push response data
    */
   @Override
   public PushResponseDTO createPush(PushDTO pushDTO) {
@@ -53,9 +53,9 @@ public class PushServiceImpl implements PushService {
   /*
    * Retrieves push by id
    *
-   * @param pushId contains ID of push
-   * @return push entity
-   * @throws PushNotFoundException if push not found by ID
+   * @param pushId: ID of push
+   * @return push: returns push entity fetched from database
+   * @throws PushNotFoundException: throws exception if push not is found by ID
    */
   @Override
   @Transactional(readOnly = true)
@@ -67,9 +67,9 @@ public class PushServiceImpl implements PushService {
   /*
    * Retrieves a push as a DTO by ID
    *
-   * @param pushId contains id of push
-   * @return PushDTO containing push data
-   * @throws PushNotFoundException if push not found by ID
+   * @param pushId: ID of push
+   * @return pushDTO: DTO containing push data
+   * @throws PushNotFoundException: throws exception if push is not found by ID
    */
   @Override
   public PushDTO getPushDTOById(Long pushId) {
@@ -81,8 +81,8 @@ public class PushServiceImpl implements PushService {
   /*
    * Retrieves all push entities
    *
-   * @return list of all push entities
-   * @throws PushNotFoundException ig no pushes are found
+   * @return pushes: returns list of all push entities
+   * @throws PushNotFoundException: throws exeption if no pushes are found
    */
   @Override
   public List<Push> getAllPushes() {
@@ -97,8 +97,8 @@ public class PushServiceImpl implements PushService {
   /*
    * Retrieves all push entities and converts them to DTOs
    *
-   * @return list of pushDTO objects
-   * @throws PushNotFoundException if no pushes are found
+   * @return pushDTOs: returns list of push DTOs
+   * @throws PushNotFoundException: throws exception if no pushes are found
    */
   @Override
   public List<PushDTO> getAllPushesAsDTOs() {
@@ -109,9 +109,9 @@ public class PushServiceImpl implements PushService {
 
   /* Retrieves latest push to branch by branch name
    *
-   * @param name of branch
-   * @return latest push to branch, by branch name
-   * @throws PushNotFoundException if no push is found by branch name
+   * @param branchName: contains name of branch
+   * @return push: contains branch fethched from database by most recent push and branch name
+   * @throws PushNotFoundException: throws exception if no push is found by branch name
    */
   @Override
   public Push getLatestPushByBranchName(String branchName) {
@@ -122,9 +122,9 @@ public class PushServiceImpl implements PushService {
   /*
    * Retrieves latest push to branch by branch name and converts it to a DTO
    *
-   * @param name of branch
-   * @return pushDTO containing data of latest push to branch
-   * @throws PushNotFoundException if no push is found by branch name
+   * @param branchName: contains name of branch 
+   * @return pushDTO: DTO containing data of branch fetched from database by most recent push and branch name
+   * @throws PushNotFoundException: throws exception if no push is found by branch name
    */
   @Override
   public PushDTO getLatestPushByBranchNameAsDTO(String branchName) {

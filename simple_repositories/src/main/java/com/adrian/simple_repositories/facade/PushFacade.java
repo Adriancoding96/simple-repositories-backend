@@ -80,9 +80,9 @@ public class PushFacade {
    * Determines the push type (project / directory / file) and passes
    * data to appropriate handler method.
    *
-   * @param pushDTO containing push request data
-   * @return pushResponseDTO containing push response data
-   * @throws InvalidPushException if request contains invalid data
+   * @param pushDTO: DTO containing push request data
+   * @return pushResponseDTO: DTO containing push response data
+   * @throws InvalidPushException: throws exception if request contains invalid data
    */
   public PushResponseDTO processPush(PushDTO pushDTO) { 
     validatePushDTO(pushDTO); 
@@ -110,8 +110,8 @@ public class PushFacade {
   /*
    * Handles push operation for request containing directory data
    *
-   * @param pushDTO containing push request data
-   * @return pushResponseDTO containing push response data
+   * @param pushDTO: DTO containing push request data
+   * @return pushResponseDTO: DTO containing push response data
    */
   private PushResponseDTO handleDirectoryPush(DirectoryFullDTO directoryDTO) {
     Project project = projectService.getProjectById(directoryDTO.getProjectId());
@@ -122,8 +122,8 @@ public class PushFacade {
   /*
    * Handles push operation for request containing file data
    *
-   * @param pushDTO containing push request data
-   * @return pushResponseDTO containing push response data
+   * @param pushDTO: DTO containing push request data
+   * @return pushResponseDTO: DTO containing push response data
    */
   private PushResponseDTO handleFilePush(FileDTO fileDTO) {
     Directory parentDirectory = directoryService.getDirectoryById(fileDTO.getDirectoryId());
@@ -134,7 +134,7 @@ public class PushFacade {
   /*
    * Validates data in push request by checking that request contains either project, directory, or file
    *
-   * @param pushDTO containing push request data
+   * @param pushDTO: DTO containing push request data
    * @throws InvalidPushException if project, directory, and file data is null
    */
   private void validatePushDTO(PushDTO pushDTO) {
@@ -150,9 +150,9 @@ public class PushFacade {
    *
    * Records user activity by branch and project with UserProjectActivity
    *
-   * @param pushDTO containing push request data
-   * @param project used in push operation
-   * @param branch used in push operation
+   * @param pushDTO: DTO containing push request data
+   * @param project: project used in push operation
+   * @param branch: branch used in push operation
    */
   private void newUserProjectActivity(PushDTO pushDTO, Project project, Branch branch) {
     User user = userDetailServiceImpl.getUserByEmail(pushDTO.getOwnerEmail());

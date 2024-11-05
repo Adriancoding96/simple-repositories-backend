@@ -51,9 +51,9 @@ public class ProjectServiceImpl implements ProjectService {
    *
    * Creates a new project from ProjectFullDTO and assiciating it with given user
    *
-   * @param projectDTO containing project data
-   * @param user containing user data of project owner
-   * @return persisted project entity
+   * @param projectFullDTO: contains project data
+   * @param user: contains user data of project owner
+   * @return: persisted project entity
    */
   @Override
   @Transactional
@@ -72,9 +72,9 @@ public class ProjectServiceImpl implements ProjectService {
   /*
    * Retrieves project by ID
    *
-   * @param projectId of project
-   * @return project entity
-   * @throws ProjectNotFoundException if project not found by ID
+   * @param projectId: ID of project
+   * @return project: returns project entity fetched from the database by ID
+   * @throws ProjectNotFoundException: throws exception if project not found by ID
    */
   @Override
   public Project getProjectById(Long projectId) {
@@ -85,9 +85,9 @@ public class ProjectServiceImpl implements ProjectService {
   /*
    * Retrieves project by UUID
    *
-   * @param uuid of project
-   * @return project entity
-   * @throws ProjectNotFoundException if project not found by uuid
+   * @param uuid: UUID of project
+   * @return project: returns project entity fetched from the database by ID
+   * @throws ProjectNotFoundException: throws exception if project not found by uuid
    */
   @Override
   public Project getProjectByUuid(String uuid) {
@@ -98,15 +98,22 @@ public class ProjectServiceImpl implements ProjectService {
   /*
    * Retrieves project by UUID and converts it to ProjectFullDTO
    *
-   * @param uuid of project
-   * @return project entity
-   * @throws ProjectNotFoundException if project not found by uuid
+   * @param uuid: UUID of project
+   * @return project: returns project entity fetched from database
+   * @throws ProjectNotFoundException: throws exception if project not found by uuid
    */
   @Override
   public ProjectFullDTO getProjectAsDTOByUuid(String uuid) {
     return projectMapper.toFullDTO(getProjectByUuid(uuid));
   }
 
+  /*
+   * TODO split in to two methods, one for fetching all projects and one for converting projects to information DTOs
+   *
+   * Retrieves all projects and converts them to information DTOs
+   *
+   * @return pushInfoDTOs: returns list of DTOs containing push information
+   */
   @Override
   public List<ProjectInformationDTO> getAllProjectsAsInfoDTOs() {
     List<Project> projects = projectRepository.findAll();
@@ -123,12 +130,24 @@ public class ProjectServiceImpl implements ProjectService {
     return infoDTOs;
   }
 
+  /*
+   * Converts a list of projects to project information DTOs
+   *
+   * @param projects: list of projects
+   * @return projectInfoDTOs: returns list of project information DTOs
+   */
   private List<ProjectInformationDTO> converToProjectInfoDTOs(List<Project> projects) {
     return projects.stream()
       .map(projectMapper::toInfoDTO)
       .collect(Collectors.toList());
   }
 
+  /*
+   * Initializing file system traversal for extracting extensions of files nested in project
+   *
+   * @param project: project entity
+   * @returns extension: list of strings containing file extensions
+   */
   private List<String> getAllFileExtionsFromProject(Project project) {
     List<String> extensions = new ArrayList<>();
     for(Directory directory : project.getDirectories()) {
@@ -138,6 +157,13 @@ public class ProjectServiceImpl implements ProjectService {
     return extensions;
   }
 
+  /*
+   *  Recursivly walk through directory tree, calling helper method to extract file extensions of current directory
+   *
+   *  @param directory: directory of current recursive itteration
+   *  @param extension: list of strings containing extensions from passed iterations (will be empty during first iteration)
+   *  @return void: no need to return anything since we are updating content of a ArrayList stored on the heap
+   */
   private void walkThroughDirectoryTree(Directory directory, List<String> extensions) {
     if(directory.getFiles() != null || !directory.getFiles().isEmpty()) {
       getFileExtensionsFromDirectory(directory, extensions);
@@ -149,23 +175,49 @@ public class ProjectServiceImpl implements ProjectService {
     }
   } 
 
+  /*
+   * Helper method to extract file extension from directory and store it in a list
+   *
+   * @param directory: directory containng files
+   * @param extension: list of strings containing extensions from passed iterations from calling method (will be empty during first iteration)
+   * @return void: no need to return anything since we are updating content of a ArrayList stored on the heap
+   */
   private void getFileExtensionsFromDirectory(Directory directory, List<String> extensions) {
     for(File file : directory.getFiles()) {
       extensions.add(file.getExtension());
     }
   }
 
+  /*
+   * Retrieves project from database by project identifier request DTO containg project uuid and user details
+   *
+   * @param request: DTO containing project uuid and user details
+   * @return projects: list of projects fetched from database by uuid and user details
+   * @throws ProjectNotFoundException: throws exception if project was not found by uuid and user details
+   */
   @Override
   public Project getProjectByProjectNameAndUserEmail(ProjectIdentifierRequestDTO request) {
     return projectRepository.findProjectByProjectNameAndUserEmail(request.getProjectName(), request.getEmail())
       .orElseThrow(() -> new ProjectNotFoundException("Could not fetch project created by user: " + request.getEmail() + " with project name: " + request.getProjectName()));
   }
 
+  /*
+   * Retrieves project uuid from database by project identifier request DTO and converts it to a unique identifier DTO
+   * 
+   * @param request: DTO cotaining project uuid and user details
+   * @return uniqueIdentifierDTO: DTO containing project uuid
+   */
   @Override
   public UniqueIdentifierDTO getProjectIdentiferByProjectNameAndUserEmail(ProjectIdentifierRequestDTO request) {
     return projectMapper.toIdentifierDTO(getProjectByProjectNameAndUserEmail(request)); 
   }
 
+  /*
+   * Retrieves project from database by uuid, updates project with data from project update DTO
+   *
+   * @param updateDTO: contains data to be updated in project
+   * @param uuid: contains uuid of project to be updated
+   */
   @Override
   public ProjectDTO updateProject(ProjectUpdateDTO updateDTO, String uuid) {
     Project project = getProjectByUuid(uuid);
@@ -175,7 +227,11 @@ public class ProjectServiceImpl implements ProjectService {
     return projectMapper.toDTO(updatedProject);
   }
 
-
+  /*
+   * Deletes project by uuid
+   * @param uuid: contains uuid of project to be deleted
+   * @throws ProjectNotFoundException: throws exception if project with uuid was not found
+   */
   @Override
   public void deleteProjectByUuid(String uuid) {
     if(!projectRepository.existsByUuid(uuid)) {

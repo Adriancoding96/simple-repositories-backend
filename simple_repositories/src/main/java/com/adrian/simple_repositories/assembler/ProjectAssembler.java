@@ -32,9 +32,9 @@ public class ProjectAssembler {
    * Creates project with nested directory and file entites by calling assemble method
    * from directory assembler which is the second class in the assembly chain
    *
-   * @param ProjectFullDTO contains project data
-   * @param User contains user data of project owner
-   * @return assembeled project entity
+   * @param dto: contains project data
+   * @param user: contains user data of project owner
+   * @return: assembeled project entity
    */
   public Project assemble(ProjectFullDTO dto, User user) {
     if(dto == null) return null;

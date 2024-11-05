@@ -30,8 +30,8 @@ public class PushController {
   /*
    * Creates a new Push
    *
-   * @Param pushDTO contains push data (project / directory / file)
-   * @return created push data response
+   * @Param pushDTO: DTO containing push data (project/directory/file)
+   * @return pushResponseDTO: returns DTO containing push response data
    */
   @PostMapping
   public ResponseEntity<PushResponseDTO> createPush(@RequestBody PushDTO pushDTO) {
@@ -42,8 +42,8 @@ public class PushController {
   /*
    * Retrieves push by id (TODO needs to be changed to uuid)
    *
-   * @Param the id of the push
-   * @return push data response (TODO needs to be changed to information DTO)
+   * @Param id: ID of push
+   * @return pushDTO: returns DTO containing push response data (TODO needs to be changed to information DTO)
    */
   @GetMapping("/{id}")
   public ResponseEntity<PushDTO> getPushById(@PathVariable Long id) {
@@ -53,7 +53,7 @@ public class PushController {
   /*
    * Retrieves all pushes
    *
-   * @Return list of all pushes
+   * @Return pushDTOs: returns list of DTOs containing data of pushes
    */
   @GetMapping
   public ResponseEntity<List<PushDTO>> getAllPushes() {
