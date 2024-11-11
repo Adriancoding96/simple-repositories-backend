@@ -39,8 +39,8 @@ public class Directory {
   private List<Directory> directories = new ArrayList<>();
 
   @ManyToOne
-  @JoinColumn(name = "project_id")
-  private Project project;
+  @JoinColumn(name = "repo_id")
+  private Repo repo;
 
   @ManyToOne
   @JoinColumn(name = "parent_directory_id")
@@ -57,13 +57,13 @@ public class Directory {
   }
 
   public Directory(Long id, String directoryName, String path, List<File> files, 
-                  List<Directory> directories, Project project, Directory parentDirectory) {
+                  List<Directory> directories, Repo repo, Directory parentDirectory) {
     this.id = id;
     this.directoryName = directoryName;
     this.path = path;
     this.files = files;
     this.directories = directories;
-    this.project = project;
+    this.repo = repo;
     this.parentDirectory = parentDirectory;
   }
 
@@ -91,8 +91,8 @@ public class Directory {
     return this.directories;
   }
 
-  public Project getProject() {
-    return this.project;
+  public Repo getRepo() {
+    return this.repo;
   }
 
   public Directory getParentDirectory() {
@@ -123,20 +123,20 @@ public class Directory {
     this.directories = directories;
   }
 
-  public void setProject(Project project) {
-    this.project = project;
+  public void setRepo(Repo repo) {
+    this.repo = repo;
   }
 
   public void setParentDirectory(Directory parentDirectory) {
     this.parentDirectory = parentDirectory;
   }
 
-  public String toStringWithoutProject() {
+  public String toStringWithoutRepo() {
     return "Directory{" +
             "id=" + id +
             ", directoryName='" + directoryName + '\'' +
             ", subdirectories=" + directories.stream()
-                                .map(Directory::toStringWithoutProject)
+                                .map(Directory::toStringWithoutRepo)
                                 .collect(Collectors.toList()) +
             ", files=" + files.stream()
                                 .map(File::toStringWithoutDirectory)

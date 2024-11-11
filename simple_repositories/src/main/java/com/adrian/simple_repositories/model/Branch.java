@@ -1,6 +1,5 @@
 package com.adrian.simple_repositories.model;
 
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,31 +28,31 @@ public class Branch {
   private LocalDateTime latestPushToBranch;
 
   @ManyToOne
-  @JoinColumn(name = "project_id")
-  private Project project;
+  @JoinColumn(name = "repo_id")
+  private Repo repo;
 
   @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY )
   private List<Push> pushes = new ArrayList<>();
 
   @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<UserProjectActivity> activities = new ArrayList<>();
+  private List<UserRepoBranchActivity> activities = new ArrayList<>();
 
   public Branch() {
     
   }
 
-  public Branch(Long id, String branchName, LocalDateTime latestPushToBranch, Project project) {
+  public Branch(Long id, String branchName, LocalDateTime latestPushToBranch, Repo repo) {
     this.id = id;
     this.branchName = branchName;
     this.latestPushToBranch = latestPushToBranch;
-    this.project = project;
+    this.repo = repo;
   }
 
-  public Branch(Long id, String branchName, LocalDateTime latestPushToBranch, Project project, List<Push> pushes) {
+  public Branch(Long id, String branchName, LocalDateTime latestPushToBranch, Repo repo, List<Push> pushes) {
     this.id = id;
     this.branchName = branchName;
     this.latestPushToBranch = latestPushToBranch;
-    this.project = project;
+    this.repo = repo;
     this.pushes = pushes;
   }
 
@@ -69,8 +68,8 @@ public class Branch {
     return latestPushToBranch;
   }
 
-  public Project getProject() {
-    return project;
+  public Repo getRepo() {
+    return repo;
   }
 
   public List<Push> getPushes() {
@@ -89,8 +88,8 @@ public class Branch {
     this.latestPushToBranch = latestPushToBranch;
   }
 
-  public void setProject(Project project) {
-    this.project = project;
+  public void setRepo(Repo repo) {
+    this.repo = repo;
   }
 
   public void setPushes(List<Push> pushes) {

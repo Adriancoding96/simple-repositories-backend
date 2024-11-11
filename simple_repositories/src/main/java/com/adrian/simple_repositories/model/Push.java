@@ -3,7 +3,6 @@ package com.adrian.simple_repositories.model;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import com.adrian.simple_repositories.annotation.ValidPush;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,40 +11,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.NamedAttributeNode;
-import jakarta.persistence.NamedEntityGraph;
-import jakarta.persistence.NamedSubgraph;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
-/*@NamedEntityGraph(
-    name = "Push.full",
-    attributeNodes = {
-        @NamedAttributeNode(value = "project", subgraph = "projectSubgraph")
-    },
-    subgraphs = {
-        @NamedSubgraph(
-            name = "projectSubgraph",
-            attributeNodes = {
-                @NamedAttributeNode(value = "directorys", subgraph = "directorySubgraph")
-            }
-        ),
-        @NamedSubgraph(
-            name = "directorySubgraph",
-            attributeNodes = {
-                @NamedAttributeNode(value = "directorys", subgraph = "subDirectorySubgraph"),
-                @NamedAttributeNode(value = "files")
-            }
-        ),
-        @NamedSubgraph(
-            name = "subDirectorySubgraph",
-            attributeNodes = {
-                @NamedAttributeNode(value = "directorys"),
-                @NamedAttributeNode(value = "files")
-            }
-        )
-    }
-)*/
 @Entity
 @Table(name = "pushes")
 //@ValidPush
@@ -69,8 +37,8 @@ public class Push {
   private Branch branch;
   
   @ManyToOne
-  @JoinColumn(name = "project_id")
-  private Project project;
+  @JoinColumn(name = "repo_id")
+  private Repo repo;
 
   @ManyToOne
   @JoinColumn(name = "directory_id")
@@ -90,13 +58,13 @@ public class Push {
 
   }
 
-  public Push(Long id, String commitHash, String commitMessage, LocalDateTime dateTime, Branch branch, Project project) {
+  public Push(Long id, String commitHash, String commitMessage, LocalDateTime dateTime, Branch branch, Repo repo) {
     this.id = id;
     this.commitHash = commitHash;
     this.commitMessage = commitMessage;
     this.dateTime = dateTime;
     this.branch = branch;
-    this.project = project;
+    this.repo = repo;
   }  
 
   public Push(Long id, String commitHash, String commitMessage, LocalDateTime dateTime, Branch branch, Directory directory) {
@@ -141,8 +109,8 @@ public class Push {
     return branch;
   }
 
-  public Project getProject() {
-    return project;
+  public Repo getRepo() {
+    return repo;
   }
 
   public Directory getDirectory() {
@@ -177,8 +145,8 @@ public class Push {
     this.branch = branch;
   }
 
-  public void setProject(Project project) {
-    this.project = project;
+  public void setRepo(Repo repo) {
+    this.repo = repo;
   }
 
   public void setDirectory(Directory directory) {
@@ -196,7 +164,7 @@ public class Push {
             ", commitHash='" + commitHash + '\'' +
             ", commitMessage='" + commitMessage + '\'' +
             ", branchId=" + (branch != null ? branch.getId() : null) +
-            ", project=" + (project != null ? project.toStringWithoutPush() : null) +
+            ", repo=" + (repo != null ? repo.toStringWithoutPush() : null) +
             ", directory=" + (directory != null ? directory.toStringWithoutPush() : null) +
             ", file=" + (file != null ? file.toStringWithoutPush() : null) +
             '}';

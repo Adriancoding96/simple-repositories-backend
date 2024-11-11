@@ -1,27 +1,27 @@
-package com.adrian.simple_repositories.dto.project;
+package com.adrian.simple_repositories.dto.repo;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
-public class ProjectInformationDTO {
+public class RepoInformationDTO {
 
   private Long id;
 
-  private String projectName;
+  private String repoName;
 
-  private String projectInformation;
+  private String repoInformation;
 
   private Map<String, Integer> fileTypes = new HashMap<>();
  
-  public ProjectInformationDTO() {
+  public RepoInformationDTO() {
 
   }
 
-  public ProjectInformationDTO(Long id, String projectName, String projectInformation, Map<String, Integer> fileTypes) {
+  public RepoInformationDTO(Long id, String repoName, String repoInformation, Map<String, Integer> fileTypes) {
     this.id = id;
-    this.projectName = projectName;
-    this.projectInformation = projectInformation;
+    this.repoName = repoName;
+    this.repoInformation = repoInformation;
     this.fileTypes = fileTypes;
   }
 
@@ -29,12 +29,12 @@ public class ProjectInformationDTO {
     return id;
   }
 
-  public String getProjectName() {
-    return projectName;
+  public String getRepoName() {
+    return repoName;
   }
 
-  public String getProjectInformation() {
-    return projectInformation;
+  public String getRepoInformation() {
+    return repoInformation;
   }
 
   public Map<String, Integer> getFileTypes() {
@@ -45,12 +45,12 @@ public class ProjectInformationDTO {
     this.id = id;
   }
 
-  public void setProjectName(String projectName) {
-    this.projectName = projectName;
+  public void setRepoName(String repoName) {
+    this.repoName = repoName;
   }
 
-  public void setProjectInformation(String projectInformation) {
-    this.projectInformation = projectInformation;
+  public void setRepoInformation(String repoInformation) {
+    this.repoInformation = repoInformation;
   }
 
   public void setFileTypes(Map<String, Integer> fileTypes) {

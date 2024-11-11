@@ -40,14 +40,14 @@ public class FileController {
   }
 
   /*
-   * Retrieves file as DTO by project uuid
+   * Retrieves file as DTO by repo uuid
    *
-   * @param uuid: project uuid
+   * @param uuid: repo uuid
    * @return fileDTO: returns response entity containing DTO with file data 
    */
-  @GetMapping("/project/{uuid}")
-  public ResponseEntity<List<FileDTO>> getAllFilesByProjectUuid(@PathVariable String uuid) {
-    return ResponseEntity.ok(fileService.getAllFilesAsDTOsByProjectUuid(uuid));
+  @GetMapping("/repo/{uuid}")
+  public ResponseEntity<List<FileDTO>> getAllFilesByRepoUuid(@PathVariable String uuid) {
+    return ResponseEntity.ok(fileService.getAllFilesAsDTOsByRepoUuid(uuid));
   }
 
   /*

@@ -12,7 +12,7 @@ import com.adrian.simple_repositories.dto.directory.DirectoryDTO;
 import com.adrian.simple_repositories.exception.DirectoryNotFoundException;
 import com.adrian.simple_repositories.mapper.DirectoryMapper;
 import com.adrian.simple_repositories.model.Directory;
-import com.adrian.simple_repositories.model.Project;
+import com.adrian.simple_repositories.model.Repo;
 import com.adrian.simple_repositories.repository.DirectoryRepository;
 import com.adrian.simple_repositories.service.DirectoryService;
 import com.adrian.simple_repositories.util.FilePathUtil;
@@ -36,9 +36,9 @@ public class DirectoryServiceImpl implements DirectoryService {
 
   @Override
   @Transactional
-  public Directory createDirectoryFromPush(DirectoryFullDTO directoryDTO, Project project) {
+  public Directory createDirectoryFromPush(DirectoryFullDTO directoryDTO, Repo repo) {
     Directory parentDirectory = getDirectoryById(directoryDTO.getParentDirectoryId());
-    Directory directory = directoryAssembler.assemble(directoryDTO, project, parentDirectory);
+    Directory directory = directoryAssembler.assemble(directoryDTO, repo, parentDirectory);
     Directory savedDirectory = directoryRepository.save(directory);
     return savedDirectory;
   }
@@ -61,17 +61,17 @@ public class DirectoryServiceImpl implements DirectoryService {
   }
 
   @Override
-  public List<Directory> getAllDirectoriesByProjectUuid(String projectUuid) {
-    List<Directory> directorys = directoryRepository.findAllDirectoriesByProjectUuid(projectUuid);
+  public List<Directory> getAllDirectoriesByRepoUuid(String repoUuid) {
+    List<Directory> directorys = directoryRepository.findAllDirectoriesByRepoUuid(repoUuid);
     if(directorys.isEmpty()) {
-      throw new DirectoryNotFoundException("Could not find directorys belonging to project with uuid: " + projectUuid);
+      throw new DirectoryNotFoundException("Could not find directorys belonging to repo with uuid: " + repoUuid);
     }
     return directorys;
   }
   
   @Override
-  public List<DirectoryDTO> getAllDirectoriesAsDTOsByProjectUuid(String projectUuid) {
-    return getAllDirectoriesByProjectUuid(projectUuid).stream()
+  public List<DirectoryDTO> getAllDirectoriesAsDTOsByRepoUuid(String repoUuid) {
+    return getAllDirectoriesByRepoUuid(repoUuid).stream()
       .map(directoryMapper::toDTO)
       .collect(Collectors.toList());
   }

@@ -36,7 +36,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
   @Override
   protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
     String path = request.getRequestURI();
-    System.out.println("IMPORTANT: JwtAuthFilter - shouldNotFilter path: " + path);
     return path.startsWith("/h2-console") || path.equals("/favicon.ico");
   }
 
@@ -47,7 +46,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       String token = null;
       String username = null;
       if(authHeader != null && authHeader.startsWith("Bearer ")) {
-        System.out.println("Autherheader recived");
         token = authHeader.substring(7);
         username = JwtHelper.extractUsername(token);
       }
@@ -58,10 +56,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       }
 
       if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-        System.out.println("Test two");
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         if(JwtHelper.validateToken(token, userDetails)) {
-          System.out.println("Token recieved, Username: " + userDetails.getUsername());
           UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, null);
           authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
           SecurityContextHolder.getContext().setAuthentication(authenticationToken);

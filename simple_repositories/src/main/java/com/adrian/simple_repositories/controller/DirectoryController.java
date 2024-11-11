@@ -33,9 +33,9 @@ public class DirectoryController {
     return ResponseEntity.ok(directoryService.getDirectoryAsDTOByUuid(uuid));
   }
 
-  @GetMapping("/project/{uuid}")
-  public ResponseEntity<List<DirectoryDTO>> getAllDirectoriesByProjectUuid(@PathVariable String uuid) {
-    return ResponseEntity.ok(directoryService.getAllDirectoriesAsDTOsByProjectUuid(uuid));
+  @GetMapping("/repo/{uuid}")
+  public ResponseEntity<List<DirectoryDTO>> getAllDirectoriesByRepoUuid(@PathVariable String uuid) {
+    return ResponseEntity.ok(directoryService.getAllDirectoriesAsDTOsByRepoUuid(uuid));
   }
 
   @PutMapping("/{uuid}")
@@ -44,7 +44,7 @@ public class DirectoryController {
   }
 
   @DeleteMapping("/{uuid}")
-  public ResponseEntity<Void> deleteProject(@PathVariable String uuid) {
+  public ResponseEntity<Void> deleteRepo(@PathVariable String uuid) {
     directoryService.deleteDirectoryByUuid(uuid);
     return ResponseEntity.noContent().build();
   }

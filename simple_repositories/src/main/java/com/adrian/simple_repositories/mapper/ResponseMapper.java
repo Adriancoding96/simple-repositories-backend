@@ -2,7 +2,7 @@ package com.adrian.simple_repositories.mapper;
 
 import com.adrian.simple_repositories.model.File;
 import com.adrian.simple_repositories.model.Directory;
-import com.adrian.simple_repositories.model.Project;
+import com.adrian.simple_repositories.model.Repo;
 
 import java.util.UUID;
 
@@ -24,8 +24,8 @@ public class ResponseMapper {
     return new PushResponseDTO(true, "Directory created successfully from push", directory.getUuid());
   }
 
-  public PushResponseDTO toPushResponseFromProject(Project project) {
-    if(project == null) return new PushResponseDTO(false, "Failed to create project from push", null);
-    return new PushResponseDTO(true, "Project created successfully from push", project.getUuid());
+  public PushResponseDTO toPushResponseFromRepo(Repo repo) {
+    if(repo == null) return new PushResponseDTO(false, "Failed to create repo from push", null);
+    return new PushResponseDTO(true, "Repo created successfully from push", repo.getUuid());
   }
 }

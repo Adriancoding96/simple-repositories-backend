@@ -24,10 +24,10 @@ public class User {
   private String password;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<UserProjectActivity> activities = new ArrayList<>();
+  private List<UserRepoBranchActivity> activities = new ArrayList<>();
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Project> projects = new ArrayList<>();
+  private List<Repo> repos = new ArrayList<>();
 
   public User() {
 
@@ -39,7 +39,7 @@ public class User {
     this.password = password;
   }
 
-  public User(String name, String email, String password, List<Project> projects, List<UserProjectActivity> activities) {
+  public User(String name, String email, String password, List<Repo> repos, List<UserRepoBranchActivity> activities) {
     this.name = name;
     this.email = email;
     this.password = password;
@@ -62,7 +62,7 @@ public class User {
     return password;
   }
 
-  public List<UserProjectActivity> getActivities() {
+  public List<UserRepoBranchActivity> getActivities() {
     return activities;
   }
 
@@ -82,7 +82,7 @@ public class User {
     this.password = password;
   }
   
-  public void setActivities(List<UserProjectActivity> activities) {
+  public void setActivities(List<UserRepoBranchActivity> activities) {
     this.activities = activities;
   }
 

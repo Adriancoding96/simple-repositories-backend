@@ -13,8 +13,8 @@ public interface FileService {
   File getFileById(Long fileId);
   File getFileByUuid(String uuid);
   FileDTO getFileAsDTOByUuid(String uuid);
-  List<File> getAllFilesByProjectUuid(String projectUuid);
-  List<FileDTO> getAllFilesAsDTOsByProjectUuid(String projectUuid);
+  List<File> getAllFilesByRepoUuid(String repoUuid);
+  List<FileDTO> getAllFilesAsDTOsByRepoUuid(String repoUuid);
   FileDTO updateFile(FileUpdateDTO updateDTO, String uuid);
   void deleteFileByUuid(String uuid);
 }

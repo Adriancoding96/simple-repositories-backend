@@ -6,30 +6,30 @@ public class BranchRequestDTO {
   
   private String branchName;
   
-  private UUID projectId;
+  private UUID repoId;
 
   public BranchRequestDTO() {
 
   }
 
-  public BranchRequestDTO(String branchName, UUID projectId) {
+  public BranchRequestDTO(String branchName, UUID repoId) {
     this.branchName = branchName;
-    this.projectId = projectId;
+    this.repoId = repoId;
   }
 
   public String getBranchName() {
     return branchName;
   }
 
-  public UUID getProjectId() {
-    return projectId;
+  public UUID getRepoId() {
+    return repoId;
   }
 
   public void setBranchName(String branchName) {
     this.branchName = branchName;
   }
 
-  public void setProjectId(UUID projectId) {
-    this.projectId = projectId;
+  public void setRepoId(UUID repoId) {
+    this.repoId = repoId;
   }
 }

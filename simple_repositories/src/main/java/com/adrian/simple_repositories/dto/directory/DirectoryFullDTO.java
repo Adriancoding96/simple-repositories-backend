@@ -10,19 +10,19 @@ public class DirectoryFullDTO {
   private String path;
   private List<FileDTO> files;
   private List<DirectoryFullDTO> directories;
-  private Long projectId;
+  private Long repoId;
   private Long parentDirectoryId;
 
   public DirectoryFullDTO() {
 
   } 
 
-  public DirectoryFullDTO(String directoryName, String path, List<FileDTO> files, List<DirectoryFullDTO> directories, Long projectId, Long parentDirectoryId) {
+  public DirectoryFullDTO(String directoryName, String path, List<FileDTO> files, List<DirectoryFullDTO> directories, Long repoId, Long parentDirectoryId) {
     this.directoryName = directoryName;
     this.path = path;
     this.files = files;
     this.directories = directories;
-    this.projectId = projectId;
+    this.repoId = repoId;
     this.parentDirectoryId= parentDirectoryId;
   }
 
@@ -42,8 +42,8 @@ public class DirectoryFullDTO {
     return directories;
   }
 
-  public Long getProjectId() {
-    return projectId;
+  public Long getRepoId() {
+    return repoId;
   }
 
   public Long getParentDirectoryId() {
@@ -66,8 +66,8 @@ public class DirectoryFullDTO {
     this.directories = directories;
   }
 
-  public void setProjectId(Long projectId) {
-    this.projectId = projectId;
+  public void setRepoId(Long repoId) {
+    this.repoId = repoId;
   }
 
   public void setParentDirectoryId(Long parentDirectoryId) {

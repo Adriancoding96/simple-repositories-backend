@@ -96,32 +96,32 @@ public class FileServiceImpl implements FileService {
   }
 
   /*
-   * Retrieves all files by project UUID
+   * Retrieves all files by repo UUID
    *
-   * @param projectUuid: project UUID
+   * @param repoUuid: repo UUID
    * @return fileDTOs: returns list of DTOs containing file data
-   * @throws FileNotFoundException: throws exception if no files was found by project uuid
+   * @throws FileNotFoundException: throws exception if no files was found by repo uuid
    */
   @Override
-  public List<File> getAllFilesByProjectUuid(String projectUuid) {
-    List<File> files = fileRepository.findAllByProjectUuid(projectUuid);
+  public List<File> getAllFilesByRepoUuid(String repoUuid) {
+    List<File> files = fileRepository.findAllByRepoUuid(repoUuid);
     if(files.isEmpty()) {
-      throw new FileNotFoundException("Could not find files related to project with uuid: " + projectUuid);
+      throw new FileNotFoundException("Could not find files related to repo with uuid: " + repoUuid);
     }
     return files;
   }
 
 
   /*
-   * Retrieves all files as DTOs by project UUID
+   * Retrieves all files as DTOs by repo UUID
    *
-   * @param projectUuid: project UUID
+   * @param repoUuid: repo UUID
    * @return fileDTOs: returns list of DTOs containing file data
-   * @throws FileNotFoundException: throws exception if no files was found by project UUID
+   * @throws FileNotFoundException: throws exception if no files was found by repo UUID
    */
   @Override
-  public List<FileDTO> getAllFilesAsDTOsByProjectUuid(String projectUuid) {
-    return getAllFilesByProjectUuid(projectUuid).stream()
+  public List<FileDTO> getAllFilesAsDTOsByRepoUuid(String repoUuid) {
+    return getAllFilesByRepoUuid(repoUuid).stream()
       .map(fileMapper::toDTO)
       .collect(Collectors.toList());
   }

@@ -8,7 +8,7 @@ import com.adrian.simple_repositories.model.File;
 
 /*
  * FileAssembler serves as the only stage in the assembly chain for creating file entitys,
- * and the final stage for directories and projects
+ * and the final stage for directories and repos 
  */
 @Component
 public class FileAssembler {

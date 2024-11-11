@@ -1,9 +1,9 @@
 package com.adrian.simple_repositories.dto.push;
 
 import com.adrian.simple_repositories.dto.branch.BranchDTO;
-import com.adrian.simple_repositories.dto.project.ProjectFullDTO;
 import com.adrian.simple_repositories.dto.directory.DirectoryFullDTO;
 import com.adrian.simple_repositories.dto.file.FileDTO;
+import com.adrian.simple_repositories.dto.repo.RepoFullDTO;
 
 public class PushDTO {
 
@@ -12,7 +12,7 @@ public class PushDTO {
   private String commitMessage;
   private String ownerEmail;
   private BranchDTO branchDTO;
-  private ProjectFullDTO projectFullDTO;
+  private RepoFullDTO repoFullDTO;
   private DirectoryFullDTO directoryFullDTO;
   private FileDTO fileDTO;
   
@@ -20,13 +20,13 @@ public class PushDTO {
 
   }
 
-  public PushDTO(Long id, String commitHash, String commitMessage, String ownerEmail, BranchDTO branchDTO,  ProjectFullDTO projectFullDTO) {
+  public PushDTO(Long id, String commitHash, String commitMessage, String ownerEmail, BranchDTO branchDTO,  RepoFullDTO repoFullDTO) {
     this.id = id;
     this.commitHash = commitHash;
     this.commitMessage = commitMessage;
     this.ownerEmail = ownerEmail;
     this.branchDTO = branchDTO;
-    this.projectFullDTO = projectFullDTO;
+    this.repoFullDTO = repoFullDTO;
   }
   
   public PushDTO(Long id, String commitHash, String commitMessage, String ownerEmail, BranchDTO branchDTO, DirectoryFullDTO directoryFullDTO) {
@@ -67,8 +67,8 @@ public class PushDTO {
     return branchDTO;
   }
 
-  public ProjectFullDTO getProjectFullDTO() {
-    return projectFullDTO;
+  public RepoFullDTO getRepoFullDTO() {
+    return repoFullDTO;
   }
 
   public DirectoryFullDTO getDirectoryFullDTO() {
@@ -99,8 +99,8 @@ public class PushDTO {
     this.branchDTO = branchDTO;
   }
 
-  public void setProjectDTO(ProjectFullDTO projectFullDTO) {
-    this.projectFullDTO = projectFullDTO;
+  public void setRepoDTO(RepoFullDTO repoFullDTO) {
+    this.repoFullDTO = repoFullDTO;
   }
 
   public void setDirectoryDTO(DirectoryFullDTO directoryFullDTO) {

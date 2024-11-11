@@ -8,17 +8,17 @@ public class BranchDTO {
   private Long id;
   private String branchName;
   private LocalDateTime latestPushToBranch;
-  private String projectUuid;
+  private String repoUuid;
 
   public BranchDTO() {
 
   }
 
-  public BranchDTO(Long id, String branchName, LocalDateTime latestPushToBranch, String projectUuid) {
+  public BranchDTO(Long id, String branchName, LocalDateTime latestPushToBranch, String repoUuid) {
     this.id = id;
     this.branchName = branchName;
     this.latestPushToBranch = latestPushToBranch;
-    this.projectUuid = projectUuid;
+    this.repoUuid = repoUuid;
   }
 
   public Long getId() {
@@ -33,8 +33,8 @@ public class BranchDTO {
     return latestPushToBranch;
   }
 
-  public String getProjectUuid() {
-    return projectUuid;
+  public String getRepoUuid() {
+    return repoUuid;
   }
 
   public void setId(Long id) {
@@ -49,7 +49,7 @@ public class BranchDTO {
     this.latestPushToBranch = latestPushToBranch;
   }
 
-  public void setProjectUuid(String projectUuid) {
-    this.projectUuid = projectUuid;
+  public void setRepoUuid(String repoUuid) {
+    this.repoUuid = repoUuid;
   }
 }

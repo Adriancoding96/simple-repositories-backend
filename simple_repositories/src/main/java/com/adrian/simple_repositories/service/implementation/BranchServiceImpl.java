@@ -7,7 +7,7 @@ import com.adrian.simple_repositories.dto.branch.BranchDTO;
 import com.adrian.simple_repositories.exception.BranchNotFoundException;
 import com.adrian.simple_repositories.mapper.BranchMapper;
 import com.adrian.simple_repositories.model.Branch;
-import com.adrian.simple_repositories.model.Project;
+import com.adrian.simple_repositories.model.Repo;
 import com.adrian.simple_repositories.repository.BranchRepository;
 import com.adrian.simple_repositories.service.BranchService;
 
@@ -15,7 +15,7 @@ import com.adrian.simple_repositories.service.BranchService;
 public class BranchServiceImpl implements BranchService {
 
 
-  //TODO Figure out if i have to inject project service in to branch service
+  //TODO Figure out if i have to inject repo service in to branch service
   private final BranchRepository branchRepository;
   private final BranchMapper branchMapper;
 
@@ -25,9 +25,9 @@ public class BranchServiceImpl implements BranchService {
     this.branchMapper = branchMapper;
   } 
 
-  public Branch createBranch(BranchDTO branchDTO, Project project) {
+  public Branch createBranch(BranchDTO branchDTO, Repo repo) {
     Branch branch = branchMapper.toEntity(branchDTO);
-    branch.setProject(project);
+    branch.setRepo(repo);
     return branchRepository.save(branch);
   }
 

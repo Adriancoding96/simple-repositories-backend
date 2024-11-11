@@ -15,8 +15,8 @@ public interface FileRepository extends JpaRepository<File, Long> {
 
   Optional<File> findByUuid(String uuid);
 
-  @Query("SELECT f FROM File f WHERE f.directory.project.uuid = :uuid")
-  List<File> findAllByProjectUuid(@Param("uuid") String uuid);
+  @Query("SELECT f FROM File f WHERE f.directory.repo.uuid = :uuid")
+  List<File> findAllByRepoUuid(@Param("uuid") String uuid);
 
   void deleteByUuid(String uuid);
 

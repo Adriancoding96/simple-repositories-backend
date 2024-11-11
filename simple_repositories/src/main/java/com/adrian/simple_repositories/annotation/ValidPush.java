@@ -16,7 +16,7 @@ import jakarta.validation.Payload;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidPush {
 
-  String message() default "A Push can only contain one of Project, Folder or File";
+  String message() default "A Push can only contain one of Repo, Folder or File";
   Class<?>[] groups() default {};
   Class<? extends Payload>[] payload() default {};
 }

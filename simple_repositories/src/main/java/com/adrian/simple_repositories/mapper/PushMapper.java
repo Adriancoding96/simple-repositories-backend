@@ -1,7 +1,7 @@
 package com.adrian.simple_repositories.mapper;
 
 import com.adrian.simple_repositories.dto.push.PushDTO;
-import com.adrian.simple_repositories.dto.project.ProjectFullDTO;
+import com.adrian.simple_repositories.dto.repo.RepoFullDTO;
 import com.adrian.simple_repositories.dto.directory.DirectoryFullDTO;
 import com.adrian.simple_repositories.dto.file.FileDTO;
 import com.adrian.simple_repositories.model.Push;
@@ -13,21 +13,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class PushMapper {
 
-  private final ProjectMapper projectMapper;
+  private final RepoMapper repoMapper;
   private final DirectoryMapper directoryMapper;
   private final FileMapper fileMapper;
 
   @Autowired
-  public PushMapper(ProjectMapper projectMapper, DirectoryMapper directoryMapper, FileMapper fileMapper) {
-    this.projectMapper = projectMapper;
+  public PushMapper(RepoMapper repoMapper, DirectoryMapper directoryMapper, FileMapper fileMapper) {
+    this.repoMapper = repoMapper;
     this.directoryMapper = directoryMapper;
     this.fileMapper = fileMapper;
   }
 
   public PushDTO toDTO(Push push) {
     if(push == null) throw new InvalidPushException("Invalid push: Push is null");
-    if(push.getProject() == null && push.getDirectory() == null && push.getFile() == null) {
-      throw new InvalidPushException("Invalid push: Does not contain project/directory/file");
+    if(push.getRepo() == null && push.getDirectory() == null && push.getFile() == null) {
+      throw new InvalidPushException("Invalid push: Does not contain repo/directory/file");
     }
     
     PushDTO dto = new PushDTO();
@@ -35,15 +35,15 @@ public class PushMapper {
     dto.setCommitHash(push.getCommitHash());
     dto.setCommitMessage(push.getCommitMessage());
     
-    if(push.getProject() != null) dto.setProjectDTO(setProjectBody(push));
+    if(push.getRepo() != null) dto.setRepoDTO(setRepoBody(push));
     if(push.getDirectory() != null) dto.setDirectoryDTO(setDirectoryBody(push));
     if(push.getFile() != null) dto.setFileDTO(setFileBody(push));
 
     return dto;
   }
 
-  private ProjectFullDTO setProjectBody(Push push) {
-    return projectMapper.toFullDTO(push.getProject());
+  private RepoFullDTO setRepoBody(Push push) {
+    return repoMapper.toFullDTO(push.getRepo());
   }
 
   private DirectoryFullDTO setDirectoryBody(Push push) {

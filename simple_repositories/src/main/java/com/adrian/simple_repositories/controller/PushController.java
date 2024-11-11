@@ -30,7 +30,7 @@ public class PushController {
   /*
    * Creates a new Push
    *
-   * @Param pushDTO: DTO containing push data (project/directory/file)
+   * @Param pushDTO: DTO containing push data (repo/directory/file)
    * @return pushResponseDTO: returns DTO containing push response data
    */
   @PostMapping

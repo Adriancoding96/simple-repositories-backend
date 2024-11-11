@@ -74,7 +74,6 @@ public class PushServiceImpl implements PushService {
   @Override
   public PushDTO getPushDTOById(Long pushId) {
     Push push = getPushById(pushId);
-    System.out.println(push.toString());
     return pushMapper.toDTO(push);
   }
 

@@ -14,7 +14,7 @@ public class BranchMapper {
     BranchDTO dto = new BranchDTO();
     dto.setId( branch.getId());
     dto.setBranchName(branch.getBranchName()); 
-    dto.setProjectUuid(branch.getProject().getUuid());
+    dto.setRepoUuid(branch.getRepo().getUuid());
     if(branch.getLatestPushToBranch() != null) {
       dto.setLatestPushToBranch(branch.getLatestPushToBranch());
     }

@@ -12,8 +12,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "user_project_activities")
-public class UserProjectActivity {
+@Table(name = "user_repo_branch_activities")
+public class UserRepoBranchActivity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,22 +26,22 @@ public class UserProjectActivity {
   private User user;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "project_id")
-  private Project project;
+  @JoinColumn(name = "repo_id")
+  private Repo repo;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "branch_id")
   private Branch branch;
 
-  public UserProjectActivity() {
+  public UserRepoBranchActivity() {
 
   }
 
-  public UserProjectActivity(Long id, LocalDateTime dateTime, User user, Project project, Branch branch) {
+  public UserRepoBranchActivity(Long id, LocalDateTime dateTime, User user, Repo repo, Branch branch) {
     this.id = id;
     this.dateTime = dateTime;
     this.user = user;
-    this.project = project;
+    this.repo = repo;
     this.branch = branch;
   }
 
@@ -57,8 +57,8 @@ public class UserProjectActivity {
     return user;
   }
 
-  public Project getProject() {
-    return project;
+  public Repo getRepo() {
+    return repo;
   }
   
   public Branch getBranch() {
@@ -77,8 +77,8 @@ public class UserProjectActivity {
     this.user = user;
   }
 
-  public void setProject(Project project) {
-    this.project = project;
+  public void setRepo(Repo repo) {
+    this.repo = repo;
   }
 
   public void setBranch(Branch branch) {

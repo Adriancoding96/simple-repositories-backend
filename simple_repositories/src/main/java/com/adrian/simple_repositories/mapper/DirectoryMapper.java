@@ -37,7 +37,7 @@ public class DirectoryMapper {
     DirectoryFullDTO dto = new DirectoryFullDTO();
     dto.setDirectoryName(directory.getDirectoryName());
     dto.setPath(directory.getPath());
-    dto.setProjectId(directory.getProject() != null ? directory.getProject().getId() : null);
+    dto.setRepoId(directory.getRepo() != null ? directory.getRepo().getId() : null);
     dto.setParentDirectoryId(directory.getParentDirectory() != null ? directory.getParentDirectory().getId() : null);
     
     if(directory.getFiles() != null) {

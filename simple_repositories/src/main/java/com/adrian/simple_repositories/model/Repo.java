@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 
 
 @Entity
-@Table(name = "projects")
-public class Project {
+@Table(name = "repos")
+public class Repo {
   
   
   @Id
@@ -31,25 +31,25 @@ public class Project {
   @Column(unique = true, nullable = false, updatable = false)
   private String uuid;
 
-  private String projectName;
+  private String repoName;
 
-  private String projectInformation;
+  private String repoInformation;
 
-  @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "repo", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Directory> directories = new ArrayList<>();
 
-  @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY )
+  @OneToMany(mappedBy = "repo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY )
   private List<Push> pushes = new ArrayList<>();
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private User user;
 
-  @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "repo", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Branch> branches = new ArrayList<>();
 
-  @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<UserProjectActivity> activities = new ArrayList<>();
+  @OneToMany(mappedBy = "repo", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<UserRepoBranchActivity> activities = new ArrayList<>();
 
   @PrePersist
   public void generateUuid() {
@@ -57,14 +57,14 @@ public class Project {
     uuid = UUID.randomUUID().toString();
   }
 
-  public Project() {
+  public Repo() {
 
   }
 
-  public Project(Long id, String projectName, String projectInformation, List<File> files, List<Directory> directories, User user) {
+  public Repo(Long id, String repoName, String repoInformation, List<File> files, List<Directory> directories, User user) {
     this.id = id;
-    this.projectName = projectName;
-    this.projectInformation = projectInformation;
+    this.repoName = repoName;
+    this.repoInformation = repoInformation;
     this.directories = directories;
     this.user = user;
   }
@@ -77,12 +77,12 @@ public class Project {
     return uuid;
   }
 
-  public String getProjectName() {
-    return this.projectName;
+  public String getRepoName() {
+    return this.repoName;
   }
 
-  public String getProjectInformation() {
-    return projectInformation;
+  public String getRepoInformation() {
+    return repoInformation;
   }
 
   public List<Directory> getDirectories() {
@@ -101,12 +101,12 @@ public class Project {
     this.uuid = uuid;
   }
 
-  public void setProjectName(String projectName) {
-    this.projectName = projectName;
+  public void setRepoName(String repoName) {
+    this.repoName = repoName;
   }
 
-  public void setProjectInformation(String projectInformation) {
-    this.projectInformation = projectInformation;
+  public void setRepoInformation(String repoInformation) {
+    this.repoInformation = repoInformation;
   }
 
   public void setDirectories(List<Directory> directories) {
@@ -118,12 +118,12 @@ public class Project {
   }
 
   public String toStringWithoutPush() {
-    return "Project{" +
+    return "Repo {" +
             "id=" + id +
-            ", projectName='" + projectName + '\'' +
-            ", projectInformation='" + projectInformation + '\'' +
+            ", repoName='" + repoName + '\'' +
+            ", repoInformation='" + repoInformation + '\'' +
             ", directories=" + directories.stream()
-                                    .map(Directory::toStringWithoutProject)
+                                    .map(Directory::toStringWithoutRepo)
                                     .collect(Collectors.toList()) +
             '}';
   }
