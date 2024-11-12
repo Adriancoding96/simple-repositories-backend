@@ -1,6 +1,8 @@
 package com.adrian.simple_repositories.dto.file;
 
-public class FileDTO {
+import com.adrian.simple_repositories.dto.Content;
+
+public class FileDTO implements Content {
 
   private String fileName;
   private String extension;

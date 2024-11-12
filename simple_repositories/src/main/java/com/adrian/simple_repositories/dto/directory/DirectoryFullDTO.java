@@ -2,9 +2,10 @@ package com.adrian.simple_repositories.dto.directory;
 
 import java.util.List;
 
+import com.adrian.simple_repositories.dto.Content;
 import com.adrian.simple_repositories.dto.file.FileDTO;
 
-public class DirectoryFullDTO {
+public class DirectoryFullDTO implements Content{
 
   private String directoryName;
   private String path;
