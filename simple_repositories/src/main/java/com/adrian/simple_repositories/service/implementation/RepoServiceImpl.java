@@ -2,6 +2,7 @@ package com.adrian.simple_repositories.service.implementation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,11 @@ import com.adrian.simple_repositories.mapper.RepoMapper;
 import com.adrian.simple_repositories.model.File;
 import com.adrian.simple_repositories.model.Directory;
 import com.adrian.simple_repositories.model.Repo;
+import com.adrian.simple_repositories.model.RepoVersion;
 import com.adrian.simple_repositories.model.User;
 import com.adrian.simple_repositories.repository.RepoRepository;
 import com.adrian.simple_repositories.service.RepoService;
+import com.adrian.simple_repositories.service.RepoVersionService;
 import com.adrian.simple_repositories.service.UserService;
 
 import jakarta.transaction.Transactional;
@@ -42,13 +45,15 @@ public class RepoServiceImpl implements RepoService {
   private final RepoAssembler repoAssembler;
   private final RepoMapper repoMapper;
   private final UserService userService;
+  private final RepoVersionService repoVersionService;
 
   @Autowired
-  public RepoServiceImpl(RepoRepository repoRepository, RepoAssembler repoAssembler, RepoMapper repoMapper, UserService userService) {
+  public RepoServiceImpl(RepoRepository repoRepository, RepoAssembler repoAssembler, RepoMapper repoMapper, UserService userService, RepoVersionService repoVersionService) {
     this.repoRepository = repoRepository;
     this.repoAssembler = repoAssembler;
     this.repoMapper = repoMapper;
     this.userService = userService;
+    this.repoVersionService = repoVersionService;
   }
 
   /*
@@ -107,6 +112,25 @@ public class RepoServiceImpl implements RepoService {
   public Repo getRepoByUuid(String uuid) {
     return repoRepository.findByUuid(uuid)
       .orElseThrow(() -> new RepoNotFoundException("Could not find repo with uuid: " + uuid));
+  }
+
+  /*
+   * Methods tries to fetch repo from database based on uuid, if that fails it tries to fetch RepoVersion
+   * to check if the uuid is for a old version of the repo, if RepoVersion is found method fetches the new
+   * version of the repo with repo PK 
+   *
+   * @param uuid: contains uuid for fetching repo
+   * @return repoDTO: returns repo as DTO
+   */
+  @Override
+  public RepoFullDTO getRepoAsDTOByUuidForPullRequest(String uuid) {
+    Optional<Repo> optionalRepo = repoRepository.findByUuid(uuid);
+    if(optionalRepo.isPresent()) return repoMapper.toFullDTO(optionalRepo.get());
+    
+    RepoVersion repoVersion = repoVersionService.getRepoVersionByOldUuid(uuid);
+    Repo repo = repoRepository.findById(repoVersion.getId())
+      .orElseThrow(() -> new RepoNotFoundException("Could not find repo by id: " + repoVersion.getId()));
+    return repoMapper.toFullDTO(repo);
   }
 
   /*

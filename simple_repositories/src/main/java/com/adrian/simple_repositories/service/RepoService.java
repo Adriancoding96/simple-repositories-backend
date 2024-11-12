@@ -22,6 +22,8 @@ public interface RepoService {
  
   Repo getRepoByUuid(String uuid);
 
+  RepoFullDTO getRepoAsDTOByUuidForPullRequest(String uuid);
+
   RepoFullDTO getRepoAsDTOByUuid(String uuid);
 
   List<RepoInformationDTO> getAllReposAsInfoDTOs();
