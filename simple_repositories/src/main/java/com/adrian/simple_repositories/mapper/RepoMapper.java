@@ -9,6 +9,7 @@ import com.adrian.simple_repositories.dto.UniqueIdentifierDTO;
 import com.adrian.simple_repositories.dto.repo.RepoDTO;
 import com.adrian.simple_repositories.dto.repo.RepoFullDTO;
 import com.adrian.simple_repositories.dto.repo.RepoInformationDTO;
+import com.adrian.simple_repositories.dto.repo.RepoSetupDTO;
 import com.adrian.simple_repositories.model.Repo;
 
 @Component
@@ -49,6 +50,14 @@ public class RepoMapper {
     repo.setRepoName(dto.getRepoName());
     repo.setRepoInformation(dto.getRepoInformation());
     
+    return repo;
+  }
+
+  public Repo toEntityFromSetupDTO(RepoSetupDTO dto) {
+    Repo repo = new Repo();
+
+    repo.setRepoName(dto.getRepoName());
+    repo.setRepoInformation(dto.getRepoInformation());
     return repo;
   }
 

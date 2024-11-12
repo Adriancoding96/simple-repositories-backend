@@ -39,6 +39,7 @@ import com.adrian.simple_repositories.service.FileService;
 import com.adrian.simple_repositories.service.DirectoryService;
 import com.adrian.simple_repositories.service.RepoService;
 import com.adrian.simple_repositories.service.UserRepoBranchActivityService;
+import com.adrian.simple_repositories.service.UserService;
 import com.adrian.simple_repositories.service.implementation.UserDetailServiceImpl;
 
 
@@ -49,7 +50,7 @@ import com.adrian.simple_repositories.service.implementation.UserDetailServiceIm
  * Injects PushService to handle push requests containing repo data, DirectoryService to handle
  * push requests containing directory data, FileService to handle push requests containing file data,
  * branch service to handle branch validation, UserRepoBranchActivityService to handle user activity by
- * repo and branch, UserDetailServiceImpl to handle user validation, ResponseMapper to build responses
+ * repo and branch, USerService to handle user validation, ResponseMapper to build responses
  * for push data.
  */
 @Component
@@ -59,18 +60,18 @@ public class PushFacade {
   private final DirectoryService directoryService;
   private final FileService fileService;
   private final BranchService branchService;
-  private final UserDetailServiceImpl userDetailServiceImpl;
+  private final UserService userService;
   private final UserRepoBranchActivityService userRepoBranchActivityService;
   private final ResponseMapper responseMapper;
 
   @Autowired
   public PushFacade(RepoService repoService, DirectoryService directoryService, FileService fileService,
-          BranchService branchService, UserDetailServiceImpl userDetailServiceImpl, UserRepoBranchActivityService userRepoBranchActivityService, ResponseMapper responseMapper) {
+          BranchService branchService, UserService userService, UserRepoBranchActivityService userRepoBranchActivityService, ResponseMapper responseMapper) {
     this.repoService = repoService;
     this.directoryService = directoryService;
     this.fileService = fileService;
     this.branchService = branchService;
-    this.userDetailServiceImpl = userDetailServiceImpl;
+    this.userService = userService;
     this.userRepoBranchActivityService = userRepoBranchActivityService;
     this.responseMapper = responseMapper;
   }
@@ -100,7 +101,7 @@ public class PushFacade {
    * @return pushResponseDTO containing push response data
    */
   private PushResponseDTO handleRepoPush(PushDTO pushDTO) {
-    User user = userDetailServiceImpl.getUserByEmail(pushDTO.getOwnerEmail());
+    User user = userService.getUserByEmail(pushDTO.getOwnerEmail());
     Repo repo = repoService.createRepoFromPush(pushDTO.getRepoFullDTO(), user);
     Branch mainBranch = branchService.createBranch(new BranchDTO(null, "main", LocalDateTime.now(), null), repo);
     newUserRepoBranchActivity(pushDTO, repo, mainBranch);
@@ -154,7 +155,7 @@ public class PushFacade {
    * @param branch: branch used in push operation
    */
   private void newUserRepoBranchActivity(PushDTO pushDTO, Repo repo, Branch branch) {
-    User user = userDetailServiceImpl.getUserByEmail(pushDTO.getOwnerEmail());
+    User user = userService.getUserByEmail(pushDTO.getOwnerEmail());
     
     UserRepoBranchActivity activity = new UserRepoBranchActivity();
     activity.setUser(user);

@@ -11,6 +11,7 @@ import com.adrian.simple_repositories.model.User;
 import com.adrian.simple_repositories.repository.UserRepository;
 import com.adrian.simple_repositories.service.UserService;
 import com.adrian.simple_repositories.exception.ExistingUserException;
+import com.adrian.simple_repositories.exception.UserNotFoundException;
 
 import jakarta.transaction.Transactional;
 
@@ -25,6 +26,13 @@ public class UserServiceImpl implements UserService {
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
   }
+
+  @Override
+  public User getUserByEmail(String email) {
+    User user = userRepository.findByEmail(email)
+      .orElseThrow(() -> new UserNotFoundException("User does not exist with email: " + email));
+    return user;
+   }
 
   @Override
   @Transactional

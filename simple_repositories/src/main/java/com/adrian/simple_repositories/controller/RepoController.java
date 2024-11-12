@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import com.adrian.simple_repositories.dto.repo.RepoDTO;
 import com.adrian.simple_repositories.dto.repo.RepoFullDTO;
 import com.adrian.simple_repositories.dto.repo.RepoIdentifierRequestDTO;
 import com.adrian.simple_repositories.dto.repo.RepoInformationDTO;
+import com.adrian.simple_repositories.dto.repo.RepoSetupDTO;
 import com.adrian.simple_repositories.dto.repo.RepoUpdateDTO;
 import com.adrian.simple_repositories.service.RepoService;
 
@@ -45,6 +47,12 @@ public class RepoController {
   public ResponseEntity<UniqueIdentifierDTO> getRepoIdentidier(@RequestBody RepoIdentifierRequestDTO request) {
     return ResponseEntity.ok(repoService.getRepoIdentiferByRepoNameAndUserEmail(request));
   }
+
+  @PostMapping("/new")
+  public ResponseEntity<RepoDTO> newRepo(@RequestBody RepoSetupDTO setupDTO) {
+    return ResponseEntity.ok(repoService.createEmptyRepo(setupDTO));  
+  }
+
 
   @PutMapping("/{uuid}")
   public ResponseEntity<RepoDTO> updateRepo(@RequestBody RepoUpdateDTO updateDTO, @PathVariable String uuid) {

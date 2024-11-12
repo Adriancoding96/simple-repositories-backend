@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import com.adrian.simple_repositories.assembler.RepoAssembler;
@@ -13,6 +14,7 @@ import com.adrian.simple_repositories.dto.repo.RepoDTO;
 import com.adrian.simple_repositories.dto.repo.RepoFullDTO;
 import com.adrian.simple_repositories.dto.repo.RepoIdentifierRequestDTO;
 import com.adrian.simple_repositories.dto.repo.RepoInformationDTO;
+import com.adrian.simple_repositories.dto.repo.RepoSetupDTO;
 import com.adrian.simple_repositories.dto.repo.RepoUpdateDTO;
 import com.adrian.simple_repositories.exception.RepoNotFoundException;
 import com.adrian.simple_repositories.mapper.RepoMapper;
@@ -22,6 +24,7 @@ import com.adrian.simple_repositories.model.Repo;
 import com.adrian.simple_repositories.model.User;
 import com.adrian.simple_repositories.repository.RepoRepository;
 import com.adrian.simple_repositories.service.RepoService;
+import com.adrian.simple_repositories.service.UserService;
 
 import jakarta.transaction.Transactional;
 
@@ -38,12 +41,29 @@ public class RepoServiceImpl implements RepoService {
   private final RepoRepository repoRepository;
   private final RepoAssembler repoAssembler;
   private final RepoMapper repoMapper;
+  private final UserService userService;
 
   @Autowired
-  public RepoServiceImpl(RepoRepository repoRepository, RepoAssembler repoAssembler, RepoMapper repoMapper) {
+  public RepoServiceImpl(RepoRepository repoRepository, RepoAssembler repoAssembler, RepoMapper repoMapper, UserService userService) {
     this.repoRepository = repoRepository;
     this.repoAssembler = repoAssembler;
     this.repoMapper = repoMapper;
+    this.userService = userService;
+  }
+
+  /*
+   * Creates a new repo from data in RepoSetupDTO
+   *
+   * @param setupDTO: contains repo data
+   * @return repoDTO: contains information of created repo
+   */
+  @Override
+  public RepoDTO createEmptyRepo(RepoSetupDTO setupDTO) {
+    Repo repo = repoMapper.toEntityFromSetupDTO(setupDTO);
+    User user = userService.getUserByEmail(setupDTO.getOwnerEmail());
+    repo.setUser(user);
+    Repo savedRepo = repoRepository.save(repo);
+    return repoMapper.toDTO(savedRepo);
   }
   
   /*

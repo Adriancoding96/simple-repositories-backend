@@ -20,12 +20,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
     this.userRepository = userRepository;
   }
 
-  public User getUserByEmail(String email) {
-    User user = userRepository.findByEmail(email)
-      .orElseThrow(() -> new UserNotFoundException("User does not exist with email: " + email));
-    return user;
-  }
-
   public UserDetails loadUserByUsername(String email) {
     User user = getUserByEmail(email); 
     return org.springframework.security.core.userdetails.User.builder()
@@ -35,9 +29,13 @@ public class UserDetailServiceImpl implements UserDetailsService {
   }
 
   public UserDetailDTO getUserAsDTOByEmail(String email) {
-    User user = userRepository.findByEmail(email)
-      .orElseThrow(() -> new UserNotFoundException("Could not find user with email: " + email));
+    User user = getUserByEmail(email); 
     return new UserDetailDTO(user.getEmail());
+  }
+
+  private User getUserByEmail(String email) {
+    return userRepository.findByEmail(email)
+      .orElseThrow(() -> new UserNotFoundException("Could not find user with email: " + email));
   }
 
 } 
