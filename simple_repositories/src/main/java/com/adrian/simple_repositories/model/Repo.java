@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
 import java.util.ArrayList;
@@ -51,7 +52,13 @@ public class Repo {
   @OneToMany(mappedBy = "repo", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<UserRepoBranchActivity> activities = new ArrayList<>();
 
+
+  /*
+   * Regenerates uuid everytime repo gets updated. this is to be able to check if your
+   * version on the local machine is the same as in the database
+   */
   @PrePersist
+  @PreUpdate
   public void generateUuid() {
     if(uuid != null) return;
     uuid = UUID.randomUUID().toString();

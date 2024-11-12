@@ -26,6 +26,7 @@ public class RepoMapper {
     if(repo == null) return null; //TODO implement exception
 
     RepoFullDTO dto = new RepoFullDTO();
+    dto.setUuid(repo.getUuid());
     dto.setRepoName(repo.getRepoName());
     dto.setRepoInformation(repo.getRepoInformation());
     dto.setDirectories(repo.getDirectories().stream()

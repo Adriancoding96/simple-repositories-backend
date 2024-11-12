@@ -8,11 +8,12 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
+import com.adrian.simple_repositories.dto.pull.PullResponseDTO;
 import com.adrian.simple_repositories.dto.push.PushResponseDTO;
+import com.adrian.simple_repositories.dto.repo.RepoFullDTO;
 
 @Component
 public class ResponseMapper {
-
 
   public PushResponseDTO toPushResponseFromFile(File file) {
     if(file == null) return new PushResponseDTO(false, "Failed to create file from push", null);
@@ -26,6 +27,11 @@ public class ResponseMapper {
 
   public PushResponseDTO toPushResponseFromRepo(Repo repo) {
     if(repo == null) return new PushResponseDTO(false, "Failed to create repo from push", null);
-    return new PushResponseDTO(true, "Repo created successfully from push", repo.getUuid());
+    return new PushResponseDTO(true, "Repository created successfully from push", repo.getUuid());
+  }
+
+  public PullResponseDTO toPullResponseFromRepo(RepoFullDTO dto) {
+    if(dto == null) return new PullResponseDTO(false, "Failed to pull repository", null, null);
+    return new PullResponseDTO(true, "Repository pulled successfully", dto.getUuid(), dto);
   }
 }
