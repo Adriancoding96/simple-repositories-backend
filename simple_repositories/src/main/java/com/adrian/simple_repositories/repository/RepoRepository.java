@@ -27,6 +27,9 @@ public interface RepoRepository extends JpaRepository<Repo, Long> {
 
   Optional<Repo> findByUuid(String uuid); 
 
+  @Query("SELECT r FROM Repo r WHERE r.uuid = :uuid AND r.user.email = :email")
+  Optional<Repo> findRepoByUuidAndUserEmail(@Param("uuid") String uuid, @Param("email") String email);
+
   @Query("SELECT r FROM Repo r WHERE r.repoName = :repoName AND r.user.email = :email")
   Optional<Repo> findRepoByRepoNameAndUserEmail(@Param("repoName") String repoName, @Param("email") String email);
 

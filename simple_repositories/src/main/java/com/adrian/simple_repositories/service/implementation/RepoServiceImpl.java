@@ -28,6 +28,7 @@ import com.adrian.simple_repositories.repository.RepoRepository;
 import com.adrian.simple_repositories.service.RepoService;
 import com.adrian.simple_repositories.service.RepoVersionService;
 import com.adrian.simple_repositories.service.UserService;
+import com.adrian.simple_repositories.security.AuthenticationFacade;
 
 import jakarta.transaction.Transactional;
 
@@ -46,14 +47,17 @@ public class RepoServiceImpl implements RepoService {
   private final RepoMapper repoMapper;
   private final UserService userService;
   private final RepoVersionService repoVersionService;
+  private final AuthenticationFacade authenticationFacade;
 
   @Autowired
-  public RepoServiceImpl(RepoRepository repoRepository, RepoAssembler repoAssembler, RepoMapper repoMapper, UserService userService, RepoVersionService repoVersionService) {
+  public RepoServiceImpl(RepoRepository repoRepository, RepoAssembler repoAssembler, RepoMapper repoMapper,
+                          UserService userService, RepoVersionService repoVersionService, AuthenticationFacade authenticationFacade) {
     this.repoRepository = repoRepository;
     this.repoAssembler = repoAssembler;
     this.repoMapper = repoMapper;
     this.userService = userService;
     this.repoVersionService = repoVersionService;
+    this.authenticationFacade = authenticationFacade;
   }
 
   /*
@@ -124,7 +128,8 @@ public class RepoServiceImpl implements RepoService {
    */
   @Override
   public RepoFullDTO getRepoAsDTOByUuidForPullRequest(String uuid) {
-    Optional<Repo> optionalRepo = repoRepository.findByUuid(uuid);
+    String email = authenticationFacade.getAuthentication().getName();
+    Optional<Repo> optionalRepo = repoRepository.findRepoByUuidAndUserEmail(uuid, email);
     if(optionalRepo.isPresent()) return repoMapper.toFullDTO(optionalRepo.get());
     
     RepoVersion repoVersion = repoVersionService.getRepoVersionByOldUuid(uuid);
