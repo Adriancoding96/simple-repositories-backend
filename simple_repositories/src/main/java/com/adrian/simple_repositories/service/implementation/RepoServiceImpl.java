@@ -130,7 +130,7 @@ public class RepoServiceImpl implements RepoService {
   public RepoFullDTO getRepoAsDTOByUuidForPullRequest(String uuid) {
     String email = authenticationFacade.getAuthentication().getName();
     Optional<Repo> optionalRepo = repoRepository.findRepoByUuidAndUserEmail(uuid, email);
-    if(optionalRepo.isPresent()) return repoMapper.toFullDTO(optionalRepo.get());
+    if(optionalRepo.isPresent()) return repoMapper.toFullDTO(optionalRepo.get()); 
     
     RepoVersion repoVersion = repoVersionService.getRepoVersionByOldUuid(uuid);
     Repo repo = repoRepository.findById(repoVersion.getId())

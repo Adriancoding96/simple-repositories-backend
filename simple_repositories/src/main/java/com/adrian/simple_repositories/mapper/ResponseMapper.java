@@ -4,8 +4,6 @@ import com.adrian.simple_repositories.model.File;
 import com.adrian.simple_repositories.model.Directory;
 import com.adrian.simple_repositories.model.Repo;
 
-import java.util.UUID;
-
 import org.springframework.stereotype.Component;
 
 import com.adrian.simple_repositories.dto.pull.PullResponseDTO;
@@ -32,6 +30,6 @@ public class ResponseMapper {
 
   public PullResponseDTO toPullResponseFromRepo(RepoFullDTO dto) {
     if(dto == null) return new PullResponseDTO(false, "Failed to pull repository", null, null);
-    return new PullResponseDTO(true, "Repository pulled successfully", dto.getUuid(), dto);
+    return new PullResponseDTO(true, "Pulled repository successfully", dto.getUuid(), dto);
   }
 }
