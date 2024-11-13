@@ -132,8 +132,8 @@ public class PushFacade {
   }
 
   private PushResponseWrapper processFilePush(PushRequestDTO requestDTO, FileDTO fileDTO, Repo repo) {
-    //File needs to be put in to parentDirectory in repo entity
-    //Persist repo should do it??
+    //Get the parent directory of file
+    //Directory directory = fileDTO.getDirectoryId()
     return null;
   }
 
