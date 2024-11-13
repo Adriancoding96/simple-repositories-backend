@@ -131,12 +131,6 @@ public class PushFacade {
     }
   }
 
-  private PushResponseWrapper processFilePush(PushRequestDTO requestDTO, FileDTO fileDTO, Repo repo) {
-    //Get the parent directory of file
-    //Directory directory = fileDTO.getDirectoryId()
-    return null;
-  }
-
   /*
    * Helper method to see if directory by the name already exists, if it does remove old
    * directory and add the new one, if it does not exists simply add the new directory
@@ -191,6 +185,71 @@ public class PushFacade {
     return false;
   }
 
+  /*
+   * Method handles pushing new files to repo, It takes the file locates the parent directory, with helper
+   * methods checks if it is a new file or updating a existing file. It places the file in the correct directory
+   * of the repo entity, updates the repo and returns a successfull respones, if proccess fails, it returns
+   * a response signaling file push was not successfull
+   *
+   * @param requestDTO: contains push request data
+   * @param fileDTO: contains data of file to be added to repo
+   * @param repo: current repo we are pushing to
+   * @return pushResponseWrapper: wrapper containing the response and the persisted node
+   */
+  private PushResponseWrapper processFilePush(PushRequestDTO requestDTO, FileDTO fileDTO, Repo repo) {
+    Directory parentDirectory = directoryService.getDirectoryByUuid(fileDTO.getDirectoryUuid());
+    File file = fileService.assemleFileFromPush(fileDTO, parentDirectory);
+    Integer replaceIndex = isFileNew(file, parentDirectory.getFiles());
+    if(insertOrReplaceFile(file, parentDirectory, repo.getDirectories(), replaceIndex)) {
+      Repo updatedRepo = repoService.updateRepo(repo);
+      PushResponseDTO responseDTO = createSuccessResponse(updatedRepo.getUuid(), "File");
+      return new PushResponseWrapper(responseDTO, file);
+    } else {
+      PushResponseDTO responseDTO = new PushResponseDTO(false, "Error updating repo with file from push", repo.getUuid());
+      return new PushResponseWrapper(responseDTO, file);
+    }
+  }
+
+  /*
+   * Helper method to check if file exists by name in the parentDirectory,
+   * if it does, it replaces the file, if not it adds the file.
+   *
+   * @param file: file to be added / replaced
+   * @param files: contains files of parentDirectory
+   *
+   */
+  private Integer isFileNew(File file, List<File> files) {
+    for(Integer i = 0, n = files.size(); i < n; i++) {
+      if(files.get(i).getFileName().equals(file.getFileName())) return i;
+    }
+    return null;
+  }
+
+  /*
+   * Method recursivly traverses repository looking for the parent directory of file, if found either replaces
+   * or adds file to parent directory, if to replace or added is depending if replace index is null or not.
+   *
+   * @param file: file to be added / replaced
+   * @param directories: sub directories of current iteration
+   * @param replaceIndex: index of file list to be replaced, can be null if it is method adds file on to the list instead
+   */
+  private boolean insertOrReplaceFile(File file, Directory parentDirectory, List<Directory> directories, Integer replaceIndex) {
+    for(int i = 0, n = directories.size(); i < n; i++) {
+      if(directories.get(i).getDirectoryName().equals(parentDirectory.getDirectoryName())) {
+        if(replaceIndex != null) {
+          directories.get(i).getFiles().set(replaceIndex, file);
+        } else {
+          directories.get(i).getFiles().add(file);
+        }
+        return true;
+      } else {
+        if(insertOrReplaceFile(file, parentDirectory, directories.get(i).getDirectories(), replaceIndex)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 
   //Fetch repo based on uuid and branch
   private Repo getRepoByUuidAndBranchName(String repoUuid, String branchName) {

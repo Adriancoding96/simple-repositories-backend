@@ -10,6 +10,7 @@ import com.adrian.simple_repositories.model.File;
 public interface FileService {
 
   File createFileFromPush(FileDTO fileDTO, Directory parentDirectory);
+  File assemleFileFromPush(FileDTO fileDTO, Directory parentDirectory);
   File getFileById(Long fileId);
   File getFileByUuid(String uuid);
   FileDTO getFileAsDTOByUuid(String uuid);

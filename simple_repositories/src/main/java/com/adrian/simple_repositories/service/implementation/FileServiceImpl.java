@@ -58,6 +58,13 @@ public class FileServiceImpl implements FileService {
     return savedFile;
   }
 
+  @Override
+  public File assemleFileFromPush(FileDTO fileDTO, Directory parentDirectory) {
+    File file = fileAssembler.assemble(fileDTO);
+    file.setDirectory(parentDirectory);
+    return file;
+  }
+
   /*
    * Retrieves file from database by ID
    *
