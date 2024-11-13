@@ -271,12 +271,12 @@ public class PushFacade {
    * @param pushDTO: DTO containing push request data
    * @return pushResponseDTO: DTO containing push response data
    */
- private PushResponseDTO handleFilePush(FileDTO fileDTO) {
+/* private PushResponseDTO handleFilePush(FileDTO fileDTO) {
     Directory parentDirectory = directoryService.getDirectoryById(fileDTO.getDirectoryId());
     File file = fileService.createFileFromPush(fileDTO, parentDirectory);
     return responseMapper.toPushResponseFromFile(file);
   }
-
+*/
   /*
    * Validates data in push request by checking that request contains either repo, directory, or file
    *
