@@ -1,35 +1,35 @@
 package com.adrian.simple_repositories.wrapper;
 
 import com.adrian.simple_repositories.dto.push.PushResponseDTO;
-import com.nimbusds.openid.connect.sdk.assurance.evidences.attachment.Content;
+import com.adrian.simple_repositories.model.marker.Node;
 
 public class PushResponseWrapper {
 
   private PushResponseDTO response;
-  private Content content;
+  private Node node;
 
   public PushResponseWrapper() {
 
   }
 
-  public PushResponseWrapper(PushResponseDTO response, Content content) {
+  public PushResponseWrapper(PushResponseDTO response, Node node) {
     this.response = response;
-    this.content = content;
+    this.node = node;
   }
 
   public PushResponseDTO getResponse() {
     return response;
   }
 
-  public Content getContent() {
-    return content;
+  public Node getNode() {
+    return node;
   }
 
   public void setResponse(PushResponseDTO response) {
     this.response = response;
   }
 
-  public void setContent(Content content) {
-    this.content = content;
+  public void setNode(Node node) {
+    this.node = node;
   }
 }

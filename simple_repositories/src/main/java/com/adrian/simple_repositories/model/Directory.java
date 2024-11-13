@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.adrian.simple_repositories.model.marker.Node;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +21,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "directories")
-public class Directory {
+public class Directory implements Node {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

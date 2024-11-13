@@ -16,12 +16,10 @@
 
 package com.adrian.simple_repositories.facade;
 
-import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.adrian.simple_repositories.dto.branch.BranchDTO;
 import com.adrian.simple_repositories.dto.file.FileDTO;
 import com.adrian.simple_repositories.dto.directory.DirectoryFullDTO;
 import com.adrian.simple_repositories.dto.push.PushDTO;
@@ -41,6 +39,7 @@ import com.adrian.simple_repositories.service.DirectoryService;
 import com.adrian.simple_repositories.service.RepoService;
 import com.adrian.simple_repositories.service.UserRepoBranchActivityService;
 import com.adrian.simple_repositories.service.UserService;
+import com.adrian.simple_repositories.wrapper.PushResponseWrapper;
 
 
 /*
@@ -84,10 +83,10 @@ public class PushFacade {
    * @param requestDTO: contains data needed to perform a push
    * @return responseDTO: contains push success/error information
    */
-  public PushResponseDTO processPush(PushRequestDTO requestDTO) {
+  public PushResponseWrapper processPush(PushRequestDTO requestDTO) {
     Repo repo = getRepoByUuidAndBranchName(requestDTO.getRepoUuid(), requestDTO.getBranchDTO().getBranchName());
     if(repo == null) { //Repo might be null because user has not passed the latest version uuid
-      return createFailedResponseBecauseNewRepoVersionExists(requestDTO.getRepoUuid()); 
+      PushResponseDTO responseDTO = createFailedResponseBecauseNewRepoVersionExists(requestDTO.getRepoUuid()); 
     }
     
    if(requestDTO.getContent() instanceof DirectoryFullDTO) {
@@ -108,16 +107,17 @@ public class PushFacade {
    * @param directoryDTO: contains new directory data
    * @param repo: contains repository data
    */
-  private PushResponseDTO processDirectoryPush(PushRequestDTO requestDTO, DirectoryFullDTO directoryDTO, Repo repo) {
+  private PushResponseWrapper processDirectoryPush(PushRequestDTO requestDTO, DirectoryFullDTO directoryDTO, Repo repo) {
     if(directoryDTO.getParentDirectoryUuid() == null) {
       Directory directory = directoryService.assembleRootDirectoryFromPush(directoryDTO, repo);
-      return createSuccessResponse(directory.getUuid(), "Directory");
+      PushResponseDTO responseDTO = createSuccessResponse(directory.getUuid(), "Directory");
+      return null;
     }
     Directory directory = directoryService.createDirectoryFromPush(directoryDTO, repo);
-    return createSuccessResponse(directory.getUuid(), "Directory");
+    return null;
   }
 
-  private PushResponseDTO processFilePush(PushRequestDTO requestDTO, FileDTO fileDTO, Repo repo) {
+  private PushResponseWrapper processFilePush(PushRequestDTO requestDTO, FileDTO fileDTO, Repo repo) {
     //File needs to be put in to parentDirectory in repo entity
     //Persist repo should do it??
     return null;

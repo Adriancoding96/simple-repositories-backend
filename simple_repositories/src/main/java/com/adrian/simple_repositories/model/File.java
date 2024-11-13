@@ -3,6 +3,8 @@ package com.adrian.simple_repositories.model;
 
 import java.util.UUID;
 
+import com.adrian.simple_repositories.model.marker.Node;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Lob;
@@ -16,7 +18,7 @@ import jakarta.persistence.JoinColumn;
 
 @Entity
 @Table(name = "files")
-public class File {
+public class File implements Node {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
