@@ -3,6 +3,7 @@ package com.adrian.simple_repositories.service.implementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,10 +12,13 @@ import com.adrian.simple_repositories.dto.push.PushRequestDTO;
 import com.adrian.simple_repositories.dto.push.PushResponseDTO;
 import com.adrian.simple_repositories.exception.PushNotFoundException;
 import com.adrian.simple_repositories.mapper.PushMapper;
+import com.adrian.simple_repositories.model.Directory;
 import com.adrian.simple_repositories.model.Push;
+import com.adrian.simple_repositories.model.File;
 import com.adrian.simple_repositories.facade.PushFacade;
 import com.adrian.simple_repositories.repository.PushRepository;
 import com.adrian.simple_repositories.service.PushService;
+import com.adrian.simple_repositories.wrapper.PushResponseWrapper;
 
 /*
  * Implementation of PushService interface.
@@ -40,15 +44,33 @@ public class PushServiceImpl implements PushService {
   }
 
   /*
-   * Creates a new push
+   * Method checks if push is successful if not, returns a response signaling
+   * the push failed, if the push was successfull a new push is persisted to the 
+   * push table cotaining persisted entity that has handled by PushFacade, the 
+   * persisted entity can be either a File or Directory, if success push also
+   * returns a response containing type of push, success flag, and the identifier 
+   * for the new version of the repository.
    *
    * @param pushDTO: DTO containing push data
    * @return pushResponse: DTO containing push response data
    */
   @Override
   public PushResponseDTO createPush(PushRequestDTO requestDTO) {
-    pushRepository.save(pushMapper.toEntity(requestDTO));
-    return pushFacade.processPush(requestDTO);
+    PushResponseWrapper responseWrapper = pushFacade.processPush(requestDTO);
+    if(!responseWrapper.getResponse().isSuccess()) {
+      return responseWrapper.getResponse();
+    }
+    Push push = pushMapper.toEntity(requestDTO);
+    if(responseWrapper.getNode() instanceof Directory) {
+      Directory directory = (Directory) responseWrapper.getNode();
+      push.setDirectory(directory);
+      pushRepository.save(push);
+    } else {
+      File file = (File) responseWrapper.getNode();
+      push.setFile(file);
+      pushRepository.save(push);
+    }
+    return responseWrapper.getResponse();
   }
 
   /*

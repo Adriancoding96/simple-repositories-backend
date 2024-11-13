@@ -53,11 +53,12 @@ public class RepoController {
     return ResponseEntity.ok(repoService.createEmptyRepo(setupDTO));  
   }
 
-
+/*
   @PutMapping("/{uuid}")
   public ResponseEntity<RepoDTO> updateRepo(@RequestBody RepoUpdateDTO updateDTO, @PathVariable String uuid) {
     return ResponseEntity.ok(repoService.updateRepo(updateDTO, uuid));
   }
+*/
 
   @DeleteMapping("/{uuid}")
   public ResponseEntity<Void> deleteRepoByUuid(@PathVariable String uuid) {
