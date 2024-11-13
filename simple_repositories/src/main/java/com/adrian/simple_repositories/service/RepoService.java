@@ -36,7 +36,9 @@ public interface RepoService {
 
   UniqueIdentifierDTO getRepoIdentiferByRepoNameAndUserEmail(RepoIdentifierRequestDTO request);
 
-  RepoDTO updateRepo(RepoUpdateDTO updateDTO, String uuid);
+  Repo updateRepo(Repo repo);
+
+  RepoDTO updateRepoWithUpdatedDTO(RepoUpdateDTO updateDTO, String uuid);
 
   void deleteRepoByUuid(String uuid);
 }

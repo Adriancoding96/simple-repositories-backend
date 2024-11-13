@@ -17,6 +17,8 @@
 package com.adrian.simple_repositories.facade;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -110,17 +112,83 @@ public class PushFacade {
   private PushResponseWrapper processDirectoryPush(PushRequestDTO requestDTO, DirectoryFullDTO directoryDTO, Repo repo) {
     if(directoryDTO.getParentDirectoryUuid() == null) {
       Directory directory = directoryService.assembleRootDirectoryFromPush(directoryDTO, repo);
-      PushResponseDTO responseDTO = createSuccessResponse(directory.getUuid(), "Directory");
-      return null;
+      addOrReplaceRootDirectory(repo.getDirectories(), directory);
+      Repo updatedRepo = repoService.updateRepo(repo); 
+      PushResponseDTO responseDTO = createSuccessResponse(updatedRepo.getUuid(), "Directory");
+      return new PushResponseWrapper(responseDTO, directory);
     }
-    Directory directory = directoryService.createDirectoryFromPush(directoryDTO, repo);
-    return null;
+    
+    Directory directory = directoryService.assembleDirectoryFromPush(directoryDTO, repo);
+    Directory parentDirectory = directoryService.getDirectoryByUuid(directoryDTO.getParentDirectoryUuid());
+    addOrReplaceDirectory(parentDirectory, directory);
+    if(insertDirectory(parentDirectory, repo.getDirectories())) {
+      Repo updatedRepo = repoService.updateRepo(repo);
+      PushResponseDTO responseDTO = createSuccessResponse(updatedRepo.getUuid(), "Directory");
+      return new PushResponseWrapper(responseDTO, directory);
+    } else {
+      PushResponseDTO responseDTO = new PushResponseDTO(false, "Error updating repo with directory from push", repo.getUuid());
+      return new PushResponseWrapper(responseDTO, directory);
+    }
   }
 
   private PushResponseWrapper processFilePush(PushRequestDTO requestDTO, FileDTO fileDTO, Repo repo) {
     //File needs to be put in to parentDirectory in repo entity
     //Persist repo should do it??
     return null;
+  }
+
+  /*
+   * Helper method to see if directory by the name already exists, if it does remove old
+   * directory and add the new one, if it does not exists simply add the new directory
+   *
+   * @param parentDirectory: parentDirectory of new directory
+   * @param newDirectory: directory containing the new data
+   */
+  private void addOrReplaceDirectory(Directory parentDirectory, Directory newDirectory) {
+    for(Directory subDir : parentDirectory.getDirectories()) {
+      if(subDir.getDirectoryName().equals(newDirectory.getDirectoryName())) {
+        parentDirectory.getDirectories().remove(subDir);
+      }
+    }
+    parentDirectory.getDirectories().add(newDirectory);
+  }
+
+  /*
+   * Helper method to check if repos root directoriees already have a directory with the same name,
+   * if it does, remove old directory and replace with new one, else simply add the new directory
+   *
+   * @param rootDirectories: List of current root directories in the repo
+   * @param newDirectory: directory containing the new data
+   */
+  private void addOrReplaceRootDirectory(List<Directory> rootDirectories, Directory newDirectory) {
+    for(Directory rootDir : rootDirectories) {
+      if(rootDir.getDirectoryName().equals(newDirectory.getDirectoryName())) {
+        rootDirectories.remove(rootDir);
+      }
+    }
+    rootDirectories.add(newDirectory);
+  }
+
+  /*
+   * Recursive method that attempts to find a sub directory with the same name as a specified
+   * directorym if it does returns true as a success flag, else returns false representing a fail
+   *
+   * @param directory: directory with new data, but same name as a existing sub directory
+   * @param subDirectories: list of directories of the current directory in iteration
+   */
+  private boolean insertDirectory(Directory directory, List<Directory> subDirectories) {
+    for(int i = 0, n = subDirectories.size(); i < n; i++) {
+      Directory subDir = subDirectories.get(i);
+      if(subDir.getDirectoryName().equals(directory.getDirectoryName())) {
+        subDirectories.set(i, directory);
+        return true;
+      } else {
+        if(insertDirectory(directory, subDirectories.get(i).getDirectories())) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
 

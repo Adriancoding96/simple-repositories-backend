@@ -6,7 +6,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import com.adrian.simple_repositories.assembler.RepoAssembler;
@@ -276,20 +275,32 @@ public class RepoServiceImpl implements RepoService {
   }
 
   /*
+   * Method updates existing repo in the database
+   *
+   * @param repo: updated repo entity
+   * @return repo: persisted repo update
+   */
+  @Override
+  public Repo updateRepo(Repo repo) {
+    return repoRepository.save(repo);
+  }
+
+
+  /*
    * Retrieves repo from database by uuid, updates repo with data from repo update DTO
    *
    * @param updateDTO: contains data to be updated in repo  
    * @param uuid: contains uuid of repo to be updated
    */
   @Override
-  public RepoDTO updateRepo(RepoUpdateDTO updateDTO, String uuid) {
+  public RepoDTO updateRepoWithUpdatedDTO(RepoUpdateDTO updateDTO, String uuid) {
     Repo repo = getRepoByUuid(uuid);
     repo.setRepoName(updateDTO.getRepoName());
     repo.setRepoInformation(updateDTO.getRepoInformation());
     Repo updatedRepo = repoRepository.save(repo);
     return repoMapper.toDTO(updatedRepo);
   }
-
+  
   /*
    * Deletes repo by uuid
    * @param uuid: contains uuid of repo to be deleted
