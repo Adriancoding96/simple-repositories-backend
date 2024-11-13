@@ -37,10 +37,23 @@ public class DirectoryServiceImpl implements DirectoryService {
   @Override
   @Transactional
   public Directory createDirectoryFromPush(DirectoryFullDTO directoryDTO, Repo repo) {
-    Directory parentDirectory = getDirectoryById(directoryDTO.getParentDirectoryId());
+    Directory parentDirectory = getDirectoryByUuid(directoryDTO.getParentDirectoryUuid());
     Directory directory = directoryAssembler.assemble(directoryDTO, repo, parentDirectory);
-    Directory savedDirectory = directoryRepository.save(directory);
+    parentDirectory.getDirectories().add(directory);
+    Directory savedDirectory = directoryRepository.save(parentDirectory);
     return savedDirectory;
+  }
+  
+  @Override
+  public Directory assembleRootDirectoryFromPush(DirectoryFullDTO directoryDTO, Repo repo) {
+    return directoryAssembler.assemble(directoryDTO, repo, null);
+  }
+
+  @Override
+  public Directory assembleDirectoryFromPush(DirectoryFullDTO directoryDTO, Repo repo) {  
+    Directory parentDirectory = getDirectoryByUuid(directoryDTO.getParentDirectoryUuid());
+    return directoryAssembler.assemble(directoryDTO, repo, parentDirectory);
+    
   }
 
   @Override

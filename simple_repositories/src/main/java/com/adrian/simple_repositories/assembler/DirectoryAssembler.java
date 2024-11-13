@@ -45,7 +45,7 @@ public class DirectoryAssembler {
     directory.setDirectoryName(dto.getDirectoryName());
     directory.setPath(dto.getPath());
     directory.setRepo(repo);
-    directory.setParentDirectory(parentDirectory);
+    if(parentDirectory != null) directory.setParentDirectory(parentDirectory);
 
     List<File> files = new ArrayList<>();
     for(FileDTO fileDTO : dto.getFiles()) {

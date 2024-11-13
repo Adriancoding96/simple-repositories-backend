@@ -1,6 +1,7 @@
 package com.adrian.simple_repositories.mapper;
 
 import com.adrian.simple_repositories.dto.push.PushDTO;
+import com.adrian.simple_repositories.dto.push.PushRequestDTO;
 import com.adrian.simple_repositories.dto.repo.RepoFullDTO;
 import com.adrian.simple_repositories.dto.directory.DirectoryFullDTO;
 import com.adrian.simple_repositories.dto.file.FileDTO;
@@ -64,5 +65,28 @@ public class PushMapper {
     
     return push;
   }
+  public Push toEntity(PushRequestDTO request) {
+    if(request.getContent() instanceof DirectoryFullDTO) {
+      DirectoryFullDTO dto = (DirectoryFullDTO) request.getContent();
+      return toEntityFromDirectoryRequest(dto, request);
+    } else {
+      FileDTO dto = (FileDTO) request.getContent();
+      return toEntityFromFileRequest(dto, request);
+    }
+  }
 
+  private Push toEntityFromDirectoryRequest(DirectoryFullDTO dto, PushRequestDTO request) {
+    Push push = new Push();
+    push.setCommitHash(request.getRepoUuid()); //TODO Currently the hash is the repo uuid, need to think about this some more
+    push.setCommitMessage(request.getCommitMessage());
+    //TODO How to handle directory mapping? if i persists push
+    return push;
+  }
+  private Push toEntityFromFileRequest(FileDTO dto, PushRequestDTO request) {
+    Push push = new Push();
+    push.setCommitHash(request.getRepoUuid()); //TODO Currently the hash is the repo uuid, need to think about this some more
+    push.setCommitMessage(request.getCommitMessage());
+    //TODO How to handle file mapping?
+    return push;
+  }
 }

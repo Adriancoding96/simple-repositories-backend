@@ -10,6 +10,8 @@ import com.adrian.simple_repositories.model.Repo;
 
 public interface DirectoryService {
   Directory createDirectoryFromPush(DirectoryFullDTO directoryDTO, Repo repo);
+  Directory assembleRootDirectoryFromPush(DirectoryFullDTO directoryDTO, Repo repo);
+  Directory assembleDirectoryFromPush(DirectoryFullDTO directoryDTO, Repo repo);
   Directory getDirectoryById(Long directoryId);
   Directory getDirectoryByUuid(String uuid);
   DirectoryFullDTO getDirectoryAsDTOByUuid(String uuid);

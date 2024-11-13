@@ -22,6 +22,10 @@ public interface RepoService {
  
   Repo getRepoByUuid(String uuid);
 
+  boolean checkIfRepoExistsByOldUuid(String OldUuid);
+
+  String getNewUuidOfRepoByOldUuid(String oldUuid);
+
   RepoFullDTO getRepoAsDTOByUuidForPullRequest(String uuid);
 
   RepoFullDTO getRepoAsDTOByUuid(String uuid);

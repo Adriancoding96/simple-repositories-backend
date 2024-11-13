@@ -25,6 +25,7 @@ import com.adrian.simple_repositories.dto.branch.BranchDTO;
 import com.adrian.simple_repositories.dto.file.FileDTO;
 import com.adrian.simple_repositories.dto.directory.DirectoryFullDTO;
 import com.adrian.simple_repositories.dto.push.PushDTO;
+import com.adrian.simple_repositories.dto.push.PushRequestDTO;
 import com.adrian.simple_repositories.dto.push.PushResponseDTO;
 import com.adrian.simple_repositories.exception.InvalidPushException;
 import com.adrian.simple_repositories.mapper.ResponseMapper;
@@ -40,7 +41,6 @@ import com.adrian.simple_repositories.service.DirectoryService;
 import com.adrian.simple_repositories.service.RepoService;
 import com.adrian.simple_repositories.service.UserRepoBranchActivityService;
 import com.adrian.simple_repositories.service.UserService;
-import com.adrian.simple_repositories.service.implementation.UserDetailServiceImpl;
 
 
 /*
@@ -77,6 +77,81 @@ public class PushFacade {
   }
 
   /*
+   * Method first check if repository exists, if not returns a failed push response,
+   * if repo exists, checks the content of requests and calles porcess directory/file
+   * method.
+   * 
+   * @param requestDTO: contains data needed to perform a push
+   * @return responseDTO: contains push success/error information
+   */
+  public PushResponseDTO processPush(PushRequestDTO requestDTO) {
+    Repo repo = getRepoByUuidAndBranchName(requestDTO.getRepoUuid(), requestDTO.getBranchDTO().getBranchName());
+    if(repo == null) { //Repo might be null because user has not passed the latest version uuid
+      return createFailedResponseBecauseNewRepoVersionExists(requestDTO.getRepoUuid()); 
+    }
+    
+   if(requestDTO.getContent() instanceof DirectoryFullDTO) {
+      DirectoryFullDTO directoryDTO = (DirectoryFullDTO) requestDTO.getContent();
+      return processDirectoryPush(requestDTO, directoryDTO, repo);
+    } else {
+      FileDTO fileDTO = (FileDTO) requestDTO.getContent();
+      return processFilePush(requestDTO, fileDTO, repo);
+    }
+  } 
+
+  /*
+   * This method calls methods in directory service based on data in the directory DTO,
+   * if directory DTO does not contain parent directory information, it assumes it is a root directory,
+   * if not calls method that updates parent directory with the new data.
+   *
+   * @param requestDTO: contains push data
+   * @param directoryDTO: contains new directory data
+   * @param repo: contains repository data
+   */
+  private PushResponseDTO processDirectoryPush(PushRequestDTO requestDTO, DirectoryFullDTO directoryDTO, Repo repo) {
+    if(directoryDTO.getParentDirectoryUuid() == null) {
+      Directory directory = directoryService.assembleRootDirectoryFromPush(directoryDTO, repo);
+      return createSuccessResponse(directory.getUuid(), "Directory");
+    }
+    Directory directory = directoryService.createDirectoryFromPush(directoryDTO, repo);
+    return createSuccessResponse(directory.getUuid(), "Directory");
+  }
+
+  private PushResponseDTO processFilePush(PushRequestDTO requestDTO, FileDTO fileDTO, Repo repo) {
+    //File needs to be put in to parentDirectory in repo entity
+    //Persist repo should do it??
+    return null;
+  }
+
+
+  //Fetch repo based on uuid and branch
+  private Repo getRepoByUuidAndBranchName(String repoUuid, String branchName) {
+    /* 
+     * At this point of development we are assuming that the branch we are working on is Main
+     * Pushing to separate branches and pulling from separate branches is going to implemented at a later state
+     */
+    return repoService.getRepoByUuid(repoUuid);
+  }
+
+  private PushResponseDTO createSuccessResponse(String uuid, String pushType) {
+    return new PushResponseDTO(
+      true,
+      pushType + " push sucessfull",
+      uuid 
+    );
+  }
+
+  private PushResponseDTO createFailedResponseBecauseNewRepoVersionExists(String oldUuid) {
+      String newUuid = repoService.getNewUuidOfRepoByOldUuid(oldUuid);
+      return new PushResponseDTO(
+        false,
+        "Please pull latest version of repo using: " + newUuid + ".",
+        null
+      );
+  }
+
+  
+  /*
    * Processes push based on content of pushDTO
    * Determines the push type (repo / directory / file) and passes
    * data to appropriate handler method.
@@ -85,14 +160,14 @@ public class PushFacade {
    * @return pushResponseDTO: DTO containing push response data
    * @throws InvalidPushException: throws exception if request contains invalid data
    */
-  public PushResponseDTO processPush(PushDTO pushDTO) { 
+/*  public PushResponseDTO processPush(PushDTO pushDTO) { 
     validatePushDTO(pushDTO); 
     if(pushDTO.getRepoFullDTO() != null) return handleRepoPush(pushDTO);
     if(pushDTO.getDirectoryFullDTO() != null) return handleDirectoryPush(pushDTO.getDirectoryFullDTO());
     if(pushDTO.getFileDTO() != null) return handleFilePush(pushDTO.getFileDTO());
     throw new InvalidPushException("Push request body is invalid, does not contain repo/directory/file");
   }
-
+*/
   /* TODO refactor method to separate branch logic in to a separate mehtod
    *
    * Handles push operation for request containing repo data
@@ -100,6 +175,8 @@ public class PushFacade {
    * @param pushDTO containing push request data
    * @return pushResponseDTO containing push response data
    */
+  
+/*
   private PushResponseDTO handleRepoPush(PushDTO pushDTO) {
     User user = userService.getUserByEmail(pushDTO.getOwnerEmail());
     Repo repo = repoService.createRepoFromPush(pushDTO.getRepoFullDTO(), user);
@@ -115,7 +192,7 @@ public class PushFacade {
    * @return pushResponseDTO: DTO containing push response data
    */
   private PushResponseDTO handleDirectoryPush(DirectoryFullDTO directoryDTO) {
-    Repo repo = repoService.getRepoById(directoryDTO.getRepoId());
+    Repo repo = repoService.getRepoByUuid(directoryDTO.getRepoUuid());
     Directory directory = directoryService.createDirectoryFromPush(directoryDTO, repo);
     return responseMapper.toPushResponseFromDirectory(directory);
    }

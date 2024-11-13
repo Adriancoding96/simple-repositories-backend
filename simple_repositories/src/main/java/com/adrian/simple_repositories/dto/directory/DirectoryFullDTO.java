@@ -11,20 +11,20 @@ public class DirectoryFullDTO implements Content{
   private String path;
   private List<FileDTO> files;
   private List<DirectoryFullDTO> directories;
-  private Long repoId;
-  private Long parentDirectoryId;
+  private String repoUuid;
+  private String parentDirectoryUuid;
 
   public DirectoryFullDTO() {
 
   } 
 
-  public DirectoryFullDTO(String directoryName, String path, List<FileDTO> files, List<DirectoryFullDTO> directories, Long repoId, Long parentDirectoryId) {
+  public DirectoryFullDTO(String directoryName, String path, List<FileDTO> files, List<DirectoryFullDTO> directories, String repoUuid, String parentDirectoryUuid) {
     this.directoryName = directoryName;
     this.path = path;
     this.files = files;
     this.directories = directories;
-    this.repoId = repoId;
-    this.parentDirectoryId= parentDirectoryId;
+    this.repoUuid = repoUuid;
+    this.parentDirectoryUuid = parentDirectoryUuid;
   }
 
   public String getDirectoryName() {
@@ -43,12 +43,12 @@ public class DirectoryFullDTO implements Content{
     return directories;
   }
 
-  public Long getRepoId() {
-    return repoId;
+  public String getRepoUuid() {
+    return repoUuid;
   }
 
-  public Long getParentDirectoryId() {
-    return parentDirectoryId;
+  public String getParentDirectoryUuid() {
+    return parentDirectoryUuid;
   }
 
   public void setDirectoryName(String directoryName) {
@@ -67,11 +67,11 @@ public class DirectoryFullDTO implements Content{
     this.directories = directories;
   }
 
-  public void setRepoId(Long repoId) {
-    this.repoId = repoId;
+  public void setRepoUuid(String repoUuid) {
+    this.repoUuid = repoUuid;
   }
 
-  public void setParentDirectoryId(Long parentDirectoryId) {
-    this.parentDirectoryId = parentDirectoryId;
+  public void setParentDirectoryUuid(String parentDirectoryUuid) {
+    this.parentDirectoryUuid = parentDirectoryUuid;
   }
 }

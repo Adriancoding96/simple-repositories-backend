@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.adrian.simple_repositories.dto.push.PushDTO;
+import com.adrian.simple_repositories.dto.push.PushRequestDTO;
 import com.adrian.simple_repositories.dto.push.PushResponseDTO;
 import com.adrian.simple_repositories.service.PushService;
 
@@ -34,8 +35,8 @@ public class PushController {
    * @return pushResponseDTO: returns DTO containing push response data
    */
   @PostMapping
-  public ResponseEntity<PushResponseDTO> createPush(@RequestBody PushDTO pushDTO) {
-    PushResponseDTO pushResponse = pushService.createPush(pushDTO);
+  public ResponseEntity<PushResponseDTO> createPush(@RequestBody PushRequestDTO requestDTO) {
+    PushResponseDTO pushResponse = pushService.createPush(requestDTO);
     return ResponseEntity.status(HttpStatus.CREATED).body(pushResponse);
   }
 

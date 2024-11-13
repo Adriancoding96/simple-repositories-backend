@@ -22,4 +22,8 @@ public class RepoVersionServiceImpl implements RepoVersionService {
     return repoVersionRepository.findByOldUuid(oldUuid)
       .orElseThrow(() -> new RepoVersionNotFoundException("RepoVersion not found by uuid: " + oldUuid));
   }
+
+  public boolean checkIfRepoExistsByOldUuid(String oldUuid) {
+    return repoVersionRepository.existsByOldUuid(oldUuid);
+  }
 }

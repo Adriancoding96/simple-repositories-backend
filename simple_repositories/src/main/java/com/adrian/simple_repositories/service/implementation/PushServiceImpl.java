@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.adrian.simple_repositories.dto.push.PushDTO;
+import com.adrian.simple_repositories.dto.push.PushRequestDTO;
 import com.adrian.simple_repositories.dto.push.PushResponseDTO;
 import com.adrian.simple_repositories.exception.PushNotFoundException;
 import com.adrian.simple_repositories.mapper.PushMapper;
@@ -45,9 +46,9 @@ public class PushServiceImpl implements PushService {
    * @return pushResponse: DTO containing push response data
    */
   @Override
-  public PushResponseDTO createPush(PushDTO pushDTO) {
-    pushRepository.save(pushMapper.toEntity(pushDTO));
-    return pushFacade.processPush(pushDTO);
+  public PushResponseDTO createPush(PushRequestDTO requestDTO) {
+    pushRepository.save(pushMapper.toEntity(requestDTO));
+    return pushFacade.processPush(requestDTO);
   }
 
   /*

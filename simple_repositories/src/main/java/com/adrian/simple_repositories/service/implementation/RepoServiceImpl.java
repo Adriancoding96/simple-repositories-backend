@@ -109,13 +109,33 @@ public class RepoServiceImpl implements RepoService {
    * Retrieves repo by UUID
    *
    * @param uuid: UUID of repo 
-   * @return repo: returns repo entity fetched from the database by ID
-   * @throws RepoNotFoundException: throws exception if repo not found by uuid
+   * @return repo: returns repo entity fetched from the database by UUID 
    */
   @Override
   public Repo getRepoByUuid(String uuid) {
-    return repoRepository.findByUuid(uuid)
-      .orElseThrow(() -> new RepoNotFoundException("Could not find repo with uuid: " + uuid));
+    String email = authenticationFacade.getAuthentication().getName();
+    return repoRepository.findRepoByUuidAndUserEmail(uuid, email)
+      .orElse(null); //Not throwing exception here because we need to check for older versions of repo
+  }
+
+
+  /*
+   * Checks if old version of repo exists by old repo uuid
+   *
+   * @param oldUuid: possibly old uuid of a repo
+   * @return exists: returns true or false if previous version of repo has had uuid
+   */
+  @Override
+  public boolean checkIfRepoExistsByOldUuid(String oldUuid) {
+    return repoVersionService.checkIfRepoExistsByOldUuid(oldUuid);
+  }
+  
+  @Override
+  public String getNewUuidOfRepoByOldUuid(String oldUuid) {
+    RepoVersion repoVersion = repoVersionService.getRepoVersionByOldUuid(oldUuid);
+    Repo repo = repoRepository.findById(repoVersion.getId())
+      .orElseThrow(() -> new RepoNotFoundException("Could not find repo with id: " + repoVersion.getId())); 
+    return repo.getUuid();
   }
 
   /*
