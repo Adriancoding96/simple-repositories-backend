@@ -1,24 +1,22 @@
 package com.adrian.simple_repositories.dto.push;
 
-import com.adrian.simple_repositories.dto.branch.BranchDTO;
-import com.adrian.simple_repositories.dto.file.FileDTO;
 import com.adrian.simple_repositories.dto.Content;
 
 public class PushRequestDTO {
 
   private String repoUuid;
   private String commitMessage;
-  private BranchDTO branchDTO;
+  private String branchName;
   private Content content;
 
   public PushRequestDTO() {
 
   }
 
-  public PushRequestDTO(String repoUuid, String commitMessage, BranchDTO branchDTO, Content content) {
+  public PushRequestDTO(String repoUuid, String commitMessage, String branchName, Content content) {
     this.repoUuid = repoUuid;
     this.commitMessage = commitMessage;
-    this.branchDTO = branchDTO;
+    this.branchName = branchName;
     this.content = content;
   }
 
@@ -30,8 +28,8 @@ public class PushRequestDTO {
     return commitMessage;
   }
 
-  public BranchDTO getBranchDTO() {
-    return branchDTO;
+  public String getBranchName() {
+    return branchName;
   }
 
   public Content getContent() {
@@ -46,8 +44,8 @@ public class PushRequestDTO {
     this.commitMessage = commitMessage;
   }
 
-  public void setBranchDTO(BranchDTO branchDTO) {
-    this.branchDTO = branchDTO;
+  public void setBranchName(String branchName) {
+    this.branchName = branchName;
   }
 
   public void setContent(Content content) {

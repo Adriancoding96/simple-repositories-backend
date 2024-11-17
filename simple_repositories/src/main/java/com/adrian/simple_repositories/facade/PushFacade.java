@@ -1,21 +1,4 @@
-/********************************************
- *            -- PushFacade --              *
- *                                          *
- * PushFacade is used to control            *
- * the API flow based on the content        *
- * of recieved push request.                * 
- * This is done for the reason instead of   *
- * coupling the service classes with        *
- * eachother they are injected here.        *
- *                                          *
- * It also simplifies scaling the           *
- * processes of persiting entitys related   *
- * to pushes.                               *
- *                                          *
- ********************************************/
-
 package com.adrian.simple_repositories.facade;
-
 
 import java.util.List;
 
@@ -79,7 +62,7 @@ public class PushFacade {
 
   /*
    * Method first check if repository exists, if not returns a failed push response,
-   * if repo exists, checks the content of requests and calles porcess directory/file
+   * if repo exists, checks the content of requests and calls process directory/file
    * method.
    * 
    * @param requestDTO: contains data needed to perform a push
