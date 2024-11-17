@@ -69,7 +69,7 @@ public class PushFacade {
    * @return responseDTO: contains push success/error information
    */
   public PushResponseWrapper processPush(PushRequestDTO requestDTO) {
-    Repo repo = getRepoByUuidAndBranchName(requestDTO.getRepoUuid(), requestDTO.getBranchName());
+    Repo repo = repoService.getRepoByUuid(requestDTO.getRepoUuid());
     if(repo == null) { //Repo might be null because user has not passed the latest version uuid
       PushResponseDTO responseDTO = createFailedResponseBecauseNewRepoVersionExists(requestDTO.getRepoUuid()); 
     }
@@ -232,15 +232,6 @@ public class PushFacade {
       }
     }
     return false;
-  }
-
-  //Fetch repo based on uuid and branch
-  private Repo getRepoByUuidAndBranchName(String repoUuid, String branchName) {
-    /* 
-     * At this point of development we are assuming that the branch we are working on is Main
-     * Pushing to separate branches and pulling from separate branches is going to implemented at a later state
-     */
-    return repoService.getRepoByUuid(repoUuid);
   }
 
   private PushResponseDTO createSuccessResponse(String uuid, String pushType) {
