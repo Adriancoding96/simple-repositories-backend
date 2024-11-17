@@ -64,6 +64,10 @@ public class Repo {
     uuid = UUID.randomUUID().toString();
   }
 
+  public void addBranch(Branch branch) {
+    branches.add(branch);
+  }
+
   public Repo() {
 
   }

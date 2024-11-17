@@ -19,6 +19,7 @@ import com.adrian.simple_repositories.dto.repo.RepoUpdateDTO;
 import com.adrian.simple_repositories.exception.RepoNotFoundException;
 import com.adrian.simple_repositories.mapper.RepoMapper;
 import com.adrian.simple_repositories.model.File;
+import com.adrian.simple_repositories.model.Branch;
 import com.adrian.simple_repositories.model.Directory;
 import com.adrian.simple_repositories.model.Repo;
 import com.adrian.simple_repositories.model.RepoVersion;
@@ -27,6 +28,7 @@ import com.adrian.simple_repositories.repository.RepoRepository;
 import com.adrian.simple_repositories.service.RepoService;
 import com.adrian.simple_repositories.service.RepoVersionService;
 import com.adrian.simple_repositories.service.UserService;
+import com.adrian.simple_repositories.service.BranchService;
 import com.adrian.simple_repositories.security.AuthenticationFacade;
 
 import jakarta.transaction.Transactional;
@@ -47,16 +49,18 @@ public class RepoServiceImpl implements RepoService {
   private final UserService userService;
   private final RepoVersionService repoVersionService;
   private final AuthenticationFacade authenticationFacade;
+  private final BranchService branchService;
 
   @Autowired
   public RepoServiceImpl(RepoRepository repoRepository, RepoAssembler repoAssembler, RepoMapper repoMapper,
-                          UserService userService, RepoVersionService repoVersionService, AuthenticationFacade authenticationFacade) {
+                          UserService userService, RepoVersionService repoVersionService, AuthenticationFacade authenticationFacade, BranchService branchService) {
     this.repoRepository = repoRepository;
     this.repoAssembler = repoAssembler;
     this.repoMapper = repoMapper;
     this.userService = userService;
     this.repoVersionService = repoVersionService;
     this.authenticationFacade = authenticationFacade;
+    this.branchService = branchService;
   }
 
   /*
@@ -70,10 +74,12 @@ public class RepoServiceImpl implements RepoService {
     Repo repo = repoMapper.toEntityFromSetupDTO(setupDTO);
     User user = userService.getUserByEmail(setupDTO.getOwnerEmail());
     repo.setUser(user);
+    Branch mainBranch = branchService.createMainBranch(repo);
+    repo.addBranch(mainBranch); 
     Repo savedRepo = repoRepository.save(repo);
     return repoMapper.toDTO(savedRepo);
   }
-  
+ 
   /*
    *  TODO Change method name to createRepoFromFullDTO ?
    *

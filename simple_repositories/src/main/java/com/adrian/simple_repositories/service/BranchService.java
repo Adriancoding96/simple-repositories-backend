@@ -5,6 +5,7 @@ import com.adrian.simple_repositories.model.Branch;
 import com.adrian.simple_repositories.model.Repo;
 
 public interface BranchService {
+  Branch createMainBranch(Repo repo);
   Branch createBranch(BranchDTO branchDTO, Repo repo);
   Branch getBranchById(Long branchId);
 }

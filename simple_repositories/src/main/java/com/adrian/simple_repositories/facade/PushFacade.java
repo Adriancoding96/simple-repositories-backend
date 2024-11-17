@@ -69,7 +69,7 @@ public class PushFacade {
    * @return responseDTO: contains push success/error information
    */
   public PushResponseWrapper processPush(PushRequestDTO requestDTO) {
-    Repo repo = getRepoByUuidAndBranchName(requestDTO.getRepoUuid(), requestDTO.getBranchDTO().getBranchName());
+    Repo repo = getRepoByUuidAndBranchName(requestDTO.getRepoUuid(), requestDTO.getBranchName());
     if(repo == null) { //Repo might be null because user has not passed the latest version uuid
       PushResponseDTO responseDTO = createFailedResponseBecauseNewRepoVersionExists(requestDTO.getRepoUuid()); 
     }
@@ -260,41 +260,6 @@ public class PushFacade {
       );
   }
 
-  
-  /*
-   * Processes push based on content of pushDTO
-   * Determines the push type (repo / directory / file) and passes
-   * data to appropriate handler method.
-   *
-   * @param pushDTO: DTO containing push request data
-   * @return pushResponseDTO: DTO containing push response data
-   * @throws InvalidPushException: throws exception if request contains invalid data
-   */
-/*  public PushResponseDTO processPush(PushDTO pushDTO) { 
-    validatePushDTO(pushDTO); 
-    if(pushDTO.getRepoFullDTO() != null) return handleRepoPush(pushDTO);
-    if(pushDTO.getDirectoryFullDTO() != null) return handleDirectoryPush(pushDTO.getDirectoryFullDTO());
-    if(pushDTO.getFileDTO() != null) return handleFilePush(pushDTO.getFileDTO());
-    throw new InvalidPushException("Push request body is invalid, does not contain repo/directory/file");
-  }
-*/
-  /* TODO refactor method to separate branch logic in to a separate mehtod
-   *
-   * Handles push operation for request containing repo data
-   *
-   * @param pushDTO containing push request data
-   * @return pushResponseDTO containing push response data
-   */
-  
-/*
-  private PushResponseDTO handleRepoPush(PushDTO pushDTO) {
-    User user = userService.getUserByEmail(pushDTO.getOwnerEmail());
-    Repo repo = repoService.createRepoFromPush(pushDTO.getRepoFullDTO(), user);
-    Branch mainBranch = branchService.createBranch(new BranchDTO(null, "main", LocalDateTime.now(), null), repo);
-    newUserRepoBranchActivity(pushDTO, repo, mainBranch);
-    return responseMapper.toPushResponseFromRepo(repo);   
-  }
-
   /*
    * Handles push operation for request containing directory data
    *
@@ -307,18 +272,6 @@ public class PushFacade {
     return responseMapper.toPushResponseFromDirectory(directory);
    }
 
-  /*
-   * Handles push operation for request containing file data
-   *
-   * @param pushDTO: DTO containing push request data
-   * @return pushResponseDTO: DTO containing push response data
-   */
-/* private PushResponseDTO handleFilePush(FileDTO fileDTO) {
-    Directory parentDirectory = directoryService.getDirectoryById(fileDTO.getDirectoryId());
-    File file = fileService.createFileFromPush(fileDTO, parentDirectory);
-    return responseMapper.toPushResponseFromFile(file);
-  }
-*/
   /*
    * Validates data in push request by checking that request contains either repo, directory, or file
    *
