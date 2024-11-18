@@ -60,6 +60,29 @@ public class PushFacade {
     this.responseMapper = responseMapper;
   }
 
+  public PushResponseWrapper processPush(PushRequestDTO requestDTO) {
+    if(requestDTO.getBranchName().equals("main")) {
+       return pushToMain(requestDTO);
+    }
+    return pushToBranch(requestDTO); 
+  }
+
+  private PushResponseWrapper pushToBranch(PushRequestDTO requestDTO) {
+    String repoUuid = requestDTO.getRepoUuid();
+    if(!repoService.checkIfRepoExistsByOldUuid(repoUuid)) {
+      repoUuid = repoService.getNewUuidOfRepoByOldUuid(repoUuid);
+    }
+    if(!branchService.doesBranchExistByNameAndRepoUuid(requestDTO.getBranchName(), repoUuid)) {
+      Repo repo = repoService.getRepoByUuid(repoUuid);
+      Branch branch = branchService.createBranch(requestDTO.getBranchName(), repo);  
+      PushResponseDTO responseDTO = new PushResponseDTO(true, "Successfull push to branch: " + branch.getBranchName(), repoUuid);
+      return new PushResponseWrapper(responseDTO, null, branch);
+    }
+    Branch branch = branchService.getBranchByNameAndRepoUuid(requestDTO.getBranchName(), repoUuid);
+    PushResponseDTO responseDTO = new PushResponseDTO(true, "Successfull push to branch: " + branch.getBranchName(), repoUuid);
+    return new PushResponseWrapper(responseDTO, null, branch);
+  }
+
   /*
    * Method first check if repository exists, if not returns a failed push response,
    * if repo exists, checks the content of requests and calls process directory/file
@@ -68,7 +91,7 @@ public class PushFacade {
    * @param requestDTO: contains data needed to perform a push
    * @return responseDTO: contains push success/error information
    */
-  public PushResponseWrapper processPush(PushRequestDTO requestDTO) {
+  private PushResponseWrapper pushToMain(PushRequestDTO requestDTO) {
     Repo repo = repoService.getRepoByUuid(requestDTO.getRepoUuid());
     if(repo == null) { //Repo might be null because user has not passed the latest version uuid
       PushResponseDTO responseDTO = createFailedResponseBecauseNewRepoVersionExists(requestDTO.getRepoUuid()); 
@@ -98,7 +121,8 @@ public class PushFacade {
       addOrReplaceRootDirectory(repo.getDirectories(), directory);
       Repo updatedRepo = repoService.updateRepo(repo); 
       PushResponseDTO responseDTO = createSuccessResponse(updatedRepo.getUuid(), "Directory");
-      return new PushResponseWrapper(responseDTO, directory);
+      Branch mainBranch = branchService.getBranchByNameAndRepoUuid("main", updatedRepo.getUuid());
+      return new PushResponseWrapper(responseDTO, directory, mainBranch);
     }
     
     Directory directory = directoryService.assembleDirectoryFromPush(directoryDTO, repo);
@@ -107,10 +131,11 @@ public class PushFacade {
     if(insertDirectory(parentDirectory, repo.getDirectories())) {
       Repo updatedRepo = repoService.updateRepo(repo);
       PushResponseDTO responseDTO = createSuccessResponse(updatedRepo.getUuid(), "Directory");
-      return new PushResponseWrapper(responseDTO, directory);
+      Branch mainBranch = branchService.getBranchByNameAndRepoUuid("main", updatedRepo.getUuid());
+      return new PushResponseWrapper(responseDTO, directory, mainBranch);
     } else {
       PushResponseDTO responseDTO = new PushResponseDTO(false, "Error updating repo with directory from push", repo.getUuid());
-      return new PushResponseWrapper(responseDTO, directory);
+      return new PushResponseWrapper(responseDTO, directory, null);
     }
   }
 
@@ -186,10 +211,10 @@ public class PushFacade {
     if(insertOrReplaceFile(file, parentDirectory, repo.getDirectories(), replaceIndex)) {
       Repo updatedRepo = repoService.updateRepo(repo);
       PushResponseDTO responseDTO = createSuccessResponse(updatedRepo.getUuid(), "File");
-      return new PushResponseWrapper(responseDTO, file);
+      return new PushResponseWrapper(responseDTO, file, null);
     } else {
       PushResponseDTO responseDTO = new PushResponseDTO(false, "Error updating repo with file from push", repo.getUuid());
-      return new PushResponseWrapper(responseDTO, file);
+      return new PushResponseWrapper(responseDTO, file, null);
     }
   }
 

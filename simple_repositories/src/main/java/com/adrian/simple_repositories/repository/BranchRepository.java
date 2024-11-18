@@ -12,5 +12,8 @@ public interface BranchRepository extends JpaRepository<Branch, Long> {
 
   @Query("SELECT b FROM Branch b WHERE b.branchName =:branchName AND b.repo.uuid = :repoUuid")
   Optional<Branch> findBranchByNameAndRepoUuid(@Param("branchName") String branchName, @Param("repoUuid") String repoUuid);
+
+  @Query("SELECT COUNT(b) FROM Branch b WHERE b.branchName = :branchName AND b.repo.uuid = :repoUuid")
+  long countByBranchNameAndRepoUuid(@Param("branchName") String branchName, @Param("repoUuid") String repoUuid);
   
 }

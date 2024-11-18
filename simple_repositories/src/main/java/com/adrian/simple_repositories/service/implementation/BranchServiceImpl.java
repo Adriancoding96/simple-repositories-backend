@@ -37,9 +37,11 @@ public class BranchServiceImpl implements BranchService {
   }
 
   @Override
-  public Branch createBranch(BranchDTO branchDTO, Repo repo) {
-    Branch branch = branchMapper.toEntity(branchDTO);
+  public Branch createBranch(String branchName, Repo repo) {
+    Branch branch = new Branch();
+    branch.setBranchName(branchName);
     branch.setRepo(repo);
+    branch.setLatestPushToBranch(LocalDateTime.now());
     return branchRepository.save(branch);
   }
 
@@ -47,5 +49,19 @@ public class BranchServiceImpl implements BranchService {
   public Branch getBranchById(Long branchId) {
     return branchRepository.findById(branchId)
       .orElseThrow(() -> new BranchNotFoundException("Branch with id: " + branchId + " not found")); 
+  }
+
+  @Override
+  public Branch getBranchByNameAndRepoUuid(String branchName, String repoUuid) {
+    return branchRepository.findBranchByNameAndRepoUuid(branchName, repoUuid)
+      .orElseThrow(() -> new BranchNotFoundException("Could not find branch by name and repoUuid"));
+  }
+
+  @Override
+  public boolean doesBranchExistByNameAndRepoUuid(String branchName, String repoUuid) {
+    long count = branchRepository.countByBranchNameAndRepoUuid(branchName, repoUuid); //TODO implement custom exception
+    if(count > 1) throw new RuntimeException("Multiple branches with the same name pointing to the same repository");
+    if(count == 0) return false; 
+    return true;
   }
 }

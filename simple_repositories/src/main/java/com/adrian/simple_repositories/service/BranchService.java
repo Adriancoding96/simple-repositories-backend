@@ -6,6 +6,8 @@ import com.adrian.simple_repositories.model.Repo;
 
 public interface BranchService {
   Branch createMainBranch(Repo repo);
-  Branch createBranch(BranchDTO branchDTO, Repo repo);
+  Branch createBranch(String branchName, Repo repo);
   Branch getBranchById(Long branchId);
+  Branch getBranchByNameAndRepoUuid(String branchName, String repoUuid);
+  boolean doesBranchExistByNameAndRepoUuid(String branchName, String repoUuid);
 }
