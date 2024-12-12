@@ -2,25 +2,23 @@ package com.adrian.simple_repositories.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.adrian.simple_repositories.dto.UniqueIdentifierDTO;
 import com.adrian.simple_repositories.dto.repo.RepoDTO;
 import com.adrian.simple_repositories.dto.repo.RepoFullDTO;
 import com.adrian.simple_repositories.dto.repo.RepoIdentifierRequestDTO;
 import com.adrian.simple_repositories.dto.repo.RepoInformationDTO;
 import com.adrian.simple_repositories.dto.repo.RepoSetupDTO;
-import com.adrian.simple_repositories.dto.repo.RepoUpdateDTO;
 import com.adrian.simple_repositories.service.RepoService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/repo")
@@ -31,6 +29,12 @@ public class RepoController {
   @Autowired
   public RepoController(RepoService repoService) {
     this.repoService = repoService;
+  }
+
+  @GetMapping("/test")
+  public String testEndpoint() {
+    System.out.println("Test endpoint called");
+    return "TEST";
   }
 
   @GetMapping("/{uuid}")
@@ -50,6 +54,7 @@ public class RepoController {
 
   @PostMapping("/new")
   public ResponseEntity<RepoDTO> newRepo(@RequestBody RepoSetupDTO setupDTO) {
+    System.out.println("Repo endpoint called");
     return ResponseEntity.ok(repoService.createEmptyRepo(setupDTO));  
   }
 

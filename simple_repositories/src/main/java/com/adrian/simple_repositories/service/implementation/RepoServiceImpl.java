@@ -5,8 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
 
 import com.adrian.simple_repositories.assembler.RepoAssembler;
 import com.adrian.simple_repositories.dto.UniqueIdentifierDTO;
@@ -18,20 +17,21 @@ import com.adrian.simple_repositories.dto.repo.RepoSetupDTO;
 import com.adrian.simple_repositories.dto.repo.RepoUpdateDTO;
 import com.adrian.simple_repositories.exception.RepoNotFoundException;
 import com.adrian.simple_repositories.mapper.RepoMapper;
-import com.adrian.simple_repositories.model.File;
 import com.adrian.simple_repositories.model.Branch;
 import com.adrian.simple_repositories.model.Directory;
+import com.adrian.simple_repositories.model.File;
 import com.adrian.simple_repositories.model.Repo;
 import com.adrian.simple_repositories.model.RepoVersion;
 import com.adrian.simple_repositories.model.User;
 import com.adrian.simple_repositories.repository.RepoRepository;
+import com.adrian.simple_repositories.security.AuthenticationFacade;
+import com.adrian.simple_repositories.service.BranchService;
 import com.adrian.simple_repositories.service.RepoService;
 import com.adrian.simple_repositories.service.RepoVersionService;
 import com.adrian.simple_repositories.service.UserService;
-import com.adrian.simple_repositories.service.BranchService;
-import com.adrian.simple_repositories.security.AuthenticationFacade;
 
-import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /*
  * Implementation of RepoService interface
@@ -70,6 +70,7 @@ public class RepoServiceImpl implements RepoService {
    * @return repoDTO: contains information of created repo
    */
   @Override
+  @Transactional
   public RepoDTO createEmptyRepo(RepoSetupDTO setupDTO) {
     Repo repo = repoMapper.toEntityFromSetupDTO(setupDTO);
     User user = userService.getUserByEmail(setupDTO.getOwnerEmail());

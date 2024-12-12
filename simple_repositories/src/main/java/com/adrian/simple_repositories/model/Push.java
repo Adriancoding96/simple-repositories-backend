@@ -3,7 +3,7 @@ package com.adrian.simple_repositories.model;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,11 +40,11 @@ public class Push {
   @JoinColumn(name = "repo_id")
   private Repo repo;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "directory_id")
   private Directory directory;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "file_id")
   private File file;
 

@@ -1,5 +1,13 @@
 package com.adrian.simple_repositories.controller;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+
+import com.adrian.simple_repositories.dto.auth.LoginRequestDTO;
+import com.adrian.simple_repositories.dto.auth.LoginResponseDTO;
+import com.adrian.simple_repositories.dto.auth.UserDetailDTO;
+import com.adrian.simple_repositories.security.JwtHelper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,14 +16,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.adrian.simple_repositories.dto.auth.LoginRequestDTO;
-import com.adrian.simple_repositories.dto.auth.LoginResponseDTO;
-import com.adrian.simple_repositories.dto.auth.UserDetailDTO;
-import com.adrian.simple_repositories.security.JwtHelper;
-
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 public class LoginController {
@@ -29,6 +29,7 @@ public class LoginController {
 
   @PostMapping(value = "/login")
   public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO request) {
+    System.out.println(request.getEmail());
     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
     String token = JwtHelper.generateToken(request.getEmail());
     return ResponseEntity.ok(new LoginResponseDTO(request.getEmail(), token));

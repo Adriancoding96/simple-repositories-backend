@@ -1,6 +1,5 @@
 package com.adrian.simple_repositories.dto.repo;
  
-import java.util.List;
 
 public class RepoDTO {
   
